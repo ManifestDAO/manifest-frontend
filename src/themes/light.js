@@ -3,9 +3,9 @@ import fonts from "./fonts";
 import commonSettings from "./global.js";
 
 const lightTheme = {
-  color: "#253449",
-  gold: "#F8CC82",
-  gray: "#A3A3A3",
+  color: "#A020F0",
+  gold: "#A020F0",
+  gray: "#A020F0",
   blueish_gray: "#768299",
   textHighlightColor: "#93AEBC", // "#F4D092",
   backgroundColor: "#AFCDE9",
