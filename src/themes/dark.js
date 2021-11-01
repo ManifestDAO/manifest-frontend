@@ -6,9 +6,9 @@ import commonSettings from "./global.js";
 // then set the values in darkTheme using the global color variables
 
 const darkTheme = {
-  color: "#FCFCFC",
-  gold: "#F8CC82",
-  gray: "#A3A3A3",
+  color: "rgba(154, 18, 179, 1)",
+  gold: "rgba(154, 18, 179, 1)",
+  gray: "rgba(154, 18, 179, 1)",
   textHighlightColor: "#F4D092",
   backgroundColor: "rgba(154, 18, 179, 1)",
   background: `
@@ -20,11 +20,11 @@ const darkTheme = {
     radial-gradient(circle at 10% 0%, rgba(154, 18, 179, 1), rgba(187,211,204,0) 35%),
     radial-gradient(circle at 11% 100%, rgba(154, 18, 179, 1), rgba(131, 165, 203, 0) 30%)
     `,
-  paperBg: "rgba(54, 56, 64, 0.4)",
-  modalBg: "#24242699",
-  popoverBg: "rgba(54, 56, 64, 0.99)",
-  menuBg: "#36384080",
-  backdropBg: "rgba(54, 56, 64, 0.5)",
+  paperBg: "rgba(154, 18, 179, 1)",
+  modalBg: "rgba(154, 18, 179, 1)",
+  popoverBg: "rgba(154, 18, 179, 1)",
+  menuBg: "rgba(154, 18, 179, 1)",
+  backdropBg: "rgba(154, 18, 179, 1)",
   largeTextColor: "#F4D092",
   activeLinkColor: "#F5DDB4",
   activeLinkSvgColor:
