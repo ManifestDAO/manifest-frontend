@@ -43,7 +43,7 @@ function NavContent() {
               <SvgIcon
                 color="primary"
                 component={OlympusIcon}
-                viewBox="0 0 151 100"
+                viewBox="150 250 300 300"
                 style={{ minWdth: "151px", minHeight: "98px", width: "151px" }}
               />
             </Link>
