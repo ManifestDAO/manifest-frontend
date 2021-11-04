@@ -1,3 +1,5 @@
+
+/*
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { close, handle_obsolete } from "../../slices/MessagesSlice";
@@ -19,7 +21,7 @@ function Linear({ message }) {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  useEffect(() => {a
     const timer = setInterval(() => {
       setProgress(oldProgress => {
         if (oldProgress === 0) {
