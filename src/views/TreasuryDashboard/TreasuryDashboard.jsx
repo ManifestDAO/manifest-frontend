@@ -170,7 +170,7 @@ function TreasuryDashboard() {
         <Zoom in={true}>
           <Grid container spacing={2} className="data-grid">
             <Grid item lg={6} md={6} sm={12} xs={12}>
-              <Paper className="ohm-card ohm-chart-card">
+              <Paper className="ohm-card ohm-chart-card right-radial">
                 <Chart
                   type="area"
                   data={data}
@@ -240,7 +240,7 @@ function TreasuryDashboard() {
             </Grid>
 
             <Grid item lg={6} md={6} sm={12} xs={12}>
-              <Paper className="ohm-card">
+              <Paper className="ohm-card right-radial">
                 <Chart
                   type="area"
                   data={data}
@@ -278,7 +278,7 @@ function TreasuryDashboard() {
             </Grid> */}
 
             <Grid item lg={6} md={6} sm={12} xs={12}>
-              <Paper className="ohm-card">
+              <Paper className="ohm-card right-radial">
                 <Chart
                   type="area"
                   data={staked}

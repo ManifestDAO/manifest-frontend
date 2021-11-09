@@ -36,7 +36,7 @@ function Dashboard() {
 
         <Grid item lg={4} md={4} sm={4} xs={7}>
           <Zoom in={true}>
-            <Paper className="ohm-card">
+            <Paper className="ohm-card-2">
               <Typography variant="h6">Market Cap</Typography>
               <Typography variant="h5">
                 {isAppLoading ? (

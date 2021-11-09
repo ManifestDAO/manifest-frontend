@@ -61,7 +61,7 @@ export const light = responsiveFontSizes(
         graphStrokeColor: lightTheme.graphStrokeColor,
       },
       typography: {
-        fontFamily: "Square",
+        fontFamily: "General",
       },
       props: {
         MuiSvgIcon: {
@@ -120,7 +120,7 @@ export const light = responsiveFontSizes(
             },
             "&.active": {
               color: lightTheme.color,
-              textDecoration: "underline",
+              textDecoration: "none",
             },
             "@media (hover:none)": {
               "&:hover": {

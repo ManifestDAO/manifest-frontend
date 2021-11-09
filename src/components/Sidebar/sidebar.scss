@@ -1,24 +1,34 @@
 .sidebar {
-  min-width: 280px;
+  min-width: 200px;
   z-index: 2;
   border-radius: 0 !important;
+  background: none !important;
 }
 
 .MuiDrawer-paper .MuiPaper-root {
   border-radius: 0 !important;
+  background-color: transparent !important;
+  -webkit-backdrop-filter: blur(0px) !important;
+  backdrop-filter: blur(0px) !important;
 }
-
+.MuiDrawer-paper {
+  background-color: transparent !important;
+  width: 200px !important;
+  -webkit-backdrop-filter: blur(0px) !important;
+  backdrop-filter: blur(0px) !important;
+}
 .dapp-sidebar {
   height: 100%;
+  width: 200px;
   overflow: hidden;
   border-radius: 0 !important;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: none !important;
 }
 
 .dapp-sidebar-inner {
   height: 100%;
   overflow: auto;
+  width: 200px;
 }
 
 .branding-header {
@@ -29,14 +39,19 @@
   width: 100%;
   align-items: center;
   text-decoration: none;
-  margin: 30px 0 10px 0;
+  margin: 64px 0 10px 0;
   .branding-header-icon {
     width: 50px;
     display: block;
     margin: 0 auto;
   }
   .wallet-link {
-    margin: 10px;
+    margin-top: 32px;
+    padding: 8px 16px;
+    border-radius: 100px;
+    background-color: rgba(255,255,255,0.05);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
   }
 }
 
@@ -53,27 +68,31 @@
 }
 
 .dapp-menu-bottom {
-  height: 40vh;
-  min-height: 30vh;
 }
 
 .dapp-menu-links {
   min-height: 35vh;
   display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 
 .dapp-nav a {
-  margin-top: 0.7rem;
-  margin-left: 33px;
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   margin-bottom: 0.5rem;
+  color: rgba(255,255,255,0.6);
   svg {
-    width: 20px;
-    height: 20px;
-    margin-right: 12px;
-    vertical-align: -4px;
+    width: 32px;
+    height: 32px;
   }
+}
+
+.dapp-nav a.active svg {
+  color: #B900FF;
 }
 
 .dapp-menu-external-links {
