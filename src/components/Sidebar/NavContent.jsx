@@ -5,7 +5,7 @@ import externalUrls from "./externalUrls";
 import { ReactComponent as StakeIcon } from "../../assets/icons/stake.svg";
 import { ReactComponent as BondIcon } from "../../assets/icons/bond.svg";
 import { ReactComponent as DashboardIcon } from "../../assets/icons/dashboard.svg";
-import { ReactComponent as OlympusIcon } from "../../assets/icons/logo-mnfst.svg";
+import { ReactComponent as Logo } from "../../assets/icons/logo-mnfst.svg";
 import { ReactComponent as PoolTogetherIcon } from "../../assets/icons/33-together.svg";
 import { trim, shorten } from "../../helpers";
 import { useAddress, useWeb3Context } from "src/hooks/web3Context";
@@ -42,9 +42,9 @@ function NavContent() {
             <Link href="https://olympusdao.finance" target="_blank">
               <SvgIcon
                 color="primary"
-                component={OlympusIcon}
-                viewBox="150 250 300 300"
-                style={{ minWdth: "151px", minHeight: "98px", width: "151px" }}
+                component={Logo}
+                viewBox="0 0 36 32"
+                style={{ maxWidth: "52px", width: "52px", height: "46.22px" }}
               />
             </Link>
 
@@ -68,10 +68,8 @@ function NavContent() {
                 }}
                 className={`button-dapp-menu ${isActive ? "active" : ""}`}
               >
-                <Typography variant="h6">
-                  <SvgIcon color="primary" component={DashboardIcon} />
-                  Dashboard
-                </Typography>
+                <SvgIcon color="primary" component={DashboardIcon} />
+                <Typography variant="h6">Dashboard</Typography>
               </Link>
 
               <Link
@@ -83,16 +81,13 @@ function NavContent() {
                 }}
                 className={`button-dapp-menu ${isActive ? "active" : ""}`}
               >
-                <Typography variant="h6">
-                  <SvgIcon color="primary" component={BondIcon} />
-                  Bond
-                </Typography>
+                <SvgIcon color="primary" component={BondIcon} />
+                <Typography variant="h6">Bond</Typography>
               </Link>
             </div>
           </div>
         </div>
         <Box className="dapp-menu-bottom" display="flex" justifyContent="space-between" flexDirection="column">
-          
           <div className="dapp-menu-social">
             <Social />
           </div>

@@ -49,7 +49,7 @@ export const girth = responsiveFontSizes(
         },
       },
       typography: {
-        fontFamily: "Square",
+        fontFamily: "General",
       },
       props: {
         MuiSvgIcon: {

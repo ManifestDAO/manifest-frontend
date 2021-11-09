@@ -67,7 +67,7 @@ export default function ExternalStakePool() {
 
   return (
     <Zoom in={true}>
-      <Paper className={`ohm-card secondary ${isSmallScreen && "mobile"}`}>
+      <Paper className={`ohm-card right-radial secondary ${isSmallScreen && "mobile"}`}>
         <div className="card-header">
           <Typography variant="h5">Farm Pool</Typography>
         </div>

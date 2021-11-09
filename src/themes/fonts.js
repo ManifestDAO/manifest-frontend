@@ -1,94 +1,64 @@
-import SquareWOFF from "../assets/fonts/EuclidSquare-Regular.woff";
-import SquareBoldWOFF from "../assets/fonts/EuclidSquare-Bold.woff";
-import SquareSemiBoldWOFF from "../assets/fonts/EuclidSquare-SemiBold.woff";
-import SquareItalicWOFF from "../assets/fonts/EuclidSquare-Italic.woff";
-import SquareLightWOFF from "../assets/fonts/EuclidSquare-Light.woff";
-import SquareMediumWOFF from "../assets/fonts/EuclidSquare-Medium.woff";
+import GeneralWOFF from "../assets/fonts/GeneralSans-Regular.woff";
+import GeneralSemiBoldWOFF from "../assets/fonts/GeneralSans-Semibold.woff";
+import GeneralItalicWOFF from "../assets/fonts/GeneralSans-Italic.woff";
+import ClashMediumWOFF from "../assets/fonts/ClashDisplay-Medium.woff";
 
-const square = {
-  fontFamily: "Square",
+const general = {
+  fontFamily: "General",
   fontStyle: "normal",
   fontDisplay: "swap",
   fontWeight: 400,
   src: `
-		local('EuclidSquare'),
-		local('EuclidSquare-Regular'),
-		url(${SquareWOFF}) format('woff')
+		local('GeneralSans'),
+		local('GeneralSans-Regular'),
+		url(${GeneralWOFF}) format('woff')
 	`,
   unicodeRange:
     "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF",
 };
 
-const squareLight = {
-  fontFamily: "Square",
-  fontStyle: "normal",
-  fontDisplay: "swap",
-  fontWeight: 300,
-  src: `
-		local('EuclidSquare'),
-		local('EuclidSquare-Light'),
-		url(${SquareLightWOFF}) format('woff')
-	`,
-  unicodeRange:
-    "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF",
-};
-
-const squareMedium = {
-  fontFamily: "Square",
-  fontStyle: "medium",
-  fontDisplay: "swap",
-  fontWeight: 500,
-  src: `
-		local('EuclidSquare'),
-		local('EuclidSquare-Medium'),
-		url(${SquareMediumWOFF}) format('woff')
-	`,
-  unicodeRange:
-    "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF",
-};
-
-const squareSemiBold = {
-  fontFamily: "Square",
+const generalSemiBold = {
+  fontFamily: "General",
   fontStyle: "normal",
   fontDisplay: "swap",
   fontWeight: 600,
   src: `
-		local('EuclidSquare-SemiBold'),
-		local('EuclidSquare-SemiBold'),
-		url(${SquareSemiBoldWOFF}) format('woff')
+		local('GeneralSans-SemiBold'),
+		local('GeneralSans-SemiBold'),
+		url(${GeneralSemiBoldWOFF}) format('woff')
 	`,
   unicodeRange:
     "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF",
 };
 
-const squareBold = {
-  fontFamily: "Square",
-  fontStyle: "bold",
-  fontDisplay: "swap",
-  fontWeight: 700,
-  src: `
-		local('EuclidSquare-Bold'),
-		local('EuclidSquare-Bold'),
-		url(${SquareBoldWOFF}) format('woff')
-	`,
-  unicodeRange:
-    "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF",
-};
-
-const squareItalic = {
-  fontFamily: "Square",
+const generalItalic = {
+  fontFamily: "General",
   fontStyle: "italic",
   fontDisplay: "swap",
   fontWeight: 400,
   src: `
-		local('EuclidSquare-Italic'),
-		local('EuclidSquare-Italic'),
-		url(${SquareItalicWOFF}) format('woff')
+		local('GeneralSans-Italic'),
+		local('GeneralSans-Italic'),
+		url(${GeneralItalicWOFF}) format('woff')
 	`,
   unicodeRange:
     "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF",
 };
 
-const fonts = [square, squareLight, squareMedium, squareBold, squareItalic];
+const clash = {
+  fontFamily: "Clash",
+  fontStyle: "italic",
+  fontDisplay: "swap",
+  fontWeight: 500,
+  src: `
+		local('ClashDisplay-Medium'),
+		local('ClashDisplay-Medium'),
+		url(${ClashMediumWOFF}) format('woff')
+	`,
+  unicodeRange:
+    "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF",
+};
+
+const fonts = [general, generalSemiBold, generalItalic, clash];
 
 export default fonts;
