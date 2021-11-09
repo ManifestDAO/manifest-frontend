@@ -71,20 +71,7 @@ function NavContent() {
                 <SvgIcon color="primary" component={DashboardIcon} />
                 <Typography variant="h6">Dashboard</Typography>
               </Link>
-
-              <Link
-                component={NavLink}
-                id="bond-nav"
-                to="/bonds"
-                isActive={(match, location) => {
-                  return checkPage(match, location, "bonds");
-                }}
-                className={`button-dapp-menu ${isActive ? "active" : ""}`}
-              >
-                <SvgIcon color="primary" component={BondIcon} />
-                <Typography variant="h6">Bond</Typography>
-              </Link>
-              
+                             
               <Link
                 component={NavLink}
                 id="stake-nav"
@@ -98,7 +85,20 @@ function NavContent() {
                 <Typography variant="h6">Stake</Typography>
               </Link>
               
-              
+              <Link
+                component={NavLink}
+                id="bond-nav"
+                to="/bonds"
+                isActive={(match, location) => {
+                  return checkPage(match, location, "bonds");
+                }}
+                className={`button-dapp-menu ${isActive ? "active" : ""}`}
+              >
+                <SvgIcon color="primary" component={BondIcon} />
+                <Typography variant="h6">Bond</Typography>
+              </Link>
+
+                       
             </div>
           </div>
         </div>
