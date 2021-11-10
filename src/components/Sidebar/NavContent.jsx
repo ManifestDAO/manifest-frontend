@@ -71,19 +71,6 @@ function NavContent() {
                 <SvgIcon color="primary" component={DashboardIcon} />
                 <Typography variant="h6">Dashboard</Typography>
               </Link>
-                             
-              <Link
-                component={NavLink}
-                id="stake-nav"
-                to="/stake"
-                isActive={(match, location) => {
-                  return checkPage(match, location, "stake");
-                }}
-                className={`button-dapp-menu ${isActive ? "active" : ""}`}
-              >
-                <SvgIcon color="primary" component={StakeIcon} />
-                <Typography variant="h6">Stake</Typography>
-              </Link>
               
               <Link
                 component={NavLink}
