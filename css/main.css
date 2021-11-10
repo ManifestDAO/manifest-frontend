@@ -1,0 +1,148 @@
+body {
+    position: absolute;
+    margin: 0px;
+    overflow: hidden;
+    top: 0px;
+    bottom: 0px;
+    width: 100%;
+    background-color: black;
+    background-image: url(/media/nebula.png);
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+  }
+  
+  html {
+    scrollbar-width: none; /* For Firefox */
+    -ms-overflow-style: none; /* For Internet Explorer and Edge */
+  }
+  
+  html::-webkit-scrollbar {
+    width: 0px; /* For Chrome, Safari, and Opera */
+  }
+
+  /* everything nav*/
+
+  .topnav{
+      height: 100px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+  }
+
+  .logo{
+      max-width: 250px;
+  }
+
+  .logo-box, .nav-box{
+    margin-left: 50px;
+    margin-right: 50px;
+  }
+
+  .nav-box{
+      display: flex;
+      gap: 50px;
+  }
+
+  .hoodie-img{
+    max-height: 80vh;
+    max-width: 60vw;
+  }
+
+  .nav-item{
+      font-size: 25px;
+      color: white;
+      font-family: GeneralSans-Variable;
+  }
+
+  /* end top nav! */
+
+  /* start main content */
+
+  .thecontent{
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      background-image: url(/media/MNFST.png);
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+  }
+
+  
+  .svg-item:hover{
+    fill: #B200FE;
+  }
+
+  .text-hoodies{
+    color: white;
+    font-family: ClashDisplay-Variable;
+  }
+
+  .text-left{
+    color: white;
+    font-family: ClashDisplay-Variable;
+    margin-left: 50px; 
+    position: sticky;
+    bottom: 0;
+  }
+
+  .text-right{
+    color: white;
+    font-family: ClashDisplay-Variable;
+    margin-right: 50px;
+    position: sticky;
+    bottom: 0;
+  }
+
+  @media only screen and (max-width: 800px) {
+    .nav-box {
+      gap: 2%;
+      margin: auto;
+      padding-top: 10px;
+    }
+    
+    .nav-item{
+      margin-left: 20px;
+      margin-right: 20px;
+      margin-top: 10px;
+    }
+
+    .topnav{
+      justify-content: center;
+      margin-top: 25px;
+    }
+
+    .svg-item{
+      width: 35px;
+      height: 35px;
+    }
+
+    .logo-box, .nav-box{
+        margin-left: 20px;
+        margin-right: 20px;
+      }
+
+    .thecontent{
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-box{
+      margin: auto;
+    }
+
+    .hoodie-img{
+      max-width: 300px;
+      max-height: 400px;
+    }
+
+    .text-left, .text-right{
+      margin: auto;
+      text-align: center;
+    }
+
+  }
