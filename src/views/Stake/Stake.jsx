@@ -210,7 +210,6 @@ function Stake() {
                   <div className="wallet-menu" id="wallet-menu">
                     {modalButton}
                   </div>
-                  <Typography variant="h6">Connect your wallet to stake MNFST</Typography>
                   <Typography variant="h4">Powered by Olympus Ω</Typography>
                 </div>
               ) : (
