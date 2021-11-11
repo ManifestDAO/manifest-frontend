@@ -211,6 +211,7 @@ function Stake() {
                     {modalButton}
                   </div>
                   <Typography variant="h6">Connect your wallet to stake MNFST</Typography>
+                  <Typography variant="h4">Powered by Ohm</Typography>
                 </div>
               ) : (
                 <>
