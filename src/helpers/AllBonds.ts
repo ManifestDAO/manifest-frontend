@@ -1,7 +1,9 @@
 import { StableBond, LPBond, NetworkID, CustomBond, BondType } from "src/lib/Bond";
 import { addresses } from "src/constants";
-import { ReactComponent as OhmEthImg } from "src/assets/tokens/OHM-WETH.svg";
+import { ReactComponent as MnfstOhmImg } from "src/assets/tokens/MNFST-OHM.svg";
 import { ReactComponent as wETHImg } from "src/assets/tokens/wETH.svg";
+import { ReactComponent as sOhmImg } from "src/assets/tokens/token_sOHM.svg";
+
 import { abi as BondOhmEthContract } from "src/abi/bonds/OhmEthContract.json";
 
 import { abi as ReserveOhmEthContract } from "src/abi/reserves/OhmEth.json";
@@ -25,12 +27,12 @@ export const eth = new CustomBond({
   reserveContract: ierc20Abi, // The Standard ierc20Abi since they're normal tokens
   networkAddrs: {
     [NetworkID.Mainnet]: {
-      bondAddress: "0xE6295201CD1ff13CeD5f063a5421c39A1D236F1c",
-      reserveAddress: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+      bondAddress: "0x4b53412beaad7d62cd00754757632f939391487b",
+      reserveAddress: "",
     },
     [NetworkID.Testnet]: {
-      bondAddress: "0xca7b90f8158A4FAA606952c023596EE6d322bcf0",
-      reserveAddress: "0xc778417e063141139fce010982780140aa0cd5ab",
+      bondAddress: "",
+      reserveAddress: "",
     },
   },
   customTreasuryBalanceFunc: async function (this: CustomBond, networkID, provider) {
@@ -44,23 +46,22 @@ export const eth = new CustomBond({
   },
 });
 
-export const ohm_weth = new CustomBond({
-  name: "ohm_weth_lp",
-  displayName: "OHM-WETH LP",
-  bondToken: "WETH",
+export const ohm_mnfst = new CustomBond({
+  name: "ohm_mnfst_lp",
+  displayName: "OHM-MNFST LP",
+  bondToken: "OHM",
   isAvailable: { [NetworkID.Mainnet]: true, [NetworkID.Testnet]: true },
-  bondIconSvg: OhmEthImg,
+  bondIconSvg: MnfstOhmImg,
   bondContractABI: BondOhmEthContract,
   reserveContract: ReserveOhmEthContract,
   networkAddrs: {
     [NetworkID.Mainnet]: {
-      bondAddress: "0xB6C9dc843dEc44Aa305217c2BbC58B44438B6E16",
-      reserveAddress: "0xfffae4a0f4ac251f4705717cd24cadccc9f33e06",
+      bondAddress: "0xD67838dD745c16F180057A0A76039ae6C38901C3",
+      reserveAddress: "0x89c4d11dfd5868d847ca26c8b1caa9c25c712cef",
     },
     [NetworkID.Testnet]: {
-      // NOTE (unbanksy): using ohm-dai rinkeby contracts
-      bondAddress: "0xcF449dA417cC36009a1C6FbA78918c31594B9377",
-      reserveAddress: "0x8D5a22Fb6A1840da602E56D1a260E56770e0bCE2",
+      bondAddress: "",
+      reserveAddress: "",
     },
   },
   bondType: BondType.LP,
@@ -68,9 +69,9 @@ export const ohm_weth = new CustomBond({
     "https://app.sushi.com/add/0x383518188c0c6d7730d91b2c03a03c837814a899/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
   customTreasuryBalanceFunc: async function (this: CustomBond, networkID, provider) {
     if (networkID === NetworkID.Mainnet) {
-      const ethBondContract = this.getContractForBond(networkID, provider);
-      let ethPrice = await ethBondContract.assetPrice();
-      ethPrice = ethPrice / Math.pow(10, 8);
+      const BondContract = this.getContractForBond(networkID, provider);
+      let ohmPrice = await BondContract.assetPrice();
+      ohmPrice = ohmPrice / Math.pow(10, 9);
       const token = this.getContractForReserve(networkID, provider);
       const tokenAddress = this.getAddressForReserve(networkID);
       const bondCalculator = getBondCalculator(networkID, provider);
@@ -78,7 +79,7 @@ export const ohm_weth = new CustomBond({
       const valuation = await bondCalculator.valuation(tokenAddress, tokenAmount);
       const markdown = await bondCalculator.markdown(tokenAddress);
       let tokenUSD = (valuation / Math.pow(10, 9)) * (markdown / Math.pow(10, 18));
-      return tokenUSD * ethPrice;
+      return tokenUSD * ohmPrice;
     } else {
       // NOTE (appleseed): using OHM-DAI on rinkeby
       const token = this.getContractForReserve(networkID, provider);
@@ -93,11 +94,42 @@ export const ohm_weth = new CustomBond({
   },
 });
 
+export const sohm = new CustomBond({
+  name: "sohm",
+  displayName: "sOHM",
+  lpUrl: "",
+  bondType: BondType.StableAsset,
+  bondToken: "sOHM",
+  isAvailable: { [NetworkID.Mainnet]: true, [NetworkID.Testnet]: true },
+  bondIconSvg: sOhmImg,
+  bondContractABI: EthBondContract,
+  reserveContract: ierc20Abi, // The Standard ierc20Abi since they're normal tokens
+  networkAddrs: {
+    [NetworkID.Mainnet]: {
+      bondAddress: "",
+      reserveAddress: "",
+    },
+    [NetworkID.Testnet]: {
+      bondAddress: "",
+      reserveAddress: "",
+    },
+  },
+  customTreasuryBalanceFunc: async function (this: CustomBond, networkID, provider) {
+    const sohmBondContract = this.getContractForBond(networkID, provider);
+    let sohmPrice = await sohmBondContract.assetPrice();
+    sohmPrice = sohmPrice / Math.pow(10, 8);
+    const token = this.getContractForReserve(networkID, provider);
+    let sohmAmount = await token.balanceOf(addresses[networkID].TREASURY_ADDRESS);
+    sohmAmount = sohmAmount / Math.pow(10, 18);
+    return sohmAmount * sohmPrice;
+  },
+});
+
 // HOW TO ADD A NEW BOND:
 // Is it a stableCoin bond? use `new StableBond`
 // Is it an LP Bond? use `new LPBond`
 // Add new bonds to this array!!
-export const allBonds = [eth, ohm_weth];
+export const allBonds = [eth, ohm_mnfst, sohm];
 export const allBondsMap = allBonds.reduce((prevVal, bond) => {
   return { ...prevVal, [bond.name]: bond };
 }, {});

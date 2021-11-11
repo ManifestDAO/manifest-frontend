@@ -10,23 +10,15 @@ import { fetchAccountSuccess, getBalances } from "./AccountSlice";
 import { error, info } from "../slices/MessagesSlice";
 import { IActionValueAsyncThunk, IChangeApprovalAsyncThunk, IJsonRPCError } from "./interfaces";
 
-interface IUAData {
-  address: string;
-  value: string;
-  approved: boolean;
-  txHash: string | null;
-  type: string | null;
-}
-
 function alreadyApprovedToken(token: string, stakeAllowance: BigNumber, unstakeAllowance: BigNumber) {
   // set defaults
   let bigZero = BigNumber.from("0");
   let applicableAllowance = bigZero;
 
   // determine which allowance to check
-  if (token === "ohm") {
+  if (token === "mnfst") {
     applicableAllowance = stakeAllowance;
-  } else if (token === "sohm") {
+  } else if (token === "smnfst") {
     applicableAllowance = unstakeAllowance;
   }
 
@@ -61,29 +53,29 @@ export const changeApproval = createAsyncThunk(
       return dispatch(
         fetchAccountSuccess({
           staking: {
-            ohmStake: +stakeAllowance,
-            ohmUnstake: +unstakeAllowance,
+            mnfstStake: +stakeAllowance,
+            mnfstUnstake: +unstakeAllowance,
           },
         }),
       );
     }
 
     try {
-      if (token === "ohm") {
+      if (token === "mnfst") {
         // won't run if stakeAllowance > 0
         approveTx = await mnfstContract.approve(
           addresses[networkID].STAKING_HELPER_ADDRESS,
           ethers.utils.parseUnits("1000000000", "gwei").toString(),
         );
-      } else if (token === "sohm") {
+      } else if (token === "smnfst") {
         approveTx = await smnfstContract.approve(
           addresses[networkID].STAKING_ADDRESS,
           ethers.utils.parseUnits("1000000000", "gwei").toString(),
         );
       }
 
-      const text = "Approve " + (token === "ohm" ? "Staking" : "Unstaking");
-      const pendingTxnType = token === "ohm" ? "approve_staking" : "approve_unstaking";
+      const text = "Approve " + (token === "mnfst" ? "Staking" : "Unstaking");
+      const pendingTxnType = token === "mnfst" ? "approve_staking" : "approve_unstaking";
       dispatch(fetchPendingTxns({ txnHash: approveTx.hash, text, type: pendingTxnType }));
 
       await approveTx.wait();
@@ -103,8 +95,8 @@ export const changeApproval = createAsyncThunk(
     return dispatch(
       fetchAccountSuccess({
         staking: {
-          ohmStake: +stakeAllowance,
-          ohmUnstake: +unstakeAllowance,
+          mnfstStake: +stakeAllowance,
+          mnfstUnstake: +unstakeAllowance,
         },
       }),
     );
@@ -128,27 +120,17 @@ export const changeStake = createAsyncThunk(
     );
 
     let stakeTx;
-    let uaData: IUAData = {
-      address: address,
-      value: value,
-      approved: true,
-      txHash: null,
-      type: null,
-    };
+
     try {
       if (action === "stake") {
-        uaData.type = "stake";
         stakeTx = await stakingHelper.stake(ethers.utils.parseUnits(value, "gwei"));
       } else {
-        uaData.type = "unstake";
         stakeTx = await staking.unstake(ethers.utils.parseUnits(value, "gwei"), true);
       }
       const pendingTxnType = action === "stake" ? "staking" : "unstaking";
-      uaData.txHash = stakeTx.hash;
       dispatch(fetchPendingTxns({ txnHash: stakeTx.hash, text: getStakingTypeText(action), type: pendingTxnType }));
       await stakeTx.wait();
     } catch (e: unknown) {
-      uaData.approved = false;
       const rpcError = e as IJsonRPCError;
       if (rpcError.code === -32603 && rpcError.message.indexOf("ds-math-sub-underflow") >= 0) {
         dispatch(
