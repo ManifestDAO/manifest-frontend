@@ -1,9 +1,9 @@
-import { AppBar, Toolbar, Box, Button, SvgIcon } from "@material-ui/core";
+import { AppBar, Toolbar, Box, Button, SvgIcon, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
+// import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { ReactComponent as MenuIcon } from "../../assets/icons/hamburger.svg";
 import OhmMenu from "./OhmMenu.jsx";
-import ThemeSwitcher from "./ThemeSwitch.jsx";
+// import ThemeSwitcher from "./ThemeSwitch.jsx";
 import ConnectMenu from "./ConnectMenu.jsx";
 import "./topbar.scss";
 
@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
 
 function TopBar({ theme, toggleTheme, handleDrawerToggle }) {
   const classes = useStyles();
-  const isVerySmallScreen = useMediaQuery("(max-width: 355px)");
+  // const isVerySmallScreen = useMediaQuery("(max-width: 355px)");
 
   return (
     <AppBar position="sticky" className={classes.appBar} elevation={0}>
@@ -47,12 +47,23 @@ function TopBar({ theme, toggleTheme, handleDrawerToggle }) {
           <SvgIcon component={MenuIcon} />
         </Button>
 
-        <Box display="flex">
-          {!isVerySmallScreen && <OhmMenu />}
-
+        <Box display="flex" justifyContent="center" alignItems="center">
+          {/* 
+          NOTE: COMMENTED OUT UNTIL UPDATED FOR MANIFEST BRANDING/COLORS, 
+                REPLACED WITH BUTTON TO MINT PAGE INSTEAD
+          {!isVerySmallScreen && <OhmMenu />} 
+          */}
+          <Button variant="contained" color="secondary" href="mint.manifest.gg" target="_blank">
+            <Typography variant="h5" style={{ fontWeight: "bold" }}>
+              Mint
+            </Typography>
+          </Button>
           <ConnectMenu theme={theme} />
 
-          <ThemeSwitcher theme={theme} toggleTheme={toggleTheme} />
+          {/* 
+            NOTE: LEAVE THIS COMMENTED OUT UNTIL LIGHT THEME IS CONFIGURED
+            <ThemeSwitcher theme={theme} toggleTheme={toggleTheme} /> 
+          */}
         </Box>
       </Toolbar>
     </AppBar>

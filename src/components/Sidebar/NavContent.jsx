@@ -1,10 +1,9 @@
 import { useCallback, useState } from "react";
 import { NavLink } from "react-router-dom";
 import Social from "./Social";
-import externalUrls from "./externalUrls";
+// import externalUrls from "./externalUrls";
 import { ReactComponent as StakeIcon } from "../../assets/icons/stake.svg";
 import { ReactComponent as BondIcon } from "../../assets/icons/bond.svg";
-import { ReactComponent as DashboardIcon } from "../../assets/icons/dashboard.svg";
 import { ReactComponent as Logo } from "../../assets/icons/logo-mnfst.svg";
 import { ReactComponent as PoolTogetherIcon } from "../../assets/icons/33-together.svg";
 import { trim, shorten } from "../../helpers";
@@ -18,7 +17,7 @@ function NavContent() {
   const [isActive] = useState();
   const address = useAddress();
   const { bonds } = useBonds();
-  const { chainID } = useWeb3Context();
+  // const { chainID } = useWeb3Context();
 
   const checkPage = useCallback((match, location, page) => {
     const currentPath = location.pathname.replace("/", "");
@@ -68,10 +67,20 @@ function NavContent() {
                 }}
                 className={`button-dapp-menu ${isActive ? "active" : ""}`}
               >
-                <Typography variant="h6">
-                  <SvgIcon color="primary" component={StakeIcon} />
-                  Stake
-                </Typography>
+                <Box display="flex" align="center">
+                  <SvgIcon
+                    style={{
+                      height: "24px",
+                      width: "24px",
+                      verticalAlign: "middle",
+                      marginRight: "3px",
+                    }}
+                    component={StakeIcon}
+                  />
+                  <Typography variant="h5" style={{ fontWeight: "600" }}>
+                    Stake
+                  </Typography>
+                </Box>
               </Link>
 
               <Link
@@ -83,10 +92,20 @@ function NavContent() {
                 }}
                 className={`button-dapp-menu ${isActive ? "active" : ""}`}
               >
-                <Typography variant="h6">
-                  <SvgIcon color="primary" component={PoolTogetherIcon} />
-                  3,3 Together
-                </Typography>
+                <Box display="flex" align="center">
+                  <SvgIcon
+                    style={{
+                      height: "24px",
+                      width: "24px",
+                      verticalAlign: "middle",
+                      marginRight: "3px",
+                    }}
+                    component={BondIcon}
+                  />
+                  <Typography variant="h5" style={{ fontWeight: "600" }}>
+                    Bond
+                  </Typography>
+                </Box>
               </Link>
             </div>
           </div>
