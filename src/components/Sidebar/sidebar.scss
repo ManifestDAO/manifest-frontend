@@ -49,7 +49,7 @@
     margin-top: 32px;
     padding: 8px 16px;
     border-radius: 100px;
-    background-color: rgba(255,255,255,0.05);
+    background-color: rgba(255, 255, 255, 0.05);
     -webkit-backdrop-filter: blur(16px);
     backdrop-filter: blur(16px);
   }
@@ -67,9 +67,6 @@
   }
 }
 
-.dapp-menu-bottom {
-}
-
 .dapp-menu-links {
   min-height: 35vh;
   display: flex;
@@ -77,22 +74,22 @@
   justify-content: center;
 }
 
-
 .dapp-nav a {
   margin-top: 32px;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-bottom: 0.5rem;
-  color: rgba(255,255,255,0.6);
+  color: rgba(255, 255, 255, 0.6);
   svg {
     width: 32px;
     height: 32px;
+    color: rgba(255, 255, 255, 0.6);
   }
 }
 
-.dapp-nav a.active svg {
-  color: #B900FF;
+.dapp-nav a.active * {
+  color: #b900ff !important;
 }
 
 .dapp-menu-external-links {
