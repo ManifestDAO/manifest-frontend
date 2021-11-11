@@ -147,7 +147,7 @@ function Stake() {
           <Grid container direction="column" spacing={2}>
             <Grid item>
               <div className="card-header">
-                <Typography variant="h5">Single Stake (🌌, 🌌)</Typography>
+                <Typography variant="h5">Single Stake (3, 3)</Typography>
                 <RebaseTimer />
               </div>
             </Grid>
@@ -378,11 +378,8 @@ function Stake() {
           </Grid>
         </Paper>
       </Zoom>
-      
     </div>
-    
-  );  
+  );
 }
-
 
 export default Stake;
