@@ -69,9 +69,13 @@ function NavContent() {
                 className={`button-dapp-menu ${isActive ? "active" : ""}`}
               >
                 <SvgIcon color="primary" component={StakeIcon} />
+<<<<<<< HEAD
                 <Typography variant="h6">Stake</Typography>
+=======
+                <Typography variant="h6">Dashboard</Typography>
+>>>>>>> 69e56a6cea30462a7d4cdad2bfc2b4be0adcfc73
               </Link>
-              
+
               <Link
                 component={NavLink}
                 id="bond-nav"
@@ -84,8 +88,6 @@ function NavContent() {
                 <SvgIcon color="primary" component={BondIcon} />
                 <Typography variant="h6">Bond</Typography>
               </Link>
-
-                       
             </div>
           </div>
         </div>
