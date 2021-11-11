@@ -39,7 +39,7 @@ function NavContent() {
       <Box className="dapp-sidebar-inner" display="flex" justifyContent="space-between" flexDirection="column">
         <div className="dapp-menu-top">
           <Box className="branding-header">
-            <Link href="manifest.gg" target="_blank">
+            <Link href="https://olympusdao.finance" target="_blank">
               <SvgIcon
                 color="primary"
                 component={Logo}
@@ -62,16 +62,16 @@ function NavContent() {
               <Link
                 component={NavLink}
                 id="dash-nav"
-                to="/dashboard"
+                to="/stake"
                 isActive={(match, location) => {
-                  return checkPage(match, location, "dashboard");
+                  return checkPage(match, location, "stake");
                 }}
                 className={`button-dapp-menu ${isActive ? "active" : ""}`}
               >
-                <SvgIcon color="primary" component={DashboardIcon} />
+                <SvgIcon color="primary" component={StakeIcon} />
                 <Typography variant="h6">Dashboard</Typography>
               </Link>
-              
+
               <Link
                 component={NavLink}
                 id="bond-nav"
@@ -84,8 +84,6 @@ function NavContent() {
                 <SvgIcon color="primary" component={BondIcon} />
                 <Typography variant="h6">Bond</Typography>
               </Link>
-
-                       
             </div>
           </div>
         </div>
