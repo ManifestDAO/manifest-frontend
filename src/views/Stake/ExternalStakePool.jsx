@@ -193,5 +193,15 @@ export default function ExternalStakePool() {
         </div>
       </Paper>
     </Zoom>
+  )
+
+  return(
+      <Zoom in={true}>
+        <Paper className={`ohm-card right-radial secondary ${isSmallScreen && "mobile"}`}>
+          <div className="card-header">
+            <Typography variant="h5">Powered by Ohm</Typography>
+          </div>
+        </Paper>
+      </Zoom>
   );
 }
