@@ -61,19 +61,17 @@ function NavContent() {
             <div className="dapp-nav" id="navbarNav">
               <Link
                 component={NavLink}
-                id="dash-nav"
-                to="/stake"
+                id="stake-nav"
+                to="/"
                 isActive={(match, location) => {
                   return checkPage(match, location, "stake");
                 }}
                 className={`button-dapp-menu ${isActive ? "active" : ""}`}
               >
-                <SvgIcon color="primary" component={StakeIcon} />
-<<<<<<< HEAD
-                <Typography variant="h6">Stake</Typography>
-=======
-                <Typography variant="h6">Dashboard</Typography>
->>>>>>> 69e56a6cea30462a7d4cdad2bfc2b4be0adcfc73
+                <Typography variant="h6">
+                  <SvgIcon color="primary" component={StakeIcon} />
+                  Stake
+                </Typography>
               </Link>
 
               <Link
@@ -85,8 +83,10 @@ function NavContent() {
                 }}
                 className={`button-dapp-menu ${isActive ? "active" : ""}`}
               >
-                <SvgIcon color="primary" component={BondIcon} />
-                <Typography variant="h6">Bond</Typography>
+                <Typography variant="h6">
+                  <SvgIcon color="primary" component={PoolTogetherIcon} />
+                  3,3 Together
+                </Typography>
               </Link>
             </div>
           </div>
