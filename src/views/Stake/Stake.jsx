@@ -15,7 +15,6 @@ import {
   Typography,
   Zoom,
 } from "@material-ui/core";
-import NewReleases from "@material-ui/icons/NewReleases";
 import RebaseTimer from "../../components/RebaseTimer/RebaseTimer";
 import TabPanel from "../../components/TabPanel";
 import { getOhmTokenImage, getTokenImage, trim } from "../../helpers";
@@ -35,7 +34,7 @@ function a11yProps(index) {
   };
 }
 
-const sOhmImg = getTokenImage("sohm");
+const sMnfstImg = getTokenImage("smnfst");
 const ohmImg = getOhmTokenImage(16, 16);
 
 function Stake() {
@@ -53,26 +52,18 @@ function Stake() {
   const fiveDayRate = useSelector(state => {
     return state.app.fiveDayRate;
   });
-  const ohmBalance = useSelector(state => {
-    return state.account.balances && state.account.balances.ohm;
+
+  const mnfstBalance = useSelector(state => {
+    return state.account.balances && state.account.balances.mnfst;
   });
-  const oldSohmBalance = useSelector(state => {
-    return state.account.balances && state.account.balances.oldsohm;
-  });
-  const sohmBalance = useSelector(state => {
-    return state.account.balances && state.account.balances.sohm;
-  });
-  const fsohmBalance = useSelector(state => {
-    return state.account.balances && state.account.balances.fsohm;
-  });
-  const wsohmBalance = useSelector(state => {
-    return state.account.balances && state.account.balances.wsohm;
+  const smnfstBalance = useSelector(state => {
+    return state.account.balances && state.account.balances.smnfst;
   });
   const stakeAllowance = useSelector(state => {
-    return state.account.staking && state.account.staking.ohmStake;
+    return state.account.staking && state.account.staking.mnfstStake;
   });
   const unstakeAllowance = useSelector(state => {
-    return state.account.staking && state.account.staking.ohmUnstake;
+    return state.account.staking && state.account.staking.mnfstUnstake;
   });
   const stakingRebase = useSelector(state => {
     return state.app.stakingRebase;
@@ -90,9 +81,9 @@ function Stake() {
 
   const setMax = () => {
     if (view === 0) {
-      setQuantity(ohmBalance);
+      setQuantity(mnfstBalance);
     } else {
-      setQuantity(sohmBalance);
+      setQuantity(smnfstBalance);
     }
   };
 
@@ -109,11 +100,11 @@ function Stake() {
 
     // 1st catch if quantity > balance
     let gweiValue = ethers.utils.parseUnits(quantity, "gwei");
-    if (action === "stake" && gweiValue.gt(ethers.utils.parseUnits(ohmBalance, "gwei"))) {
+    if (action === "stake" && gweiValue.gt(ethers.utils.parseUnits(mnfstBalance, "gwei"))) {
       return dispatch(error("You cannot stake more than your OHM balance."));
     }
 
-    if (action === "unstake" && gweiValue.gt(ethers.utils.parseUnits(sohmBalance, "gwei"))) {
+    if (action === "unstake" && gweiValue.gt(ethers.utils.parseUnits(smnfstBalance, "gwei"))) {
       return dispatch(error("You cannot unstake more than your sOHM balance."));
     }
 
@@ -122,8 +113,8 @@ function Stake() {
 
   const hasAllowance = useCallback(
     token => {
-      if (token === "ohm") return stakeAllowance > 0;
-      if (token === "sohm") return unstakeAllowance > 0;
+      if (token === "mnfst") return stakeAllowance > 0;
+      if (token === "smnfst") return unstakeAllowance > 0;
       return 0;
     },
     [stakeAllowance, unstakeAllowance],
@@ -143,13 +134,8 @@ function Stake() {
     setView(newView);
   };
 
-  const trimmedBalance = Number(
-    [sohmBalance, fsohmBalance, wsohmBalance]
-      .filter(Boolean)
-      .map(balance => Number(balance))
-      .reduce((a, b) => a + b, 0)
-      .toFixed(4),
-  );
+  const trimmedBalance = Number(smnfstBalance).toFixed(4);
+
   const trimmedStakingAPY = trim(stakingAPY * 100, 1);
   const stakingRebasePercentage = trim(stakingRebase * 100, 4);
   const nextRewardValue = trim((stakingRebasePercentage / 100) * trimmedBalance, 4);
@@ -163,19 +149,6 @@ function Stake() {
               <div className="card-header">
                 <Typography variant="h5">Single Stake (3, 3)</Typography>
                 <RebaseTimer />
-
-                {address && oldSohmBalance > 0.01 && (
-                  <Link
-                    className="migrate-sohm-button"
-                    style={{ textDecoration: "none" }}
-                    href="https://docs.olympusdao.finance/using-the-website/migrate"
-                    aria-label="migrate-sohm"
-                    target="_blank"
-                  >
-                    <NewReleases viewBox="0 0 24 24" />
-                    <Typography>Migrate sOHM!</Typography>
-                  </Link>
-                )}
               </div>
             </Grid>
 
@@ -223,7 +196,7 @@ function Stake() {
                         Current Index
                       </Typography>
                       <Typography variant="h4">
-                        {currentIndex ? <>{trim(currentIndex, 1)} OHM</> : <Skeleton width="150px" />}
+                        {currentIndex ? <>{trim(currentIndex, 1)} MNFST</> : <Skeleton width="150px" />}
                       </Typography>
                     </div>
                   </Grid>
@@ -258,20 +231,20 @@ function Stake() {
 
                     <Box className="stake-action-row " display="flex" alignItems="center">
                       {address && !isAllowanceDataLoading ? (
-                        (!hasAllowance("ohm") && view === 0) || (!hasAllowance("sohm") && view === 1) ? (
+                        (!hasAllowance("mnfst") && view === 0) || (!hasAllowance("smnfst") && view === 1) ? (
                           <Box className="help-text">
                             <Typography variant="body1" className="stake-note" color="textSecondary">
                               {view === 0 ? (
                                 <>
-                                  First time staking <b>OHM</b>?
+                                  First time staking <b>MNFST</b>?
                                   <br />
-                                  Please approve Olympus Dao to use your <b>OHM</b> for staking.
+                                  Please approve Manifest to use your <b>MNFST</b> for staking.
                                 </>
                               ) : (
                                 <>
-                                  First time unstaking <b>sOHM</b>?
+                                  First time unstaking <b>sMNFST</b>?
                                   <br />
-                                  Please approve Olympus Dao to use your <b>sOHM</b> for unstaking.
+                                  Please approve Manifest to use your <b>sMNFST</b> for unstaking.
                                 </>
                               )}
                             </Typography>
@@ -314,7 +287,7 @@ function Stake() {
                               onChangeStake("stake");
                             }}
                           >
-                            {txnButtonText(pendingTransactions, "staking", "Stake OHM")}
+                            {txnButtonText(pendingTransactions, "staking", "Stake MNFST")}
                           </Button>
                         ) : (
                           <Button
@@ -323,7 +296,7 @@ function Stake() {
                             color="primary"
                             disabled={isPendingTxn(pendingTransactions, "approve_staking")}
                             onClick={() => {
-                              onSeekApproval("ohm");
+                              onSeekApproval("mnfst");
                             }}
                           >
                             {txnButtonText(pendingTransactions, "approve_staking", "Approve")}
@@ -333,7 +306,7 @@ function Stake() {
                       <TabPanel value={view} index={1} className="stake-tab-panel">
                         {isAllowanceDataLoading ? (
                           <Skeleton />
-                        ) : address && hasAllowance("sohm") ? (
+                        ) : address && hasAllowance("smnfst") ? (
                           <Button
                             className="stake-button"
                             variant="contained"
@@ -343,7 +316,7 @@ function Stake() {
                               onChangeStake("unstake");
                             }}
                           >
-                            {txnButtonText(pendingTransactions, "unstaking", "Unstake OHM")}
+                            {txnButtonText(pendingTransactions, "unstaking", "Unstake MNFST")}
                           </Button>
                         ) : (
                           <Button
@@ -352,7 +325,7 @@ function Stake() {
                             color="primary"
                             disabled={isPendingTxn(pendingTransactions, "approve_unstaking")}
                             onClick={() => {
-                              onSeekApproval("sohm");
+                              onSeekApproval("smnfst");
                             }}
                           >
                             {txnButtonText(pendingTransactions, "approve_unstaking", "Approve")}
@@ -366,21 +339,21 @@ function Stake() {
                     <div className="data-row">
                       <Typography variant="body1">Your Balance</Typography>
                       <Typography variant="body1">
-                        {isAppLoading ? <Skeleton width="80px" /> : <>{trim(ohmBalance, 4)} OHM</>}
+                        {isAppLoading ? <Skeleton width="80px" /> : <>{trim(mnfstBalance, 4)} MNFST</>}
                       </Typography>
                     </div>
 
                     <div className="data-row">
                       <Typography variant="body1">Your Staked Balance</Typography>
                       <Typography variant="body1">
-                        {isAppLoading ? <Skeleton width="80px" /> : <>{trimmedBalance} sOHM</>}
+                        {isAppLoading ? <Skeleton width="80px" /> : <>{trimmedBalance} sMNFST</>}
                       </Typography>
                     </div>
 
                     <div className="data-row">
                       <Typography variant="body1">Next Reward Amount</Typography>
                       <Typography variant="body1">
-                        {isAppLoading ? <Skeleton width="80px" /> : <>{nextRewardValue} sOHM</>}
+                        {isAppLoading ? <Skeleton width="80px" /> : <>{nextRewardValue} sMNFST</>}
                       </Typography>
                     </div>
 

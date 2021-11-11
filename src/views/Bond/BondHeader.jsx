@@ -39,7 +39,7 @@ function BondHeader({ bond, slippage, recipientAddress, onRecipientAddressChange
       </div>
 
       <div className="bond-settings">
-        <IconButton onClick={handleOpen}>
+        <IconButton onClick={handleOpen} disabled="true">
           <SvgIcon color="primary" component={SettingsIcon} />
         </IconButton>
         <AdvancedSettings

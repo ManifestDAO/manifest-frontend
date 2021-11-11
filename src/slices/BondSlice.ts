@@ -15,7 +15,6 @@ import {
   IRedeemAllBondsAsyncThunk,
   IRedeemBondAsyncThunk,
 } from "./interfaces";
-import { segmentUA } from "../helpers/userAnalyticHelpers";
 
 export const changeApproval = createAsyncThunk(
   "bonding/changeApproval",
@@ -207,7 +206,6 @@ export const bondAsset = createAsyncThunk(
       } else dispatch(error(rpcError.message));
     } finally {
       if (bondTx) {
-        segmentUA(uaData);
         dispatch(clearPendingTxn(bondTx.hash));
       }
     }
@@ -251,7 +249,6 @@ export const redeemBond = createAsyncThunk(
       dispatch(error((e as IJsonRPCError).message));
     } finally {
       if (redeemTx) {
-        segmentUA(uaData);
         dispatch(clearPendingTxn(redeemTx.hash));
       }
     }

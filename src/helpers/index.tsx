@@ -1,12 +1,13 @@
 import { EPOCH_INTERVAL, BLOCK_RATE_SECONDS, addresses } from "../constants";
 import { ethers } from "ethers";
 import axios from "axios";
-import { abi as PairContract } from "../abi/PairContract.json";
 import { abi as RedeemHelperAbi } from "../abi/RedeemHelper.json";
 
 import { SvgIcon } from "@material-ui/core";
 import { ReactComponent as OhmImg } from "../assets/tokens/token_OHM.svg";
 import { ReactComponent as SOhmImg } from "../assets/tokens/token_sOHM.svg";
+import { ReactComponent as MnfstImg } from "../assets/tokens/MNFST.svg";
+import { ReactComponent as SMnfstImg } from "../assets/tokens/sMNFST.svg";
 
 import { JsonRpcSigner, StaticJsonRpcProvider } from "@ethersproject/providers";
 import { IBaseAsyncThunk } from "src/slices/interfaces";
@@ -113,9 +114,23 @@ export function getOhmTokenImage(w?: number, h?: number) {
   return <SvgIcon component={OhmImg} viewBox="0 0 32 32" style={{ height, width }} />;
 }
 
+export function getMnfstTokenImage(w?: number, h?: number) {
+  const height = h == null ? "32px" : `${h}px`;
+  const width = w == null ? "32px" : `${w}px`;
+  return <SvgIcon component={MnfstImg} viewBox="0 0 32 32" style={{ height, width }} />;
+}
+
+export function getSmnfstTokenImage(w?: number, h?: number) {
+  const height = h == null ? "32px" : `${h}px`;
+  const width = w == null ? "32px" : `${w}px`;
+  return <SvgIcon component={SMnfstImg} viewBox="0 0 32 32" style={{ height, width }} />;
+}
+
 export function getTokenImage(name: string) {
   if (name === "ohm") return getOhmTokenImage();
   if (name === "sohm") return getSohmTokenImage();
+  if (name === "mnfst") return getMnfstTokenImage();
+  if (name === "smnfst") return getSmnfstTokenImage();
 }
 
 // TS-REFACTOR-NOTE - Used for:
