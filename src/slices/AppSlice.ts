@@ -176,12 +176,12 @@ interface IAppData {
   readonly currentIndex?: string;
   readonly currentBlock?: number;
   readonly fiveDayRate?: number;
-  readonly marketCap: number;
+  readonly marketCap?: number;
   readonly marketPrice: number;
   readonly stakingAPY?: number;
   readonly stakingRebase?: number;
-  readonly stakingTVL: number;
-  readonly totalSupply: number;
+  readonly stakingTVL?: number;
+  readonly totalSupply?: number;
   readonly treasuryBalance?: number;
   readonly treasuryMarketValue?: number;
 }
