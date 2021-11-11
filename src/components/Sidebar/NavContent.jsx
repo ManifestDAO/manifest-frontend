@@ -68,10 +68,8 @@ function NavContent() {
                 }}
                 className={`button-dapp-menu ${isActive ? "active" : ""}`}
               >
-                <Typography variant="h6">
-                  <SvgIcon color="primary" component={StakeIcon} />
-                  Stake
-                </Typography>
+                <SvgIcon color="primary" component={StakeIcon} />
+                <Typography variant="h6">Stake</Typography>
               </Link>
 
               <Link
@@ -83,10 +81,8 @@ function NavContent() {
                 }}
                 className={`button-dapp-menu ${isActive ? "active" : ""}`}
               >
-                <Typography variant="h6">
-                  <SvgIcon color="primary" component={PoolTogetherIcon} />
-                  3,3 Together
-                </Typography>
+                <SvgIcon color="primary" component={BondIcon} />
+                <Typography variant="h6">Bond</Typography>
               </Link>
             </div>
           </div>
