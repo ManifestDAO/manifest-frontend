@@ -9,7 +9,6 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { fetchAccountSuccess, getBalances } from "./AccountSlice";
 import { error, info } from "../slices/MessagesSlice";
 import { IActionValueAsyncThunk, IChangeApprovalAsyncThunk, IJsonRPCError } from "./interfaces";
-import { segmentUA } from "../helpers/userAnalyticHelpers";
 
 interface IUAData {
   address: string;
@@ -161,8 +160,6 @@ export const changeStake = createAsyncThunk(
       return;
     } finally {
       if (stakeTx) {
-        segmentUA(uaData);
-
         dispatch(clearPendingTxn(stakeTx.hash));
       }
     }
