@@ -2,7 +2,7 @@
   "abi": [
     {
       "inputs": [
-        { "internalType": "address", "name": "_OHM", "type": "address" },
+        { "internalType": "address", "name": "_MNFST", "type": "address" },
         { "internalType": "address", "name": "_principle", "type": "address" },
         { "internalType": "address", "name": "_treasury", "type": "address" },
         { "internalType": "address", "name": "_DAO", "type": "address" },
@@ -17,7 +17,7 @@
         { "indexed": false, "internalType": "uint256", "name": "deposit", "type": "uint256" },
         { "indexed": true, "internalType": "uint256", "name": "payout", "type": "uint256" },
         { "indexed": true, "internalType": "uint256", "name": "expires", "type": "uint256" },
-        { "indexed": true, "internalType": "uint256", "name": "priceInUSD", "type": "uint256" }
+        { "indexed": true, "internalType": "uint256", "name": "priceInOHM", "type": "uint256" }
       ],
       "name": "BondCreated",
       "type": "event"
@@ -25,7 +25,7 @@
     {
       "anonymous": false,
       "inputs": [
-        { "indexed": true, "internalType": "uint256", "name": "priceInUSD", "type": "uint256" },
+        { "indexed": true, "internalType": "uint256", "name": "priceInOHM", "type": "uint256" },
         { "indexed": true, "internalType": "uint256", "name": "internalPrice", "type": "uint256" },
         { "indexed": true, "internalType": "uint256", "name": "debtRatio", "type": "uint256" }
       ],
@@ -80,7 +80,7 @@
     },
     {
       "inputs": [],
-      "name": "OHM",
+      "name": "MNFST",
       "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
       "stateMutability": "view",
       "type": "function"
@@ -126,7 +126,7 @@
     },
     {
       "inputs": [],
-      "name": "bondPriceInUSD",
+      "name": "bondPriceInOHM",
       "outputs": [{ "internalType": "uint256", "name": "price_", "type": "uint256" }],
       "stateMutability": "view",
       "type": "function"
@@ -274,7 +274,7 @@
     },
     {
       "inputs": [
-        { "internalType": "enum OlympusBondDepository.PARAMETER", "name": "_parameter", "type": "uint8" },
+        { "internalType": "enum ManifestBondDepository.PARAMETER", "name": "_parameter", "type": "uint8" },
         { "internalType": "uint256", "name": "_input", "type": "uint256" }
       ],
       "name": "setBondTerms",

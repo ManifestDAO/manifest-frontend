@@ -102,11 +102,11 @@ export const calcBondDetails = createAsyncThunk(
     }
 
     try {
-      bondPrice = await bondContract.bondPriceInUSD();
+      bondPrice = await bondContract.bondPriceInOHM();
       // bondDiscount = (marketPrice * Math.pow(10, 9) - bondPrice) / bondPrice; // 1 - bondPrice / (bondPrice * Math.pow(10, 9));
       bondDiscount = (marketPrice * Math.pow(10, 18) - bondPrice) / bondPrice; // 1 - bondPrice / (bondPrice * Math.pow(10, 9));
     } catch (e) {
-      console.log("error getting bondPriceInUSD", e);
+      console.log("error getting bondPriceInOHM", e);
     }
 
     if (Number(value) === 0) {

@@ -4,10 +4,12 @@ import { ReactComponent as MnfstOhmImg } from "src/assets/tokens/MNFST-OHM.svg";
 import { ReactComponent as wETHImg } from "src/assets/tokens/wETH.svg";
 import { ReactComponent as sOhmImg } from "src/assets/tokens/token_sOHM.svg";
 
-import { abi as BondOhmEthContract } from "src/abi/bonds/OhmEthContract.json";
-
-import { abi as ReserveOhmEthContract } from "src/abi/reserves/OhmEth.json";
 import { abi as EthBondContract } from "src/abi/bonds/EthContract.json";
+import { abi as MnfstOhmBondContract } from "src/abi/bonds/MnfstOhmContract.json";
+
+import { abi as ReserveMnfstOhmContract } from "src/abi/reserves/MnfstOhm.json";
+// import { abi as ReserveSohmContract } from "src/abi/reserves/sOhm.json";
+import { abi as SohmBondContract } from "src/abi/bonds/sOhmContract.json";
 
 import { abi as ierc20Abi } from "src/abi/IERC20.json";
 import { getBondCalculator } from "src/helpers/BondCalculator";
@@ -28,11 +30,11 @@ export const eth = new CustomBond({
   networkAddrs: {
     [NetworkID.Mainnet]: {
       bondAddress: "0x4b53412beaad7d62cd00754757632f939391487b",
-      reserveAddress: "",
+      reserveAddress: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
     },
     [NetworkID.Testnet]: {
       bondAddress: "",
-      reserveAddress: "",
+      reserveAddress: "0xc778417e063141139fce010982780140aa0cd5ab",
     },
   },
   customTreasuryBalanceFunc: async function (this: CustomBond, networkID, provider) {
@@ -46,14 +48,14 @@ export const eth = new CustomBond({
   },
 });
 
-export const ohm_mnfst = new CustomBond({
+export const ohm_mnfst_lp = new LPBond({
   name: "ohm_mnfst_lp",
   displayName: "OHM-MNFST LP",
   bondToken: "OHM",
   isAvailable: { [NetworkID.Mainnet]: true, [NetworkID.Testnet]: true },
   bondIconSvg: MnfstOhmImg,
-  bondContractABI: BondOhmEthContract,
-  reserveContract: ReserveOhmEthContract,
+  bondContractABI: MnfstOhmBondContract,
+  reserveContract: ReserveMnfstOhmContract,
   networkAddrs: {
     [NetworkID.Mainnet]: {
       bondAddress: "0xD67838dD745c16F180057A0A76039ae6C38901C3",
@@ -64,64 +66,62 @@ export const ohm_mnfst = new CustomBond({
       reserveAddress: "",
     },
   },
-  bondType: BondType.LP,
   lpUrl:
     "https://app.sushi.com/add/0x383518188c0c6d7730d91b2c03a03c837814a899/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-  customTreasuryBalanceFunc: async function (this: CustomBond, networkID, provider) {
-    if (networkID === NetworkID.Mainnet) {
-      const BondContract = this.getContractForBond(networkID, provider);
-      let ohmPrice = await BondContract.assetPrice();
-      ohmPrice = ohmPrice / Math.pow(10, 9);
-      const token = this.getContractForReserve(networkID, provider);
-      const tokenAddress = this.getAddressForReserve(networkID);
-      const bondCalculator = getBondCalculator(networkID, provider);
-      const tokenAmount = await token.balanceOf(addresses[networkID].TREASURY_ADDRESS);
-      const valuation = await bondCalculator.valuation(tokenAddress, tokenAmount);
-      const markdown = await bondCalculator.markdown(tokenAddress);
-      let tokenUSD = (valuation / Math.pow(10, 9)) * (markdown / Math.pow(10, 18));
-      return tokenUSD * ohmPrice;
-    } else {
-      // NOTE (appleseed): using OHM-DAI on rinkeby
-      const token = this.getContractForReserve(networkID, provider);
-      const tokenAddress = this.getAddressForReserve(networkID);
-      const bondCalculator = getBondCalculator(networkID, provider);
-      const tokenAmount = await token.balanceOf(addresses[networkID].TREASURY_ADDRESS);
-      const valuation = await bondCalculator.valuation(tokenAddress, tokenAmount);
-      const markdown = await bondCalculator.markdown(tokenAddress);
-      let tokenUSD = (valuation / Math.pow(10, 9)) * (markdown / Math.pow(10, 18));
-      return tokenUSD;
-    }
-  },
+  // customTreasuryBalanceFunc: async function (this: CustomBond, networkID, provider) {
+  //   if (networkID === NetworkID.Mainnet) {
+  //     const BondContract = this.getContractForBond(networkID, provider);
+  //     let ohmPrice = await BondContract.assetPrice();
+  //     ohmPrice = ohmPrice / Math.pow(10, 9);
+  //     const token = this.getContractForReserve(networkID, provider);
+  //     const tokenAddress = this.getAddressForReserve(networkID);
+  //     const bondCalculator = getBondCalculator(networkID, provider);
+  //     const tokenAmount = await token.balanceOf(addresses[networkID].TREASURY_ADDRESS);
+  //     const valuation = await bondCalculator.valuation(tokenAddress, tokenAmount);
+  //     const markdown = await bondCalculator.markdown(tokenAddress);
+  //     let tokenUSD = (valuation / Math.pow(10, 9)) * (markdown / Math.pow(10, 18));
+  //     return tokenUSD * ohmPrice;
+  //   } else {
+  //     // NOTE (appleseed): using OHM-DAI on rinkeby
+  //     // const token = this.getContractForReserve(networkID, provider);
+  //     // const tokenAddress = this.getAddressForReserve(networkID);
+  //     // const bondCalculator = getBondCalculator(networkID, provider);
+  //     // const tokenAmount = await token.balanceOf(addresses[networkID].TREASURY_ADDRESS);
+  //     // const valuation = await bondCalculator.valuation(tokenAddress, tokenAmount);
+  //     // const markdown = await bondCalculator.markdown(tokenAddress);
+  //     // let tokenUSD = (valuation / Math.pow(10, 9)) * (markdown / Math.pow(10, 18));
+  //     // return tokenUSD;
+  //   }
+  // },
 });
 
-export const sohm = new CustomBond({
+export const sohm = new StableBond({
   name: "sohm",
   displayName: "sOHM",
-  lpUrl: "",
-  bondType: BondType.StableAsset,
+  // bondType: BondType.CustomAsset,
   bondToken: "sOHM",
   isAvailable: { [NetworkID.Mainnet]: true, [NetworkID.Testnet]: true },
   bondIconSvg: sOhmImg,
-  bondContractABI: EthBondContract,
-  reserveContract: ierc20Abi, // The Standard ierc20Abi since they're normal tokens
+  bondContractABI: SohmBondContract,
+  // reserveContract: ReserveSohmContract, // The Standard ierc20Abi since they're normal tokens
   networkAddrs: {
     [NetworkID.Mainnet]: {
-      bondAddress: "",
-      reserveAddress: "",
+      bondAddress: "0x9cd38F8462f1cbcb5Ce3f1eDf92131f703c52b3a",
+      reserveAddress: "0x04F2694C8fcee23e8Fd0dfEA1d4f5Bb8c352111F",
     },
     [NetworkID.Testnet]: {
       bondAddress: "",
-      reserveAddress: "",
+      reserveAddress: "0x1Fecda1dE7b6951B248C0B62CaeBD5BAbedc2084",
     },
-  },
-  customTreasuryBalanceFunc: async function (this: CustomBond, networkID, provider) {
-    const sohmBondContract = this.getContractForBond(networkID, provider);
-    let sohmPrice = await sohmBondContract.assetPrice();
-    sohmPrice = sohmPrice / Math.pow(10, 8);
-    const token = this.getContractForReserve(networkID, provider);
-    let sohmAmount = await token.balanceOf(addresses[networkID].TREASURY_ADDRESS);
-    sohmAmount = sohmAmount / Math.pow(10, 18);
-    return sohmAmount * sohmPrice;
+    // customTreasuryBalanceFunc: async function (this: CustomBond, networkID, provider) {
+    //   const sohmBondContract = this.getContractForBond(networkID, provider);
+    //   let sohmPrice = await sohmBondContract.assetPrice();
+    //   sohmPrice = sohmPrice / Math.pow(10, 8);
+    //   const token = this.getContractForReserve(networkID, provider);
+    //   let sohmAmount = await token.balanceOf(addresses[networkID].TREASURY_ADDRESS);
+    //   sohmAmount = sohmAmount / Math.pow(10, 18);
+    //   return sohmAmount * sohmPrice;
+    // },
   },
 });
 
@@ -129,7 +129,7 @@ export const sohm = new CustomBond({
 // Is it a stableCoin bond? use `new StableBond`
 // Is it an LP Bond? use `new LPBond`
 // Add new bonds to this array!!
-export const allBonds = [eth, ohm_mnfst, sohm];
+export const allBonds = [eth, ohm_mnfst_lp, sohm];
 export const allBondsMap = allBonds.reduce((prevVal, bond) => {
   return { ...prevVal, [bond.name]: bond };
 }, {});

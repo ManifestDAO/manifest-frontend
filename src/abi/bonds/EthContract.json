@@ -2,7 +2,7 @@
   "abi": [
     {
       "inputs": [
-        { "internalType": "address", "name": "_OHM", "type": "address" },
+        { "internalType": "address", "name": "_MNFST", "type": "address" },
         { "internalType": "address", "name": "_principle", "type": "address" },
         { "internalType": "address", "name": "_treasury", "type": "address" },
         { "internalType": "address", "name": "_DAO", "type": "address" },
@@ -80,7 +80,7 @@
     },
     {
       "inputs": [],
-      "name": "OHM",
+      "name": "MNFST",
       "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
       "stateMutability": "view",
       "type": "function"
@@ -251,13 +251,7 @@
       "stateMutability": "nonpayable",
       "type": "function"
     },
-    {
-      "inputs": [],
-      "name": "renounceManagement",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
+    { "inputs": [], "name": "renounceManagement", "outputs": [], "stateMutability": "nonpayable", "type": "function" },
     {
       "inputs": [
         { "internalType": "bool", "name": "_addition", "type": "bool" },
@@ -272,7 +266,7 @@
     },
     {
       "inputs": [
-        { "internalType": "enum OlympusBondDepository.PARAMETER", "name": "_parameter", "type": "uint8" },
+        { "internalType": "enum ManifestBondDepository.PARAMETER", "name": "_parameter", "type": "uint8" },
         { "internalType": "uint256", "name": "_input", "type": "uint256" }
       ],
       "name": "setBondTerms",
