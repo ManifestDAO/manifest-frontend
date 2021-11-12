@@ -117,6 +117,7 @@ function ChooseBond() {
                     {bonds.map(bond => (
                       <BondTableData key={bond.name} bond={bond} />
                     ))}
+                    <Typography variant="h4">Powered by Olympus Ω</Typography>
                   </TableBody>
                 </Table>
               </TableContainer>
