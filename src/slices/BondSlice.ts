@@ -140,12 +140,17 @@ export const calcBondDetails = createAsyncThunk(
       const errorString =
         "You're trying to bond more than the maximum payout available! The maximum bond payout is " +
         (maxBondPrice / Math.pow(10, 9)).toFixed(2).toString() +
-        " OHM.";
+        " MNFST.";
       dispatch(error(errorString));
     }
 
     // Calculate bonds purchased
-    let purchased = await bond.getTreasuryBalance(networkID, provider);
+    let purchased = 0;
+    try {
+      purchased = await bond.getTreasuryBalance(networkID, provider);
+    } catch (e) {
+      console.error("cant find treasury balance");
+    }
 
     return {
       bond: bond.name,
