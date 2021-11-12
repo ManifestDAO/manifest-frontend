@@ -48,7 +48,7 @@
   .wallet-link {
     margin-top: 32px;
     padding: 8px 16px;
-    border-radius: 100px;
+    border-radius: 100px !important;
     background-color: rgba(255, 255, 255, 0.05);
     -webkit-backdrop-filter: blur(16px);
     backdrop-filter: blur(16px);
@@ -79,7 +79,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 0.5rem;
+  // margin-bottom: 0.5rem;
   color: rgba(255, 255, 255, 0.6);
   svg {
     width: 32px;
@@ -93,6 +93,7 @@
 }
 
 .dapp-menu-external-links {
+  display: none;
   display: flex;
   flex-flow: column;
   align-items: flex-start;

@@ -2,6 +2,7 @@ import { EPOCH_INTERVAL, BLOCK_RATE_SECONDS, addresses } from "../constants";
 import { ethers } from "ethers";
 import axios from "axios";
 import { abi as RedeemHelperAbi } from "../abi/RedeemHelper.json";
+import { abi as PairContract } from "../abi/PairContract.json";
 
 import { SvgIcon } from "@material-ui/core";
 import { ReactComponent as OhmImg } from "../assets/tokens/token_OHM.svg";
@@ -11,16 +12,17 @@ import { ReactComponent as SMnfstImg } from "../assets/tokens/sMNFST.svg";
 
 import { JsonRpcSigner, StaticJsonRpcProvider } from "@ethersproject/providers";
 import { IBaseAsyncThunk } from "src/slices/interfaces";
+import { mnfst_ohm_lp } from "./AllBonds";
 
 // NOTE (appleseed): this looks like an outdated method... we now have this data in the graph (used elsewhere in the app)
 export async function getMarketPrice({ networkID, provider }: IBaseAsyncThunk) {
-  // const ohm_dai_address = ohm_dai.getAddressForReserve(networkID);
-  // const pairContract = new ethers.Contract(ohm_dai_address, PairContract, provider);
-  // const reserves = await pairContract.getReserves();
-  // const marketPrice = reserves[1] / reserves[0];
+  const mnfst_ohm_address = mnfst_ohm_lp.getAddressForReserve(networkID);
+  const pairContract = new ethers.Contract(mnfst_ohm_address, PairContract, provider);
+  const reserves = await pairContract.getReserves();
+  const marketPrice = reserves[1] / reserves[0];
 
-  // commit('set', { marketPrice: marketPrice / Math.pow(10, 9) });
-  let marketPrice = 333; // fix this later
+  // commit("set", { marketPrice: marketPrice / Math.pow(10, 9) });
+  // let marketPrice = 333; // fix this later
   return marketPrice;
 }
 

@@ -8,7 +8,7 @@ import { abi as sOHMv2 } from "../abi/sOhmv2.json";
 import { setAll } from "../helpers";
 
 import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
-import { Bond, NetworkID } from "src/lib/Bond"; // TODO: this type definition needs to move out of BOND.
+// import { Bond, NetworkID } from "src/lib/Bond"; // TODO: this type definition needs to move out of BOND.
 import { RootState } from "src/store";
 import { IBaseAddressAsyncThunk, ICalcUserBondDetailsAsyncThunk } from "./interfaces";
 
@@ -25,7 +25,7 @@ export const getBalances = createAsyncThunk(
     );
     const smnfstBalance = await smnfstContract.balanceOf(address);
 
-    const sohmContract = new ethers.Contract(addresses[networkID].SOHM_ADDRESS as string, ierc20Abi, provider);
+    const sohmContract = new ethers.Contract(addresses[networkID].SOHM_ADDRESS as string, sOHMv2, provider);
     const sohmBalance = await sohmContract.balanceOf(address);
 
     return {
@@ -64,25 +64,48 @@ export const loadAccountDetails = createAsyncThunk(
     let sohmBondAllowance = 0;
 
     if (addresses[networkID].MNFST_ADDRESS) {
-      const ohmContract = new ethers.Contract(addresses[networkID].MNFST_ADDRESS as string, ManifestERC20Abi, provider);
-      mnfstBalance = await ohmContract.balanceOf(address);
-      stakeAllowance = await ohmContract.allowance(address, addresses[networkID].STAKING_HELPER_ADDRESS);
+      // console.log("Checking account MNFST...");
+      const mnfstContract = new ethers.Contract(
+        addresses[networkID].MNFST_ADDRESS as string,
+        ManifestERC20Abi,
+        provider,
+      );
+
+      mnfstBalance = await mnfstContract.balanceOf(address);
+      stakeAllowance =
+        (await mnfstContract.allowance(address, addresses[networkID].STAKING_HELPER_ADDRESS)) / Math.pow(10, 18);
+
+      // console.log("mnfst balance: ", mnfstBalance);
+      // console.log("mnfst stakeAllowance: ", stakeAllowance);
     }
 
     if (addresses[networkID].SMNFST_ADDRESS) {
+      // console.log("Checking account SMNFST...");
       const smnfstContract = new ethers.Contract(
         addresses[networkID].SMNFST_ADDRESS as string,
         sManifestERC20Abi,
         provider,
       );
+
       smnfstBalance = await smnfstContract.balanceOf(address);
-      unstakeAllowance = await smnfstContract.allowance(address, addresses[networkID].STAKING_ADDRESS);
+
+      try {
+        unstakeAllowance =
+          (await smnfstContract.allowance(address, addresses[networkID].STAKING_ADDRESS)) / Math.pow(10, 18);
+      } catch (e) {
+        console.error(e);
+      }
+
+      // console.log("smnfst unstakeAllowance: ", unstakeAllowance);
     }
 
     if (addresses[networkID].SOHM_ADDRESS) {
+      // console.log("Checking account SOHM...");
       const sohmContract = new ethers.Contract(addresses[networkID].SOHM_ADDRESS as string, sOHMv2, provider);
       sohmBalance = await sohmContract.balanceOf(address);
-      // sohmBondAllowance = await sohmContract.allowance(address, addresses[networkID]...);
+      // if (networkID === 4)
+      //   sohmBondAllowance = await sohmContract.allowance(address, addresses[networkID].SOHM_BOND_ADDRESS);
+      // else sohmBondAllowance = 0;
     }
 
     return {

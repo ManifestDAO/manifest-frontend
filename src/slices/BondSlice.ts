@@ -155,7 +155,7 @@ export const calcBondDetails = createAsyncThunk(
     try {
       purchased = await bond.getTreasuryBalance(networkID, provider);
     } catch (e) {
-      console.error("cant find treasury balance");
+      console.error(e);
     }
 
     return {

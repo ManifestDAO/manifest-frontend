@@ -5,18 +5,17 @@ import Social from "./Social";
 import { ReactComponent as StakeIcon } from "../../assets/icons/stake.svg";
 import { ReactComponent as BondIcon } from "../../assets/icons/bond.svg";
 import { ReactComponent as Logo } from "../../assets/icons/logo-mnfst.svg";
-import { ReactComponent as PoolTogetherIcon } from "../../assets/icons/33-together.svg";
 import { trim, shorten } from "../../helpers";
 import { useAddress, useWeb3Context } from "src/hooks/web3Context";
-import useBonds from "../../hooks/Bonds";
+// import useBonds from "../../hooks/Bonds";
 import { Paper, Link, Box, Typography, SvgIcon } from "@material-ui/core";
-import { Skeleton } from "@material-ui/lab";
+// import { Skeleton } from "@material-ui/lab";
 import "./sidebar.scss";
 
 function NavContent() {
   const [isActive] = useState();
   const address = useAddress();
-  const { bonds } = useBonds();
+  // const { bonds } = useBonds();
   // const { chainID } = useWeb3Context();
 
   const checkPage = useCallback((match, location, page) => {
@@ -50,7 +49,7 @@ function NavContent() {
             {address && (
               <div className="wallet-link">
                 <Link href={`https://etherscan.io/address/${address}`} target="_blank">
-                  {shorten(address)}
+                  <Typography>{shorten(address)}</Typography>
                 </Link>
               </div>
             )}

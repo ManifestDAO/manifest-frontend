@@ -1,11 +1,10 @@
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { addresses } from "../constants";
 import { abi as ManifestStaking } from "../abi/ManifestStaking.json";
 import { abi as MNFST } from "../abi/ManifestERC20.json";
 import { abi as sMNFST } from "../abi/sManifestERC20.json";
 import { setAll, getTokenPrice, getMarketPrice } from "../helpers";
 import { NodeHelper } from "../helpers/NodeHelper";
-import apollo from "../lib/apolloClient.js";
 import { createSlice, createSelector, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "src/store";
 import { IBaseAsyncThunk } from "./interfaces";
@@ -18,99 +17,76 @@ const initialState = {
 export const loadAppDetails = createAsyncThunk(
   "app/loadAppDetails",
   async ({ networkID, provider }: IBaseAsyncThunk, { dispatch }) => {
-    //     const protocolMetricsQuery = `
-    //   query {
-    //     _meta {
-    //       block {
-    //         number
-    //       }
-    //     }
-    //     protocolMetrics(first: 1, orderBy: timestamp, orderDirection: desc) {
-    //       timestamp
-    //       ohmCirculatingSupply
-    //       sOhmCirculatingSupply
-    //       totalSupply
-    //       ohmPrice
-    //       marketCap
-    //       totalValueLocked
-    //       treasuryMarketValue
-    //       nextEpochRebase
-    //       nextDistributedOhm
-    //     }
-    //   }
-    // `;
-
-    //     const graphData = await apollo(protocolMetricsQuery);
-
-    //     if (!graphData || graphData == null) {
-    //       console.error("Returned a null response when querying TheGraph");
-    //       return;
-    //     }
-
-    //     const stakingTVL = parseFloat(graphData.data.protocolMetrics[0].totalValueLocked);
-    //     // NOTE (appleseed): marketPrice from Graph was delayed, so get CoinGecko price
-    //     // const marketPrice = parseFloat(graphData.data.protocolMetrics[0].ohmPrice);
-    //     let marketPrice;
-    //     try {
-    //       const originalPromiseResult = await dispatch(
-    //         loadMarketPrice({ networkID: networkID, provider: provider }),
-    //       ).unwrap();
-    //       marketPrice = originalPromiseResult?.marketPrice;
-    //     } catch (rejectedValueOrSerializedError) {
-    //       // handle error here
-    //       console.error("Returned a null response from dispatch(loadMarketPrice)");
-    //       return;
-    //     }
-
-    //     const marketCap = parseFloat(graphData.data.protocolMetrics[0].marketCap);
-    //     const circSupply = parseFloat(graphData.data.protocolMetrics[0].ohmCirculatingSupply);
-    //     const totalSupply = parseFloat(graphData.data.protocolMetrics[0].totalSupply);
-    //     const treasuryMarketValue = parseFloat(graphData.data.protocolMetrics[0].treasuryMarketValue);
-    //     // const currentBlock = parseFloat(graphData.data._meta.block.number);
-
     if (!provider) {
       console.error("failed to connect to provider, please connect your wallet");
-      // return {
-      //   stakingTVL,
-      //   marketPrice,
-      //   marketCap,
-      //   circSupply,
-      //   totalSupply,
-      //   treasuryMarketValue,
-      // };
+      return {
+        // stakingTVL,
+        // marketPrice,
+        // marketCap,
+        // circSupply,
+        // totalSupply,
+        // treasuryMarketValue,
+      };
     }
     const currentBlock = await provider.getBlockNumber();
 
-    const stakingContract = new ethers.Contract(
-      addresses[networkID].STAKING_ADDRESS as string,
-      ManifestStaking,
-      provider,
-    );
-
-    const smnfstMainContract = new ethers.Contract(addresses[networkID].SMNFST_ADDRESS as string, sMNFST, provider);
-
     // Calculating staking
-    const epoch = await stakingContract.epoch();
-    const stakingReward = epoch.distribute;
-    const circSupply = await smnfstMainContract.circulatingSupply();
-    const stakingRebase = stakingReward / circSupply;
-    const fiveDayRate = Math.pow(1 + stakingRebase, 5 * 3) - 1;
-    const stakingAPY = Math.pow(1 + stakingRebase, 365 * 3) - 1;
+    let epoch;
+    let stakingReward = 0;
+    let circSupply = 0;
+    let stakingRebase = 0;
+    let fiveDayRate = 0;
+    let stakingAPY = 0;
+    let currentIndex = 0;
+    let totalSupply = 0;
+    let stakingTVL = 0;
 
-    // Current index
-    const currentIndex = await stakingContract.index();
+    try {
+      const stakingContract = new ethers.Contract(
+        addresses[networkID].STAKING_ADDRESS as string,
+        ManifestStaking,
+        provider,
+      );
+
+      const smnfstMainContract = new ethers.Contract(addresses[networkID].SMNFST_ADDRESS as string, sMNFST, provider);
+
+      epoch = await stakingContract.epoch();
+      currentIndex = await stakingContract.index();
+      circSupply = await smnfstMainContract.circulatingSupply();
+      totalSupply = await smnfstMainContract.totalSupply();
+      stakingTVL = (await stakingContract.contractBalance()) / Math.pow(10, 8);
+
+      stakingReward = epoch.distribute / Math.pow(10, 18);
+      stakingRebase = stakingReward / circSupply || 0;
+      // convenience log
+      // console.log(
+      //   "reward: " +
+      //     stakingReward +
+      //     "\ncirc: " +
+      //     circSupply +
+      //     "\ntotal: " +
+      //     totalSupply +
+      //     "\nstaking rebase: " +
+      //     stakingRebase,
+      // );
+      fiveDayRate = Math.pow(1 + stakingRebase, 5 * 3) - 1;
+      stakingAPY = Math.pow(1 + stakingRebase, 365 * 3) - 1;
+      // console.log("Staking apy: ", stakingAPY);
+    } catch (e) {
+      console.error(e);
+    }
 
     return {
       currentIndex: ethers.utils.formatUnits(currentIndex, "gwei"),
       currentBlock,
       fiveDayRate,
       stakingAPY,
-      // stakingTVL,
+      stakingTVL,
       stakingRebase,
       // marketCap,
       // marketPrice,
       circSupply,
-      // totalSupply,
+      totalSupply,
       // treasuryMarketValue,
     } as IAppData;
   },

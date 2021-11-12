@@ -13,6 +13,7 @@ import { abi as SohmBondContract } from "src/abi/bonds/sOhmContract.json";
 
 import { abi as ierc20Abi } from "src/abi/IERC20.json";
 import { getBondCalculator } from "src/helpers/BondCalculator";
+import { getTokenPrice } from ".";
 
 // TODO(zx): Further modularize by splitting up reserveAssets into vendor token definitions
 //   and include that in the definition of a bond
@@ -48,9 +49,9 @@ export const eth = new CustomBond({
   },
 });
 
-export const ohm_mnfst_lp = new CustomBond({
-  name: "ohm_mnfst_lp",
-  displayName: "OHM-MNFST LP",
+export const mnfst_ohm_lp = new CustomBond({
+  name: "mnfst_ohm_lp",
+  displayName: "MNFST-OHM LP",
   bondToken: "OHM",
   bondType: BondType.LP,
   isAvailable: { [NetworkID.Mainnet]: true, [NetworkID.Testnet]: true },
@@ -71,9 +72,10 @@ export const ohm_mnfst_lp = new CustomBond({
     "https://app.sushi.com/add/0x383518188c0c6d7730d91b2c03a03c837814a899/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
   customTreasuryBalanceFunc: async function (this: CustomBond, networkID, provider) {
     if (networkID === NetworkID.Mainnet) {
-      const BondContract = this.getContractForBond(networkID, provider);
-      let ohmPrice = await BondContract.assetPrice();
-      ohmPrice = ohmPrice / Math.pow(10, 9);
+      // const BondContract = this.getContractForBond(networkID, provider);
+      // console.log("sohm bond contract", BondContract);
+      let ohmPrice = await getTokenPrice(); // BondContract.assetPrice();
+
       const token = this.getContractForReserve(networkID, provider);
       const tokenAddress = this.getAddressForReserve(networkID);
       const bondCalculator = getBondCalculator(networkID, provider);
@@ -84,14 +86,15 @@ export const ohm_mnfst_lp = new CustomBond({
       return tokenUSD * ohmPrice;
     } else {
       // NOTE (appleseed): using OHM-DAI on rinkeby
-      const token = this.getContractForReserve(networkID, provider);
-      const tokenAddress = this.getAddressForReserve(networkID);
-      const bondCalculator = getBondCalculator(networkID, provider);
-      const tokenAmount = await token.balanceOf(addresses[networkID].TREASURY_ADDRESS);
-      const valuation = await bondCalculator.valuation(tokenAddress, tokenAmount);
-      const markdown = await bondCalculator.markdown(tokenAddress);
-      let tokenUSD = (valuation / Math.pow(10, 9)) * (markdown / Math.pow(10, 18));
-      return tokenUSD;
+      // const token = this.getContractForReserve(networkID, provider);
+      // const tokenAddress = this.getAddressForReserve(networkID);
+      // const bondCalculator = getBondCalculator(networkID, provider);
+      // const tokenAmount = await token.balanceOf(addresses[networkID].TREASURY_ADDRESS);
+      // const valuation = await bondCalculator.valuation(tokenAddress, tokenAmount);
+      // const markdown = await bondCalculator.markdown(tokenAddress);
+      // let tokenUSD = (valuation / Math.pow(10, 9)) * (markdown / Math.pow(10, 18));
+      // return tokenUSD;
+      return 33;
     }
   },
 });
@@ -117,12 +120,14 @@ export const sohm = new CustomBond({
     },
   },
   customTreasuryBalanceFunc: async function (this: CustomBond, networkID, provider) {
-    const sohmBondContract = this.getContractForBond(networkID, provider);
-    let sohmPrice = await sohmBondContract.assetPrice();
-    sohmPrice = sohmPrice / Math.pow(10, 9);
+    // const sohmBondContract = this.getContractForBond(networkID, provider);
+    // let sohmPrice = await sohmBondContract.assetPrice();
+    // sohmPrice = sohmPrice / Math.pow(10, 8);
+    let sohmPrice = await getTokenPrice(); // BondContract.assetPrice();
+
     const token = this.getContractForReserve(networkID, provider);
     let sohmAmount = await token.balanceOf(addresses[networkID].TREASURY_ADDRESS);
-    sohmAmount = sohmAmount / Math.pow(10, 18);
+    sohmAmount = sohmAmount / Math.pow(10, 9);
     return sohmAmount * sohmPrice;
   },
 });
@@ -131,7 +136,7 @@ export const sohm = new CustomBond({
 // Is it a stableCoin bond? use `new StableBond`
 // Is it an LP Bond? use `new LPBond`
 // Add new bonds to this array!!
-export const allBonds = [eth, ohm_mnfst_lp, sohm];
+export const allBonds = [eth, mnfst_ohm_lp, sohm];
 export const allBondsMap = allBonds.reduce((prevVal, bond) => {
   return { ...prevVal, [bond.name]: bond };
 }, {});
