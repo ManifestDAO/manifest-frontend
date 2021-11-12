@@ -2,16 +2,8 @@
   "abi": [
     {
       "inputs": [
-        {
-          "internalType": "address",
-          "name": "_staking",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "_MNFST",
-          "type": "address"
-        }
+        { "internalType": "address", "name": "_staking", "type": "address" },
+        { "internalType": "address", "name": "_MNFST", "type": "address" }
       ],
       "stateMutability": "nonpayable",
       "type": "constructor"
@@ -19,18 +11,8 @@
     {
       "anonymous": false,
       "inputs": [
-        {
-          "indexed": false,
-          "internalType": "address",
-          "name": "sender",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "amount",
-          "type": "uint256"
-        }
+        { "indexed": false, "internalType": "address", "name": "sender", "type": "address" },
+        { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }
       ],
       "name": "Staked",
       "type": "event"
@@ -38,24 +20,12 @@
     {
       "inputs": [],
       "name": "MNFST",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
+      "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
       "stateMutability": "view",
       "type": "function"
     },
     {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_amount",
-          "type": "uint256"
-        }
-      ],
+      "inputs": [{ "internalType": "uint256", "name": "_amount", "type": "uint256" }],
       "name": "stake",
       "outputs": [],
       "stateMutability": "nonpayable",
@@ -64,13 +34,7 @@
     {
       "inputs": [],
       "name": "staking",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
+      "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
       "stateMutability": "view",
       "type": "function"
     }

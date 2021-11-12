@@ -8,7 +8,7 @@ import { abi as EthBondContract } from "src/abi/bonds/EthContract.json";
 import { abi as MnfstOhmBondContract } from "src/abi/bonds/MnfstOhmContract.json";
 
 import { abi as ReserveMnfstOhmContract } from "src/abi/reserves/MnfstOhm.json";
-// import { abi as ReserveSohmContract } from "src/abi/reserves/sOhm.json";
+import { abi as ReserveSohmContract } from "src/abi/reserves/sOhm.json";
 import { abi as SohmBondContract } from "src/abi/bonds/sOhmContract.json";
 
 import { abi as ierc20Abi } from "src/abi/IERC20.json";
@@ -48,10 +48,11 @@ export const eth = new CustomBond({
   },
 });
 
-export const ohm_mnfst_lp = new LPBond({
+export const ohm_mnfst_lp = new CustomBond({
   name: "ohm_mnfst_lp",
   displayName: "OHM-MNFST LP",
   bondToken: "OHM",
+  bondType: BondType.LP,
   isAvailable: { [NetworkID.Mainnet]: true, [NetworkID.Testnet]: true },
   bondIconSvg: MnfstOhmImg,
   bondContractABI: MnfstOhmBondContract,
@@ -68,42 +69,43 @@ export const ohm_mnfst_lp = new LPBond({
   },
   lpUrl:
     "https://app.sushi.com/add/0x383518188c0c6d7730d91b2c03a03c837814a899/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
-  // customTreasuryBalanceFunc: async function (this: CustomBond, networkID, provider) {
-  //   if (networkID === NetworkID.Mainnet) {
-  //     const BondContract = this.getContractForBond(networkID, provider);
-  //     let ohmPrice = await BondContract.assetPrice();
-  //     ohmPrice = ohmPrice / Math.pow(10, 9);
-  //     const token = this.getContractForReserve(networkID, provider);
-  //     const tokenAddress = this.getAddressForReserve(networkID);
-  //     const bondCalculator = getBondCalculator(networkID, provider);
-  //     const tokenAmount = await token.balanceOf(addresses[networkID].TREASURY_ADDRESS);
-  //     const valuation = await bondCalculator.valuation(tokenAddress, tokenAmount);
-  //     const markdown = await bondCalculator.markdown(tokenAddress);
-  //     let tokenUSD = (valuation / Math.pow(10, 9)) * (markdown / Math.pow(10, 18));
-  //     return tokenUSD * ohmPrice;
-  //   } else {
-  //     // NOTE (appleseed): using OHM-DAI on rinkeby
-  //     // const token = this.getContractForReserve(networkID, provider);
-  //     // const tokenAddress = this.getAddressForReserve(networkID);
-  //     // const bondCalculator = getBondCalculator(networkID, provider);
-  //     // const tokenAmount = await token.balanceOf(addresses[networkID].TREASURY_ADDRESS);
-  //     // const valuation = await bondCalculator.valuation(tokenAddress, tokenAmount);
-  //     // const markdown = await bondCalculator.markdown(tokenAddress);
-  //     // let tokenUSD = (valuation / Math.pow(10, 9)) * (markdown / Math.pow(10, 18));
-  //     // return tokenUSD;
-  //   }
-  // },
+  customTreasuryBalanceFunc: async function (this: CustomBond, networkID, provider) {
+    if (networkID === NetworkID.Mainnet) {
+      const BondContract = this.getContractForBond(networkID, provider);
+      let ohmPrice = await BondContract.assetPrice();
+      ohmPrice = ohmPrice / Math.pow(10, 9);
+      const token = this.getContractForReserve(networkID, provider);
+      const tokenAddress = this.getAddressForReserve(networkID);
+      const bondCalculator = getBondCalculator(networkID, provider);
+      const tokenAmount = await token.balanceOf(addresses[networkID].TREASURY_ADDRESS);
+      const valuation = await bondCalculator.valuation(tokenAddress, tokenAmount);
+      const markdown = await bondCalculator.markdown(tokenAddress);
+      let tokenUSD = (valuation / Math.pow(10, 9)) * (markdown / Math.pow(10, 18));
+      return tokenUSD * ohmPrice;
+    } else {
+      // NOTE (appleseed): using OHM-DAI on rinkeby
+      const token = this.getContractForReserve(networkID, provider);
+      const tokenAddress = this.getAddressForReserve(networkID);
+      const bondCalculator = getBondCalculator(networkID, provider);
+      const tokenAmount = await token.balanceOf(addresses[networkID].TREASURY_ADDRESS);
+      const valuation = await bondCalculator.valuation(tokenAddress, tokenAmount);
+      const markdown = await bondCalculator.markdown(tokenAddress);
+      let tokenUSD = (valuation / Math.pow(10, 9)) * (markdown / Math.pow(10, 18));
+      return tokenUSD;
+    }
+  },
 });
 
-export const sohm = new StableBond({
+export const sohm = new CustomBond({
   name: "sohm",
   displayName: "sOHM",
-  // bondType: BondType.CustomAsset,
+  bondType: BondType.StableAsset,
   bondToken: "sOHM",
+  lpUrl: "",
   isAvailable: { [NetworkID.Mainnet]: true, [NetworkID.Testnet]: true },
   bondIconSvg: sOhmImg,
   bondContractABI: SohmBondContract,
-  // reserveContract: ReserveSohmContract, // The Standard ierc20Abi since they're normal tokens
+  reserveContract: ReserveSohmContract, // The Standard ierc20Abi since they're normal tokens
   networkAddrs: {
     [NetworkID.Mainnet]: {
       bondAddress: "0x9cd38F8462f1cbcb5Ce3f1eDf92131f703c52b3a",
@@ -113,15 +115,15 @@ export const sohm = new StableBond({
       bondAddress: "",
       reserveAddress: "0x1Fecda1dE7b6951B248C0B62CaeBD5BAbedc2084",
     },
-    // customTreasuryBalanceFunc: async function (this: CustomBond, networkID, provider) {
-    //   const sohmBondContract = this.getContractForBond(networkID, provider);
-    //   let sohmPrice = await sohmBondContract.assetPrice();
-    //   sohmPrice = sohmPrice / Math.pow(10, 8);
-    //   const token = this.getContractForReserve(networkID, provider);
-    //   let sohmAmount = await token.balanceOf(addresses[networkID].TREASURY_ADDRESS);
-    //   sohmAmount = sohmAmount / Math.pow(10, 18);
-    //   return sohmAmount * sohmPrice;
-    // },
+  },
+  customTreasuryBalanceFunc: async function (this: CustomBond, networkID, provider) {
+    const sohmBondContract = this.getContractForBond(networkID, provider);
+    let sohmPrice = await sohmBondContract.assetPrice();
+    sohmPrice = sohmPrice / Math.pow(10, 9);
+    const token = this.getContractForReserve(networkID, provider);
+    let sohmAmount = await token.balanceOf(addresses[networkID].TREASURY_ADDRESS);
+    sohmAmount = sohmAmount / Math.pow(10, 18);
+    return sohmAmount * sohmPrice;
   },
 });
 

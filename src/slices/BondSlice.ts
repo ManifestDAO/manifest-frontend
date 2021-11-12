@@ -101,10 +101,16 @@ export const calcBondDetails = createAsyncThunk(
       console.error("Returned a null response from dispatch(loadMarketPrice)");
     }
 
+    bondPrice = 33;
+
     try {
-      bondPrice = await bondContract.bondPriceInOHM();
-      // bondDiscount = (marketPrice * Math.pow(10, 9) - bondPrice) / bondPrice; // 1 - bondPrice / (bondPrice * Math.pow(10, 9));
-      bondDiscount = (marketPrice * Math.pow(10, 18) - bondPrice) / bondPrice; // 1 - bondPrice / (bondPrice * Math.pow(10, 9));
+      if (bond.name.indexOf("eth") === -1) {
+        bondPrice = await bondContract.bondPriceInOHM();
+        bondDiscount = (marketPrice * Math.pow(10, 9) - bondPrice) / bondPrice; // 1 - bondPrice / (bondPrice * Math.pow(10, 9));
+      } else {
+        bondPrice = await bondContract.bondPriceInUSD();
+        bondDiscount = (marketPrice * Math.pow(10, 18) - bondPrice) / bondPrice; // 1 - bondPrice / (bondPrice * Math.pow(10, 9));
+      }
     } catch (e) {
       console.log("error getting bondPriceInOHM", e);
     }
