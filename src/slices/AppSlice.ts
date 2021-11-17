@@ -4,14 +4,14 @@ import { abi as ManifestStaking } from "../abi/ManifestStaking.json";
 import { abi as MNFST } from "../abi/ManifestERC20.json";
 import { abi as sMNFST } from "../abi/sManifestERC20.json";
 import { setAll, getTokenPrice, getMarketPrice } from "../helpers";
-import { NodeHelper } from "../helpers/NodeHelper";
+// import { NodeHelper } from "../helpers/NodeHelper";
 import { createSlice, createSelector, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "src/store";
 import { IBaseAsyncThunk } from "./interfaces";
 
 const initialState = {
-  loading: false,
-  loadingMarketPrice: false,
+  loading: true,
+  loadingMarketPrice: true,
 };
 
 export const loadAppDetails = createAsyncThunk(
@@ -40,6 +40,18 @@ export const loadAppDetails = createAsyncThunk(
     let currentIndex = 0;
     let totalSupply = 0;
     let stakingTVL = 0;
+    let marketPrice = 33;
+
+    try {
+      const originalPromiseResult = await dispatch(
+        loadMarketPrice({ networkID: networkID, provider: provider }),
+      ).unwrap();
+      marketPrice = originalPromiseResult?.marketPrice;
+    } catch (rejectedValueOrSerializedError) {
+      // handle error here
+      console.error("Returned a null response from dispatch(loadMarketPrice)");
+      return;
+    }
 
     try {
       const stakingContract = new ethers.Contract(
@@ -71,7 +83,6 @@ export const loadAppDetails = createAsyncThunk(
       // );
       fiveDayRate = Math.pow(1 + stakingRebase, 5 * 3) - 1;
       stakingAPY = Math.pow(1 + stakingRebase, 365 * 3) - 1;
-      // console.log("Staking apy: ", stakingAPY);
     } catch (e) {
       console.error(e);
     }
@@ -84,7 +95,7 @@ export const loadAppDetails = createAsyncThunk(
       stakingTVL,
       stakingRebase,
       // marketCap,
-      // marketPrice,
+      marketPrice,
       circSupply,
       totalSupply,
       // treasuryMarketValue,
@@ -140,7 +151,6 @@ const loadMarketPrice = createAsyncThunk("app/loadMarketPrice", async ({ network
   let marketPrice: number;
   try {
     marketPrice = await getMarketPrice({ networkID, provider });
-    marketPrice = marketPrice / Math.pow(10, 9);
   } catch (e) {
     marketPrice = await getTokenPrice("olympus");
   }

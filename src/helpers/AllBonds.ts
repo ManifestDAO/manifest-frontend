@@ -34,7 +34,7 @@ export const eth = new CustomBond({
       reserveAddress: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
     },
     [NetworkID.Testnet]: {
-      bondAddress: "",
+      bondAddress: "0xe6bc5e089FCc257E33e7341434C19dD99C72e07F",
       reserveAddress: "0xc778417e063141139fce010982780140aa0cd5ab",
     },
   },
@@ -42,6 +42,7 @@ export const eth = new CustomBond({
     const ethBondContract = this.getContractForBond(networkID, provider);
     let ethPrice = await ethBondContract.assetPrice();
     ethPrice = ethPrice / Math.pow(10, 8);
+    console.log("eth price", ethPrice);
     const token = this.getContractForReserve(networkID, provider);
     let ethAmount = await token.balanceOf(addresses[networkID].TREASURY_ADDRESS);
     ethAmount = ethAmount / Math.pow(10, 18);
@@ -64,7 +65,7 @@ export const mnfst_ohm_lp = new CustomBond({
       reserveAddress: "0x89c4d11dfd5868d847ca26c8b1caa9c25c712cef",
     },
     [NetworkID.Testnet]: {
-      bondAddress: "",
+      bondAddress: "0x6e2fD14A6BE4F76B769CDeC5CCA8664849c03855",
       reserveAddress: "",
     },
   },
@@ -115,7 +116,7 @@ export const sohm = new CustomBond({
       reserveAddress: "0x04F2694C8fcee23e8Fd0dfEA1d4f5Bb8c352111F",
     },
     [NetworkID.Testnet]: {
-      bondAddress: "",
+      bondAddress: "0x45CBd8dE3beF01Bd6Ae4d889aeE31Fac0D699548",
       reserveAddress: "0x1Fecda1dE7b6951B248C0B62CaeBD5BAbedc2084",
     },
   },

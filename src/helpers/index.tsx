@@ -17,9 +17,19 @@ import { mnfst_ohm_lp } from "./AllBonds";
 // NOTE (appleseed): this looks like an outdated method... we now have this data in the graph (used elsewhere in the app)
 export async function getMarketPrice({ networkID, provider }: IBaseAsyncThunk) {
   const mnfst_ohm_address = mnfst_ohm_lp.getAddressForReserve(networkID);
+  // console.log("mnfst_ohm slp: ", mnfst_ohm_address);
   const pairContract = new ethers.Contract(mnfst_ohm_address, PairContract, provider);
+  // console.log("pair contract: ", pairContract);
   const reserves = await pairContract.getReserves();
-  const marketPrice = reserves[1] / reserves[0];
+  // console.log("reserves: ", reserves);
+  const marketPriceInOhm = reserves[1] / reserves[0];
+
+  // console.log("market price in OHM: ", marketPriceInOhm);
+
+  const ohmMarketPrice = await getTokenPrice();
+  const marketPrice = marketPriceInOhm * ohmMarketPrice;
+
+  // console.log("market price in USD: ", marketPrice);
 
   // commit("set", { marketPrice: marketPrice / Math.pow(10, 9) });
   // let marketPrice = 333; // fix this later

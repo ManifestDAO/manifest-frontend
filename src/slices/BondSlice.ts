@@ -105,10 +105,12 @@ export const calcBondDetails = createAsyncThunk(
 
     try {
       if (bond.name.indexOf("eth") === -1) {
-        bondPrice = await bondContract.bondPriceInOHM();
-        bondDiscount = (marketPrice * Math.pow(10, 9) - bondPrice) / bondPrice; // 1 - bondPrice / (bondPrice * Math.pow(10, 9));
+        bondPrice = (await bondContract.bondPriceInOHM()) / Math.pow(10, 9);
+        console.log("bond price in ohm: ", bondPrice);
+        bondDiscount = (marketPrice * Math.pow(10, 18) - bondPrice) / bondPrice; // 1 - bondPrice / (bondPrice * Math.pow(10, 9));
       } else {
-        bondPrice = await bondContract.bondPriceInUSD();
+        bondPrice = (await bondContract.bondPriceInUSD()) / Math.pow(10, 18);
+        console.log("eth bond: ", bondPrice);
         bondDiscount = (marketPrice * Math.pow(10, 18) - bondPrice) / bondPrice; // 1 - bondPrice / (bondPrice * Math.pow(10, 9));
       }
     } catch (e) {
