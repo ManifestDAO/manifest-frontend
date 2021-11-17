@@ -8,7 +8,6 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import useTheme from "./hooks/useTheme";
 import useBonds from "./hooks/Bonds";
 import { useAddress, useWeb3Context } from "./hooks/web3Context";
-import { segmentUA } from "./helpers/userAnalyticHelpers";
 import { shouldTriggerSafetyCheck } from "./helpers";
 
 import { calcBondDetails } from "./slices/BondSlice";
@@ -24,19 +23,11 @@ import Messages from "./components/Messages/Messages";
 import NotFound from "./views/404/NotFound";
 
 import { dark as darkTheme } from "./themes/dark.js";
-import { light as lightTheme } from "./themes/light.js";
-import { girth as gTheme } from "./themes/girth.js";
+// import { light as lightTheme } from "./themes/light.js";
+// import { girth as gTheme } from "./themes/girth.js";
 import "./style.scss";
 
-// 😬 Sorry for all the console logging
-const DEBUG = false;
-
-// 🛰 providers
-if (DEBUG) console.log("📡 Connecting to Mainnet Ethereum");
-// 🔭 block explorer URL
-// const blockExplorer = targetNetwork.blockExplorer;
-
-const drawerWidth = 260;
+const drawerWidth = 250;
 const transitionDuration = 969;
 
 const useStyles = makeStyles(theme => ({

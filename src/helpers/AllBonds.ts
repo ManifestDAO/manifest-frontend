@@ -66,7 +66,7 @@ export const mnfst_ohm_lp = new CustomBond({
     },
     [NetworkID.Testnet]: {
       bondAddress: "0x6e2fD14A6BE4F76B769CDeC5CCA8664849c03855",
-      reserveAddress: "",
+      reserveAddress: "0x42F9e504eB2f6F9a3eE7B7630bEeC0C034DBE578",
     },
   },
   lpUrl:
