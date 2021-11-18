@@ -64,12 +64,18 @@ export const loadAppDetails = createAsyncThunk(
 
       epoch = await stakingContract.epoch();
       currentIndex = await stakingContract.index();
-      circSupply = await smnfstMainContract.circulatingSupply();
+      circSupply = (await smnfstMainContract.circulatingSupply()) / Math.pow(10, 9);
       totalSupply = await smnfstMainContract.totalSupply();
-      stakingTVL = (await stakingContract.contractBalance()) / Math.pow(10, 8);
+      stakingTVL = ((await stakingContract.contractBalance()) / Math.pow(10, 9)) * marketPrice;
 
-      stakingReward = epoch.distribute / Math.pow(10, 18);
-      stakingRebase = stakingReward / circSupply || 0;
+      // console.log("epoch: ", epoch);
+
+      stakingReward = epoch.distribute / Math.pow(10, 9);
+
+      // console.log("staking reward: ", stakingReward);
+      stakingRebase = stakingReward / circSupply;
+
+      // console.log("staking rebase: ", stakingRebase);
       // convenience log
       // console.log(
       //   "reward: " +
@@ -83,6 +89,7 @@ export const loadAppDetails = createAsyncThunk(
       // );
       fiveDayRate = Math.pow(1 + stakingRebase, 5 * 3) - 1;
       stakingAPY = Math.pow(1 + stakingRebase, 365 * 3) - 1;
+      // console.log("staking apy: ", stakingAPY);
     } catch (e) {
       console.error(e);
     }

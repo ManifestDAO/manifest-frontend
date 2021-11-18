@@ -29,6 +29,7 @@ import { error } from "../../slices/MessagesSlice";
 import { ethers } from "ethers";
 import { addresses } from "src/constants";
 import { ReactComponent as ArrowUp } from "src/assets/icons/arrow-up.svg";
+import PoweredBy from "src/components/PoweredBy";
 
 function a11yProps(index) {
   return {
@@ -395,7 +396,7 @@ function Stake() {
               </div>
             </Grid>
           </Paper>
-          <Typography variant="h4">Powered by Olympus Ω</Typography>
+          <PoweredBy />
         </>
       </Zoom>
     </div>

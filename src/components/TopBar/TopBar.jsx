@@ -53,11 +53,6 @@ function TopBar({ theme, toggleTheme, handleDrawerToggle }) {
                 REPLACED WITH BUTTON TO MINT PAGE INSTEAD
           {!isVerySmallScreen && <OhmMenu />} 
           */}
-          <Button variant="contained" color="secondary" href="https://mint.manifest.gg" target="_blank">
-            <Typography variant="h5" style={{ fontWeight: "bold" }}>
-              Mint
-            </Typography>
-          </Button>
           <ConnectMenu theme={theme} />
 
           {/* 

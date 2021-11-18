@@ -22,6 +22,7 @@ import { Skeleton } from "@material-ui/lab";
 import ClaimBonds from "./ClaimBonds";
 import isEmpty from "lodash/isEmpty";
 import { allBondsMap } from "src/helpers/AllBonds";
+import PoweredBy from "src/components/PoweredBy";
 
 function ChooseBond() {
   const { bonds } = useBonds();
@@ -124,7 +125,6 @@ function ChooseBond() {
               </Grid>
             )}
           </Paper>
-          <Typography variant="h4">Powered by Olympus Ω</Typography>
         </>
       </Zoom>
 
@@ -139,6 +139,7 @@ function ChooseBond() {
           </Grid>
         </Box>
       )}
+      <PoweredBy />
     </div>
   );
 }
