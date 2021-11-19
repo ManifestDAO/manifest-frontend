@@ -1,5 +1,5 @@
 .sidebar {
-  min-width: 200px;
+  min-width: 220px;
   z-index: 2;
   border-radius: 0 !important;
   background: none !important;
@@ -13,13 +13,13 @@
 }
 .MuiDrawer-paper {
   background-color: transparent !important;
-  width: 200px !important;
+  width: 220px !important;
   -webkit-backdrop-filter: blur(0px) !important;
   backdrop-filter: blur(0px) !important;
 }
 .dapp-sidebar {
   height: 100%;
-  width: 200px;
+  width: 220px;
   overflow: hidden;
   border-radius: 0 !important;
   background: none !important;
@@ -28,7 +28,7 @@
 .dapp-sidebar-inner {
   height: 100%;
   overflow: auto;
-  width: 200px;
+  width: 220px;
 }
 
 .branding-header {

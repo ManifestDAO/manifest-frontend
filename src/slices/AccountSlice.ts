@@ -68,6 +68,9 @@ export const loadAccountDetails = createAsyncThunk(
     let genesisSaleEligible = false;
     let genesisClaimed = "0";
     let genesisBalance = "0";
+    let genesisClaimed1 = 0;
+    let genesisClaimed2 = 0;
+    let genesisClaimed3 = 0;
 
     if (addresses[networkID].MNFST_ADDRESS) {
       const mnfstContract = new ethers.Contract(
@@ -116,9 +119,15 @@ export const loadAccountDetails = createAsyncThunk(
       genesisClaimed = await genesisContract
         .totalClaimedBy(address)
         .then((amt: BigNumber) => ethers.utils.formatUnits(amt, "wei"));
-      // genesisBalance = await genesisContract
-      //   .balanceOf(address)
-      //   .then((bal: BigNumber) => ethers.utils.formatUnits(bal, "wei"));
+      genesisClaimed1 = await genesisContract
+        .balanceOf(address, 1)
+        .then((bal: BigNumber) => ethers.utils.formatUnits(bal, "wei"));
+      genesisClaimed2 = await genesisContract
+        .balanceOf(address, 2)
+        .then((bal: BigNumber) => ethers.utils.formatUnits(bal, "wei"));
+      genesisClaimed3 = await genesisContract
+        .balanceOf(address, 3)
+        .then((bal: BigNumber) => ethers.utils.formatUnits(bal, "wei"));
     }
 
     return {
@@ -136,7 +145,10 @@ export const loadAccountDetails = createAsyncThunk(
       // },
       genesis: {
         saleEligible: genesisSaleEligible,
-        claimed: genesisClaimed,
+        totalClaimed: genesisClaimed,
+        hoodie1Claimed: genesisClaimed1,
+        hoodie2Claimed: genesisClaimed2,
+        hoodie3Claimed: genesisClaimed3,
         // balance: genesisBalance,
       },
     };

@@ -117,7 +117,9 @@ export const loadAppDetails = createAsyncThunk(
         .then((n: BigNumber) => ethers.utils.formatUnits(n, "wei"));
       genesisPrice = await genesisNFTContract.price().then((p: BigNumber) => ethers.utils.formatEther(p));
       // totalGenesisSupply = await genesisNFTContract.totalSupply();
-      maxHoodieMint = await genesisNFTContract.MAX_PER_WALLET();
+      maxHoodieMint = await genesisNFTContract
+        .MAX_PER_WALLET()
+        .then((n: BigNumber) => ethers.utils.formatUnits(n, "wei"));
       hoodie1Remaining = await genesisNFTContract.totalRemaining1();
       hoodie2Remaining = await genesisNFTContract.totalRemaining2();
       hoodie3Remaining = await genesisNFTContract.totalRemaining3();

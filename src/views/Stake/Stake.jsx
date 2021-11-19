@@ -281,7 +281,7 @@ function Stake() {
                         <TabPanel value={view} index={0} className="stake-tab-panel">
                           {isAllowanceDataLoading ? (
                             <Skeleton />
-                          ) : address && hasAllowance("ohm") ? (
+                          ) : address && hasAllowance("mnfst") ? (
                             <Button
                               className="stake-button"
                               variant="contained"
@@ -377,7 +377,9 @@ function Stake() {
 
                       <div className="data-row">
                         <Link
-                          href={`https://etherscan.io/address/${addresses[chainID].STAKING_ADDRESS}`}
+                          href={`https://${chainID === 4 ? "rinkeby." : ""}etherscan.io/address/${
+                            addresses[chainID].STAKING_ADDRESS
+                          }`}
                           target="_blank"
                           rel="norefer"
                         >

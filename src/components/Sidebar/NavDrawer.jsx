@@ -2,7 +2,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Drawer } from "@material-ui/core";
 import NavContent from "./NavContent.jsx";
 
-const drawerWidth = 280;
+const drawerWidth = 220;
 
 const useStyles = makeStyles(theme => ({
   drawer: {

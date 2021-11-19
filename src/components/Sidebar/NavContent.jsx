@@ -75,10 +75,10 @@ function NavContent() {
                 <Box display="flex" align="center">
                   <SvgIcon
                     style={{
-                      height: "24px",
-                      width: "36px",
+                      height: "20px",
+                      width: "28px",
                       verticalAlign: "middle",
-                      marginRight: "3px",
+                      marginRight: "5px",
                     }}
                     component={StakeIcon}
                   />
@@ -100,10 +100,10 @@ function NavContent() {
                 <Box display="flex" align="center">
                   <SvgIcon
                     style={{
-                      height: "24px",
-                      width: "36px",
+                      height: "20px",
+                      width: "28px",
                       verticalAlign: "middle",
-                      marginRight: "3px",
+                      marginRight: "5px",
                     }}
                     component={BondIcon}
                   />
@@ -125,10 +125,10 @@ function NavContent() {
                 <Box display="flex" align="center">
                   <SvgIcon
                     style={{
-                      height: "24px",
-                      width: "36px",
+                      height: "20px",
+                      width: "28px",
                       verticalAlign: "middle",
-                      marginRight: "3px",
+                      marginRight: "5px",
                     }}
                     viewBox="0 0 24 24"
                     component={ShoppingCartIcon}

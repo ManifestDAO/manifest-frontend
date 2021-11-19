@@ -24,10 +24,7 @@ function Mint() {
 
   const isDisabled = () => {
     return (
-      pendingTransaction.length > 0 ||
-      accountData.claimed === 3 ||
-      !accountData.saleEligible ||
-      !genesisData.saleStarted
+      pendingTransaction.length > 0 || accountData.claimed >= 3 || !accountData.saleEligible || !genesisData.saleStarted
     );
   };
 
@@ -82,81 +79,97 @@ function Mint() {
             )}
 
             <Typography variant="h5">0.333 ETH</Typography>
-            <Typography variant="h5">1 Per Mint / 3 Per Wallet</Typography>
+            <Typography variant="h5">Max 1 Per Mint / 3 Per Wallet</Typography>
+            <Typography>Wallet ballance: {accountData.totalClaimed}</Typography>
           </Box>
         </Box>
         <Box m={1}>
           <Grid container spacing={3} className="grid-container">
             <Grid item lg={4} p={1} style={{ textAlign: "center" }}>
               <Paper className="ohm-card">
-                <Typography variant="h5">Creation</Typography>
-                <Box className="preview gif-1"></Box>
-                <Box className="mint-data" p={1}>
-                  <Typography variant="body1">
-                    <strong>The builder</strong>, you prefer a solid work station and divine inspiration, you’re Edison
-                    with a lightbulb. You’re Dyson with a vacuum. You’re a creator in your own way, you bring about
-                    revolutions and evolution for the human race. You may be a tinkerer for yourself first and foremost,
-                    but the universe always has bigger plans in store for you. Your inventions, your creations, will
-                    leave a mark on human history. You want to create something that stands long after you pass. And,
-                    you will.
-                  </Typography>
-                </Box>
-                <Box m={2}>
-                  <Button variant="contained" color="primary" disabled={isDisabled} onClick={() => handleMint(1)}>
+                <Box display="flex" flexDirection="column" justifyContent="space-between" height="100%">
+                  <Typography variant="h5">Creation</Typography>
+                  <Box className="preview gif-1"></Box>
+                  <Box className="mint-data" p={1}>
+                    <Typography variant="body1">
+                      <strong>The builder</strong>, you prefer a solid work station and divine inspiration, you’re
+                      Edison with a lightbulb. You’re Dyson with a vacuum. You’re a creator in your own way, you bring
+                      about revolutions and evolution for the human race. You may be a tinkerer for yourself first and
+                      foremost, but the universe always has bigger plans in store for you. Your inventions, your
+                      creations, will leave a mark on human history. You want to create something that stands long after
+                      you pass. And, you will.
+                    </Typography>
+                  </Box>
+                  <Button variant="contained" color="primary" disabled={isDisabled()} onClick={() => handleMint(1)}>
                     Mint Creation
                   </Button>
-                  <Typography variant="h6">{`${
-                    genesisData.hoodie1Remaining ? genesisData.hoodie1Remaining : "Not"
-                  } Available`}</Typography>
+                  <Box m={1}>
+                    <Typography variant="h6">
+                      {`${genesisData.hoodie1Remaining ? genesisData.hoodie1Remaining : "Not"} Available`}
+                    </Typography>
+                    <Typography>Youve minted: {accountData.hoodie1Claimed}</Typography>
+                  </Box>
                 </Box>
               </Paper>
             </Grid>
 
             <Grid item lg={4} p={1} style={{ textAlign: "center" }}>
               <Paper className="ohm-card">
-                <Typography variant="h5">Abundance</Typography>
-                <Box className="preview gif-2"></Box>
-                <Box className="mint-data" p={1}>
-                  <Typography variant="body1">
-                    <strong>The visionary</strong>, you’re someone that wants to walk into a room and raise a hundred
-                    million in five minutes flat, you’ve never been the type of person to fit in and why would you?
-                    You’re infinitely abundant in your being, a vortex of attraction, magnetism unparalleled, everything
-                    you desire instantly manifests into your reality. You believe in people. You believe in
-                    storytelling. You believe that empathy is the greatest advantage you possess. And, you’re right.
-                  </Typography>
-                </Box>
-                <Box m={2}>
-                  <Button variant="contained" color="primary" disabled={isDisabled} onClick={() => handleMint(2)}>
+                <Box display="flex" flexDirection="column" justifyContent="space-between" height="100%">
+                  <Box>
+                    <Typography variant="h5">Abundance</Typography>
+                    <Box className="preview gif-2"></Box>
+                    <Box className="mint-data" p={1}>
+                      <Typography variant="body1">
+                        <strong>The visionary</strong>, you’re someone that wants to walk into a room and raise a
+                        hundred million in five minutes flat, you’ve never been the type of person to fit in and why
+                        would you? You’re infinitely abundant in your being, a vortex of attraction, magnetism
+                        unparalleled, everything you desire instantly manifests into your reality. You believe in
+                        people. You believe in storytelling. You believe that empathy is the greatest advantage you
+                        possess. And, you’re right.
+                      </Typography>
+                    </Box>
+                  </Box>
+                  <Button variant="contained" color="primary" disabled={isDisabled()} onClick={() => handleMint(2)}>
                     Mint Abundance
                   </Button>
-                  <Typography variant="h6">{`${
-                    genesisData.hoodie2Remaining ? genesisData.hoodie2Remaining : "Not"
-                  } Available`}</Typography>
+                  <Box m={1}>
+                    <Typography variant="h6">{`${
+                      genesisData.hoodie2Remaining ? genesisData.hoodie2Remaining : "Not"
+                    } Available`}</Typography>
+                    <Typography>Youve minted: {accountData.hoodie2Claimed}</Typography>
+                  </Box>
                 </Box>
               </Paper>
             </Grid>
 
             <Grid item lg={4} p={1} style={{ textAlign: "center" }}>
               <Paper className="ohm-card">
-                <Typography variant="h5">Flow</Typography>
-                <Box className="preview gif-3"></Box>
-                <Box className="mint-data" p={1}>
-                  <Typography variant="body1">
-                    <strong>The artist</strong>, you’re a creator that recognizes living in flow is the highest path to
-                    walk in life. Every art piece you create, whether it’s a painting or song or something else, is
-                    filled with emotion and passion and perfectly flows effortlessly through your hands, mouth, and
-                    senses. It’s through this creation, this birth of manifestation from source you truly feel alive.
-                    You create for yourself, you create for something higher than yourself, your work resonates deeply
-                    with the collective. And, so it is.
-                  </Typography>
-                </Box>
-                <Box m={2}>
-                  <Button variant="contained" color="primary" disabled={isDisabled} onClick={() => handleMint(3)}>
+                <Box display="flex" flexDirection="column" justifyContent="space-between" height="100%">
+                  <Box>
+                    <Typography variant="h5">Flow</Typography>
+                    <Box className="preview gif-3"></Box>
+                    <Box className="mint-data" p={1}>
+                      <Typography variant="body1">
+                        <strong>The artist</strong>, you’re a creator that recognizes living in flow is the highest path
+                        to walk in life. Every art piece you create, whether it’s a painting or song or something else,
+                        is filled with emotion and passion and perfectly flows effortlessly through your hands, mouth,
+                        and senses. It’s through this creation, this birth of manifestation from source you truly feel
+                        alive. You create for yourself, you create for something higher than yourself, your work
+                        resonates deeply with the collective. And, so it is.
+                      </Typography>
+                    </Box>
+                  </Box>
+
+                  <Button variant="contained" color="primary" disabled={isDisabled()} onClick={() => handleMint(3)}>
                     Mint Flow
                   </Button>
-                  <Typography variant="h6">{`${
-                    genesisData.hoodie3Remaining ? genesisData.hoodie3Remaining : "Not"
-                  } Available`}</Typography>
+                  <Box m={1}>
+                    <Typography variant="h6">{`${
+                      genesisData.hoodie3Remaining ? genesisData.hoodie3Remaining : "Not"
+                    } Available`}</Typography>
+                    <Typography>Youve minted: {accountData.hoodie3Claimed}</Typography>
+                  </Box>
                 </Box>
               </Paper>
             </Grid>
