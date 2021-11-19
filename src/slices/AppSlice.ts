@@ -1,7 +1,7 @@
 import { BigNumber, ethers } from "ethers";
 import { addresses } from "../constants";
 import { abi as ManifestStaking } from "../abi/ManifestStaking.json";
-import { abi as MNFST } from "../abi/ManifestERC20.json";
+// import { abi as MNFST } from "../abi/ManifestERC20.json";
 import { abi as sMNFST } from "../abi/sManifestERC20.json";
 import { abi as Genesis1155Abi } from "../abi/Genesis1155.json";
 import { setAll, getTokenPrice, getMarketPrice } from "../helpers";
@@ -13,6 +13,17 @@ import { IBaseAsyncThunk } from "./interfaces";
 const initialState = {
   loading: true,
   loadingMarketPrice: true,
+  genesisMint: {
+    saleStarted: false,
+    totalMinted: 0,
+    price: "0.333",
+    totalSupply: 999,
+    maxMint: 3,
+    hoodie1Remaining: 0,
+    hoodie2Remaining: 0,
+    hoodie3Remaining: 0,
+    contractAddress: "",
+  },
 };
 
 export const loadAppDetails = createAsyncThunk(
@@ -49,7 +60,6 @@ export const loadAppDetails = createAsyncThunk(
       ).unwrap();
       marketPrice = originalPromiseResult?.marketPrice;
     } catch (rejectedValueOrSerializedError) {
-      // handle error here
       console.error("Returned a null response from dispatch(loadMarketPrice)");
       return;
     }
@@ -68,8 +78,6 @@ export const loadAppDetails = createAsyncThunk(
       totalSupply = await smnfstMainContract.totalSupply();
       stakingTVL = ((await stakingContract.contractBalance()) / Math.pow(10, 9)) * marketPrice;
       stakingReward = epoch.distribute / Math.pow(10, 9);
-
-      // console.log("staking reward: ", stakingReward);
       stakingRebase = stakingReward / circSupply;
 
       // console.log("staking rebase: ", stakingRebase);
@@ -84,22 +92,35 @@ export const loadAppDetails = createAsyncThunk(
       //     "\nstaking rebase: " +
       //     stakingRebase,
       // );
+
       fiveDayRate = Math.pow(1 + stakingRebase, 5 * 3) - 1;
       stakingAPY = Math.pow(1 + stakingRebase, 365 * 3) - 1;
-      // console.log("staking apy: ", stakingAPY);
     } catch (e) {
       console.error(e);
     }
 
-    let saleStarted = false;
-    let totalMinted = 0;
-    let price = "0.333";
+    let genesisSaleStarted = false;
+    let totalHoodiesMinted = 0;
+    let genesisPrice = "0.333";
     let totalGenesisSupply = 999;
-    let maxMint = 3;
-    let genesisAddress = addresses[networkID].GENESIS_1155;
+    let maxHoodieMint = 3;
+    let hoodie1Remaining = 0;
+    let hoodie2Remaining = 0;
+    let hoodie3Remaining = 0;
 
+    let genesisAddress = addresses[networkID].GENESIS_1155;
     try {
       const genesisNFTContract = new ethers.Contract(genesisAddress, Genesis1155Abi, provider);
+      genesisSaleStarted = await genesisNFTContract.saleIsActive();
+      totalHoodiesMinted = await genesisNFTContract
+        .totalHoodiesMinted()
+        .then((n: BigNumber) => ethers.utils.formatUnits(n, "wei"));
+      genesisPrice = await genesisNFTContract.price().then((p: BigNumber) => ethers.utils.formatEther(p));
+      // totalGenesisSupply = await genesisNFTContract.totalSupply();
+      maxHoodieMint = await genesisNFTContract.MAX_PER_WALLET();
+      hoodie1Remaining = await genesisNFTContract.totalRemaining1();
+      hoodie2Remaining = await genesisNFTContract.totalRemaining2();
+      hoodie3Remaining = await genesisNFTContract.totalRemaining3();
     } catch (e) {
       console.log("Genesis contract error: ", e);
     }
@@ -117,12 +138,15 @@ export const loadAppDetails = createAsyncThunk(
       totalSupply,
       // treasuryMarketValue,
       genesisMint: {
-        saleStarted,
-        totalMinted,
-        price,
-        totalSupply,
-        maxMint,
-        genesisAddress,
+        saleStarted: genesisSaleStarted,
+        totalMinted: totalHoodiesMinted,
+        price: genesisPrice,
+        totalSupply: totalGenesisSupply,
+        maxMint: maxHoodieMint,
+        hoodie1Remaining: hoodie1Remaining,
+        hoodie2Remaining: hoodie2Remaining,
+        hoodie3Remaining: hoodie3Remaining,
+        contractAddress: genesisAddress,
       },
     } as IAppData;
   },
@@ -195,7 +219,7 @@ interface IAppData {
   readonly totalSupply?: number;
   readonly treasuryBalance?: number;
   readonly treasuryMarketValue?: number;
-  genesisMint: IMintData;
+  readonly genesisMint: IMintData;
 }
 
 interface IMintData {
@@ -205,6 +229,10 @@ interface IMintData {
   totalSupply: number;
   maxMint: number;
   genesisAddress: string;
+  hoodie1Remaining: number;
+  hoodie2Remaining: number;
+  hoodie3Remaining: number;
+  contractAddress: string;
 }
 
 const appSlice = createSlice({

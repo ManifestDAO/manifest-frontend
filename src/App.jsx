@@ -26,7 +26,7 @@ import { dark as darkTheme } from "./themes/dark.js";
 // import { light as lightTheme } from "./themes/light.js";
 import "./style.scss";
 
-const drawerWidth = 210;
+const drawerWidth = 220;
 const transitionDuration = 969;
 
 const useStyles = makeStyles(theme => ({
@@ -79,6 +79,7 @@ function App() {
 
   const isAppLoading = useSelector(state => state.app.loading);
   const isAppLoaded = useSelector(state => typeof state.app.marketPrice != "undefined"); // Hacky way of determining if we were able to load app Details.
+
   const { bonds } = useBonds();
   async function loadDetails(whichDetails) {
     // NOTE (unbanksy): If you encounter the following error:

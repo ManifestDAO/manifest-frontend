@@ -1,9 +1,10 @@
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { addresses } from "../constants";
 import { abi as ierc20Abi } from "../abi/IERC20.json";
 import { abi as ManifestERC20Abi } from "../abi/ManifestERC20.json";
 import { abi as sManifestERC20Abi } from "../abi/sManifestERC20.json";
 import { abi as sOHMv2 } from "../abi/sOhmv2.json";
+import { abi as Genesis1155Abi } from "../abi/Genesis1155.json";
 
 import { setAll } from "../helpers";
 
@@ -48,9 +49,11 @@ interface IUserAccountDetails {
     mnfstStake: number;
     mnfstUnstake: number;
   };
-  // bonding: {
-  //   sohmAllowance: number;
-  // };
+  genesis: {
+    saleEligible: boolean;
+    claimed: string;
+    balance: string;
+  };
 }
 
 export const loadAccountDetails = createAsyncThunk(
@@ -62,9 +65,11 @@ export const loadAccountDetails = createAsyncThunk(
     let stakeAllowance = 0;
     let unstakeAllowance = 0;
     let sohmBondAllowance = 0;
+    let genesisSaleEligible = false;
+    let genesisClaimed = "0";
+    let genesisBalance = "0";
 
     if (addresses[networkID].MNFST_ADDRESS) {
-      // console.log("Checking account MNFST...");
       const mnfstContract = new ethers.Contract(
         addresses[networkID].MNFST_ADDRESS as string,
         ManifestERC20Abi,
@@ -74,13 +79,9 @@ export const loadAccountDetails = createAsyncThunk(
       mnfstBalance = await mnfstContract.balanceOf(address);
       stakeAllowance =
         (await mnfstContract.allowance(address, addresses[networkID].STAKING_HELPER_ADDRESS)) / Math.pow(10, 18);
-
-      // console.log("mnfst balance: ", mnfstBalance);
-      // console.log("mnfst stakeAllowance: ", stakeAllowance);
     }
 
     if (addresses[networkID].SMNFST_ADDRESS) {
-      // console.log("Checking account SMNFST...");
       const smnfstContract = new ethers.Contract(
         addresses[networkID].SMNFST_ADDRESS as string,
         sManifestERC20Abi,
@@ -95,17 +96,29 @@ export const loadAccountDetails = createAsyncThunk(
       } catch (e) {
         console.error(e);
       }
-
-      // console.log("smnfst unstakeAllowance: ", unstakeAllowance);
     }
 
     if (addresses[networkID].SOHM_ADDRESS) {
-      // console.log("Checking account SOHM...");
       const sohmContract = new ethers.Contract(addresses[networkID].SOHM_ADDRESS as string, sOHMv2, provider);
       sohmBalance = await sohmContract.balanceOf(address);
       // if (networkID === 4)
       //   sohmBondAllowance = await sohmContract.allowance(address, addresses[networkID].SOHM_BOND_ADDRESS);
       // else sohmBondAllowance = 0;
+    }
+
+    if (addresses[networkID].GENESIS_1155) {
+      const genesisContract = new ethers.Contract(
+        addresses[networkID].GENESIS_1155 as string,
+        Genesis1155Abi,
+        provider,
+      );
+      genesisSaleEligible = await genesisContract.checkSaleEligiblity(address);
+      genesisClaimed = await genesisContract
+        .totalClaimedBy(address)
+        .then((amt: BigNumber) => ethers.utils.formatUnits(amt, "wei"));
+      // genesisBalance = await genesisContract
+      //   .balanceOf(address)
+      //   .then((bal: BigNumber) => ethers.utils.formatUnits(bal, "wei"));
     }
 
     return {
@@ -121,6 +134,11 @@ export const loadAccountDetails = createAsyncThunk(
       // bonding: {
       //   sohmAllowance: +sohmBondAllowance,
       // },
+      genesis: {
+        saleEligible: genesisSaleEligible,
+        claimed: genesisClaimed,
+        // balance: genesisBalance,
+      },
     };
   },
 );
@@ -188,12 +206,19 @@ interface IAccountSlice {
     mnfst: string;
     smnfst: string;
   };
+  genesis: {
+    saleEligible: boolean;
+    claimed: string;
+    balance?: string;
+  };
   loading: boolean;
 }
+
 const initialState: IAccountSlice = {
-  loading: false,
+  loading: true,
   bonds: {},
   balances: { sohm: "", mnfst: "", smnfst: "" },
+  genesis: { saleEligible: false, claimed: "0", balance: "0" },
 };
 
 const accountSlice = createSlice({

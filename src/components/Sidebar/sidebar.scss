@@ -64,6 +64,7 @@
   .dapp-nav {
     display: flex;
     flex-flow: column;
+    align-items: flex-start;
   }
 }
 
@@ -186,4 +187,8 @@
       }
     }
   }
+}
+
+.glow * {
+  text-shadow: 0 0 80px rbg(192 219 255 / 75%), 0 0 32px rgb(65 120 255 / 24%) !important;
 }

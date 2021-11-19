@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import Social from "./Social";
 // import externalUrls from "./externalUrls";
@@ -12,6 +12,8 @@ import { useAddress, useWeb3Context } from "src/hooks/web3Context";
 // import useBonds from "../../hooks/Bonds";
 import { Paper, Link, Box, Typography, SvgIcon } from "@material-ui/core";
 // import { Skeleton } from "@material-ui/lab";
+import { useSelector } from "react-redux";
+
 import "./sidebar.scss";
 
 function NavContent() {
@@ -19,6 +21,8 @@ function NavContent() {
   const address = useAddress();
   // const { bonds } = useBonds();
   // const { chainID } = useWeb3Context();
+
+  const mintIsLive = useSelector(state => state.app.genesisMint.saleStarted);
 
   const checkPage = useCallback((match, location, page) => {
     const currentPath = location.pathname.replace("/", "");
@@ -72,9 +76,9 @@ function NavContent() {
                   <SvgIcon
                     style={{
                       height: "24px",
-                      width: "24px",
+                      width: "36px",
                       verticalAlign: "middle",
-                      marginRight: "10px",
+                      marginRight: "3px",
                     }}
                     component={StakeIcon}
                   />
@@ -97,9 +101,9 @@ function NavContent() {
                   <SvgIcon
                     style={{
                       height: "24px",
-                      width: "24px",
+                      width: "36px",
                       verticalAlign: "middle",
-                      marginRight: "10px",
+                      marginRight: "3px",
                     }}
                     component={BondIcon}
                   />
@@ -116,15 +120,15 @@ function NavContent() {
                 isActive={(match, location) => {
                   return checkPage(match, location, "mint");
                 }}
-                className={`button-dapp-menu ${isActive ? "active" : ""}`}
+                className={`button-dapp-menu ${isActive ? "active" : ""} ${mintIsLive ? "glow" : ""}`}
               >
                 <Box display="flex" align="center">
                   <SvgIcon
                     style={{
                       height: "24px",
-                      width: "24px",
+                      width: "36px",
                       verticalAlign: "middle",
-                      marginRight: "10px",
+                      marginRight: "3px",
                     }}
                     viewBox="0 0 24 24"
                     component={ShoppingCartIcon}
