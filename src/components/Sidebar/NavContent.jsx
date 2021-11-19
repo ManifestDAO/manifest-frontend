@@ -4,7 +4,9 @@ import Social from "./Social";
 // import externalUrls from "./externalUrls";
 import { ReactComponent as StakeIcon } from "../../assets/icons/stake.svg";
 import { ReactComponent as BondIcon } from "../../assets/icons/bond.svg";
+import { ReactComponent as MintIcon } from "../../assets/icons/bag.svg";
 import { ReactComponent as Logo } from "../../assets/icons/logo-mnfst.svg";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import { trim, shorten } from "../../helpers";
 import { useAddress, useWeb3Context } from "src/hooks/web3Context";
 // import useBonds from "../../hooks/Bonds";
@@ -72,7 +74,7 @@ function NavContent() {
                       height: "24px",
                       width: "24px",
                       verticalAlign: "middle",
-                      marginRight: "3px",
+                      marginRight: "10px",
                     }}
                     component={StakeIcon}
                   />
@@ -97,12 +99,38 @@ function NavContent() {
                       height: "24px",
                       width: "24px",
                       verticalAlign: "middle",
-                      marginRight: "3px",
+                      marginRight: "10px",
                     }}
                     component={BondIcon}
                   />
                   <Typography variant="h5" style={{ fontWeight: "600" }}>
                     Bond
+                  </Typography>
+                </Box>
+              </Link>
+
+              <Link
+                component={NavLink}
+                id="mint-nav"
+                to="/mint"
+                isActive={(match, location) => {
+                  return checkPage(match, location, "mint");
+                }}
+                className={`button-dapp-menu ${isActive ? "active" : ""}`}
+              >
+                <Box display="flex" align="center">
+                  <SvgIcon
+                    style={{
+                      height: "24px",
+                      width: "24px",
+                      verticalAlign: "middle",
+                      marginRight: "10px",
+                    }}
+                    viewBox="0 0 24 24"
+                    component={ShoppingCartIcon}
+                  />
+                  <Typography variant="h5" style={{ fontWeight: "600" }}>
+                    Mint
                   </Typography>
                 </Box>
               </Link>

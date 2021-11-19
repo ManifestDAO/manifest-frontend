@@ -27,10 +27,11 @@ body {
   display: flex;
   flex-flow: column;
   flex-direction: column;
-  z-index: 1;
+  z-index: -1;
   background-size: cover;
   font-family: "General";
   overflow: hidden;
+  overflow-y: scroll;
 }
 
 * {

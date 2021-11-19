@@ -15,7 +15,7 @@ import { loadAppDetails } from "./slices/AppSlice";
 import { loadAccountDetails, calculateUserBondDetails } from "./slices/AccountSlice";
 import { info } from "./slices/MessagesSlice";
 
-import { Stake, ChooseBond, Bond } from "./views";
+import { Stake, ChooseBond, Bond, Mint } from "./views";
 import Sidebar from "./components/Sidebar/Sidebar.jsx";
 import TopBar from "./components/TopBar/TopBar.jsx";
 import NavDrawer from "./components/Sidebar/NavDrawer.jsx";
@@ -24,10 +24,9 @@ import NotFound from "./views/404/NotFound";
 
 import { dark as darkTheme } from "./themes/dark.js";
 // import { light as lightTheme } from "./themes/light.js";
-// import { girth as gTheme } from "./themes/girth.js";
 import "./style.scss";
 
-const drawerWidth = 250;
+const drawerWidth = 210;
 const transitionDuration = 969;
 
 const useStyles = makeStyles(theme => ({
@@ -209,6 +208,10 @@ function App() {
                 );
               })}
               <ChooseBond />
+            </Route>
+
+            <Route path="/mint">
+              <Mint />
             </Route>
 
             <Route component={NotFound} />

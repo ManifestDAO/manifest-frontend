@@ -3,6 +3,7 @@ import { addresses } from "../constants";
 import { abi as ManifestStaking } from "../abi/ManifestStaking.json";
 import { abi as MNFST } from "../abi/ManifestERC20.json";
 import { abi as sMNFST } from "../abi/sManifestERC20.json";
+import { abi as Genesis1155Abi } from "../abi/Genesis1155.json";
 import { setAll, getTokenPrice, getMarketPrice } from "../helpers";
 // import { NodeHelper } from "../helpers/NodeHelper";
 import { createSlice, createSelector, createAsyncThunk } from "@reduxjs/toolkit";
@@ -59,7 +60,6 @@ export const loadAppDetails = createAsyncThunk(
         ManifestStaking,
         provider,
       );
-
       const smnfstMainContract = new ethers.Contract(addresses[networkID].SMNFST_ADDRESS as string, sMNFST, provider);
 
       epoch = await stakingContract.epoch();
@@ -67,9 +67,6 @@ export const loadAppDetails = createAsyncThunk(
       circSupply = (await smnfstMainContract.circulatingSupply()) / Math.pow(10, 9);
       totalSupply = await smnfstMainContract.totalSupply();
       stakingTVL = ((await stakingContract.contractBalance()) / Math.pow(10, 9)) * marketPrice;
-
-      // console.log("epoch: ", epoch);
-
       stakingReward = epoch.distribute / Math.pow(10, 9);
 
       // console.log("staking reward: ", stakingReward);
@@ -94,6 +91,19 @@ export const loadAppDetails = createAsyncThunk(
       console.error(e);
     }
 
+    let saleStarted = false;
+    let totalMinted = 0;
+    let price = "0.333";
+    let totalGenesisSupply = 999;
+    let maxMint = 3;
+    let genesisAddress = addresses[networkID].GENESIS_1155;
+
+    try {
+      const genesisNFTContract = new ethers.Contract(genesisAddress, Genesis1155Abi, provider);
+    } catch (e) {
+      console.log("Genesis contract error: ", e);
+    }
+
     return {
       currentIndex: ethers.utils.formatUnits(currentIndex, "gwei"),
       currentBlock,
@@ -106,6 +116,14 @@ export const loadAppDetails = createAsyncThunk(
       circSupply,
       totalSupply,
       // treasuryMarketValue,
+      genesisMint: {
+        saleStarted,
+        totalMinted,
+        price,
+        totalSupply,
+        maxMint,
+        genesisAddress,
+      },
     } as IAppData;
   },
 );
@@ -177,6 +195,16 @@ interface IAppData {
   readonly totalSupply?: number;
   readonly treasuryBalance?: number;
   readonly treasuryMarketValue?: number;
+  genesisMint: IMintData;
+}
+
+interface IMintData {
+  saleStarted: boolean;
+  totalMinted: number;
+  price: string;
+  totalSupply: number;
+  maxMint: number;
+  genesisAddress: string;
 }
 
 const appSlice = createSlice({

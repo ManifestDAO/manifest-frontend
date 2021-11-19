@@ -39,7 +39,7 @@ function a11yProps(index) {
 }
 
 const sMnfstImg = getTokenImage("smnfst");
-const ohmImg = getOhmTokenImage(16, 16);
+// const ohmImg = getOhmTokenImage(16, 16);
 
 function Stake() {
   const dispatch = useDispatch();
@@ -152,7 +152,7 @@ function Stake() {
             <Grid container direction="column" spacing={2}>
               <Grid item>
                 <div className="card-header">
-                  <Typography variant="h5">Single Stake (🌌,🌌)</Typography>
+                  <Typography variant="h5">Single Stake (💜,🌌)</Typography>
                   <RebaseTimer />
                 </div>
               </Grid>

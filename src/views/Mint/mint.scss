@@ -1,0 +1,39 @@
+.mint-view {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .ohm-card {
+    text-align: center;
+    min-width: 222px;
+    max-width: 333px;
+  }
+  .preview {
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    min-height: 200px;
+    // background-color: #00000033;
+    background-size: contain;
+    background-repeat: no-repeat;
+    &.gif-1 {
+      background-image: url("../../assets/images/01_creation.gif");
+    }
+    &.gif-2 {
+      background-image: url("../../assets/images/02_abundance.gif");
+    }
+    &.gif-3 {
+      background-image: url("../../assets/images/03_flow.gif");
+    }
+  }
+  .mint-data {
+    margin-top: 10px;
+  }
+}
+
+.mobile {
+  .grid-container {
+    justify-content: center;
+    flex-flow: column;
+  }
+}
