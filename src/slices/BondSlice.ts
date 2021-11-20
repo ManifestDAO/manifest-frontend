@@ -88,7 +88,7 @@ export const calcBondDetails = createAsyncThunk(
     const bondCalcContract = getBondCalculator(networkID, provider);
 
     const terms = await bondContract.terms();
-    const maxBondPrice = await bondContract.maxPayout();
+    const maxBondPrice = (await bondContract.maxPayout()) * Math.pow(10, 9);
     const debtRatio = (await bondContract.standardizedDebtRatio()) / Math.pow(10, 9);
 
     let marketPriceData = { marketPrice: 0, ohmPrice: 0 };
@@ -149,12 +149,12 @@ export const calcBondDetails = createAsyncThunk(
         const errorString = "Amount is too small!";
         dispatch(error(errorString));
       } else {
-        bondQuote = (bondQuote / Math.pow(10, 18)) * 1000;
+        bondQuote = bondQuote / Math.pow(10, 9);
       }
     }
 
     // Display error if user tries to exceed maximum.
-    if (!!value && parseFloat(bondQuote.toString()) > maxBondPrice / Math.pow(10, 9)) {
+    if (!!value && parseFloat(bondQuote.toString()) > maxBondPrice) {
       const errorString =
         "You're trying to bond more than the maximum payout available! The maximum bond payout is " +
         (maxBondPrice / Math.pow(10, 9)).toFixed(2).toString() +
@@ -191,7 +191,7 @@ export const bondAsset = createAsyncThunk(
     const depositorAddress = address;
     const acceptedSlippage = slippage / 100 || 0.005; // 0.5% as default
     // parseUnits takes String => BigNumber
-    const valueInWei = ethers.utils.parseUnits(value.toString(), "ether");
+    const valueInWei = ethers.utils.parseUnits(value.toString(), "wei");
     let balance;
     // Calculate maxPremium based on premium and slippage.
     // const calculatePremium = await bonding.calculatePremium();
