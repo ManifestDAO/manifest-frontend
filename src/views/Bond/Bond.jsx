@@ -45,6 +45,10 @@ function Bond({ bond }) {
     setView(newView);
   };
 
+  useEffect(() => {
+    console.log(bond);
+  }, []);
+
   return (
     <Fade in={true} mountOnEnter unmountOnExit>
       <Grid container id="bond-view">
@@ -65,7 +69,14 @@ function Bond({ bond }) {
                     Bond Price
                   </Typography>
                   <Typography variant="h3" className="price" color="primary">
-                    {isBondLoading ? <Skeleton /> : formatCurrency(bond.bondPrice, 2)}
+                    {isBondLoading ? (
+                      <Skeleton />
+                    ) : (
+                      // ) : bond.name === "sohm" ? (
+                      //   `${bond.bondPrice} OHM`
+                      // ) : (
+                      formatCurrency(bond.bondPrice, 2)
+                    )}
                   </Typography>
                 </div>
                 <div className="bond-price-data">

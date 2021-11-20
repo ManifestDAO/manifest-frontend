@@ -22,18 +22,20 @@ export async function getMarketPrice({ networkID, provider }: IBaseAsyncThunk) {
   // console.log("pair contract: ", pairContract);
   const reserves = await pairContract.getReserves();
   // console.log("reserves: ", reserves);
-  const marketPriceInOhm = reserves[1] / reserves[0];
+
+  let marketPriceInOhm = reserves[0] / reserves[1];
+  let check = reserves[0] / Math.pow(10, 18) > reserves[1] / Math.pow(10, 18);
+  if (check) marketPriceInOhm = reserves[1] / reserves[0];
 
   // console.log("market price in OHM: ", marketPriceInOhm);
 
-  const ohmMarketPrice = await getTokenPrice();
-  const marketPrice = marketPriceInOhm * ohmMarketPrice;
+  const ohmPrice = await getTokenPrice();
+  const marketPrice = marketPriceInOhm * ohmPrice;
 
   // console.log("market price in USD: ", marketPrice);
 
   // commit("set", { marketPrice: marketPrice / Math.pow(10, 9) });
-  // let marketPrice = 333; // fix this later
-  return marketPrice;
+  return { marketPrice, ohmPrice };
 }
 
 export async function getTokenPrice(tokenId = "olympus") {

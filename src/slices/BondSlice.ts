@@ -69,6 +69,7 @@ export interface IBondDetails {
   maxBondPrice: number;
   bondPrice: number;
   marketPrice: number;
+  ohmPrice: number;
 }
 export const calcBondDetails = createAsyncThunk(
   "bonding/calcBondDetails",
@@ -90,12 +91,13 @@ export const calcBondDetails = createAsyncThunk(
     const maxBondPrice = await bondContract.maxPayout();
     const debtRatio = (await bondContract.standardizedDebtRatio()) / Math.pow(10, 9);
 
-    let marketPrice: number = 0;
+    let marketPriceData = { marketPrice: 0, ohmPrice: 0 };
+
     try {
       const originalPromiseResult = await dispatch(
         findOrLoadMarketPrice({ networkID: networkID, provider: provider }),
       ).unwrap();
-      marketPrice = originalPromiseResult?.marketPrice;
+      marketPriceData = originalPromiseResult?.marketPrices;
     } catch (rejectedValueOrSerializedError) {
       // handle error here
       console.error("Returned a null response from dispatch(loadMarketPrice)");
@@ -103,15 +105,23 @@ export const calcBondDetails = createAsyncThunk(
 
     bondPrice = 33;
 
+    let marketPrice = marketPriceData.marketPrice;
+    let ohmPrice = marketPriceData.ohmPrice;
+
     try {
-      if (bond.name.indexOf("eth") === -1) {
+      if (bond.name.indexOf("ohm") !== -1) {
         bondPrice = (await bondContract.bondPriceInOHM()) / Math.pow(10, 9);
         console.log("bond price in ohm: ", bondPrice);
-        bondDiscount = (marketPrice * Math.pow(10, 18) - bondPrice) / bondPrice; // 1 - bondPrice / (bondPrice * Math.pow(10, 9));
+        let bondPriceUSD = bondPrice * ohmPrice;
+        bondPrice = bondPriceUSD;
+        console.log("bond price converted to USD: ", bondPriceUSD);
+        console.log("market price of MNFST: ", marketPrice);
+        bondDiscount = (marketPrice - bondPrice) / bondPrice; // 1 - bondPrice / (bondPrice * Math.pow(10, 9));
+        console.log("bond discount: ", bondDiscount);
       } else {
         bondPrice = (await bondContract.bondPriceInUSD()) / Math.pow(10, 18);
         console.log("eth bond: ", bondPrice);
-        bondDiscount = (marketPrice * Math.pow(10, 18) - bondPrice) / bondPrice; // 1 - bondPrice / (bondPrice * Math.pow(10, 9));
+        bondDiscount = (marketPrice - bondPrice) / bondPrice; // 1 - bondPrice / (bondPrice * Math.pow(10, 9));
       }
     } catch (e) {
       console.log("error getting bondPriceInOHM", e);
@@ -139,7 +149,7 @@ export const calcBondDetails = createAsyncThunk(
         const errorString = "Amount is too small!";
         dispatch(error(errorString));
       } else {
-        bondQuote = bondQuote / Math.pow(10, 18);
+        bondQuote = (bondQuote / Math.pow(10, 18)) * 1000;
       }
     }
 
@@ -168,8 +178,9 @@ export const calcBondDetails = createAsyncThunk(
       purchased,
       vestingTerm: Number(terms.vestingTerm),
       maxBondPrice: maxBondPrice / Math.pow(10, 9),
-      bondPrice: bondPrice / Math.pow(10, 18),
+      bondPrice: bondPrice,
       marketPrice: marketPrice,
+      ohmPrice: ohmPrice,
     };
   },
 );
@@ -191,20 +202,12 @@ export const bondAsset = createAsyncThunk(
 
     // Deposit the bond
     let bondTx;
-    let uaData = {
-      address: address,
-      value: value,
-      type: "Bond",
-      bondName: bond.displayName,
-      approved: true,
-      txHash: null,
-    };
+
     try {
       bondTx = await bondContract.deposit(valueInWei, maxPremium, depositorAddress);
       dispatch(
         fetchPendingTxns({ txnHash: bondTx.hash, text: "Bonding " + bond.displayName, type: "bond_" + bond.name }),
       );
-      uaData.txHash = bondTx.hash;
       await bondTx.wait();
       // TODO: it may make more sense to only have it in the finally.
       // UX preference (show pending after txn complete or after balance updated)
@@ -237,18 +240,9 @@ export const redeemBond = createAsyncThunk(
     const bondContract = bond.getContractForBond(networkID, signer);
 
     let redeemTx;
-    let uaData = {
-      address: address,
-      type: "Redeem",
-      bondName: bond.displayName,
-      autoStake: autostake,
-      approved: true,
-      txHash: null,
-    };
     try {
       redeemTx = await bondContract.redeem(address, autostake === true);
       const pendingTxnType = "redeem_bond_" + bond + (autostake === true ? "_autostake" : "");
-      uaData.txHash = redeemTx.hash;
       dispatch(
         fetchPendingTxns({ txnHash: redeemTx.hash, text: "Redeeming " + bond.displayName, type: pendingTxnType }),
       );
@@ -258,7 +252,6 @@ export const redeemBond = createAsyncThunk(
 
       dispatch(getBalances({ address, networkID, provider }));
     } catch (e: unknown) {
-      uaData.approved = false;
       dispatch(error((e as IJsonRPCError).message));
     } finally {
       if (redeemTx) {

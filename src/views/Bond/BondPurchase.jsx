@@ -122,6 +122,10 @@ function BondPurchase({ bond, slippage, recipientAddress }) {
     dispatch(changeApproval({ address, bond, provider, networkID: chainID }));
   };
 
+  useEffect(() => {
+    console.log("bond: ", bond);
+  }, []);
+
   const displayUnits = bond.displayUnits;
 
   const isAllowanceDataLoading = bond.allowance == null;

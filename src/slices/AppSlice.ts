@@ -13,6 +13,7 @@ import { IBaseAsyncThunk } from "./interfaces";
 const initialState = {
   loading: true,
   loadingMarketPrice: true,
+  marketPrices: { marketPrice: 0, ohmPrice: 0 },
   genesisMint: {
     saleStarted: false,
     totalMinted: 0,
@@ -52,13 +53,13 @@ export const loadAppDetails = createAsyncThunk(
     let currentIndex = 0;
     let totalSupply = 0;
     let stakingTVL = 0;
-    let marketPrice = 33;
+    let marketPrices = { marketPrice: 0, ohmPrice: 0 };
 
     try {
       const originalPromiseResult = await dispatch(
         loadMarketPrice({ networkID: networkID, provider: provider }),
       ).unwrap();
-      marketPrice = originalPromiseResult?.marketPrice;
+      marketPrices = originalPromiseResult?.marketPrices;
     } catch (rejectedValueOrSerializedError) {
       console.error("Returned a null response from dispatch(loadMarketPrice)");
       return;
@@ -76,7 +77,7 @@ export const loadAppDetails = createAsyncThunk(
       currentIndex = await stakingContract.index();
       circSupply = (await smnfstMainContract.circulatingSupply()) / Math.pow(10, 9);
       totalSupply = await smnfstMainContract.totalSupply();
-      stakingTVL = ((await stakingContract.contractBalance()) / Math.pow(10, 9)) * marketPrice;
+      stakingTVL = ((await stakingContract.contractBalance()) / Math.pow(10, 9)) * marketPrices.marketPrice;
       stakingReward = epoch.distribute / Math.pow(10, 9);
       stakingRebase = stakingReward / circSupply;
 
@@ -104,9 +105,9 @@ export const loadAppDetails = createAsyncThunk(
     let genesisPrice = "0.333";
     let totalGenesisSupply = 999;
     let maxHoodieMint = 3;
-    let hoodie1Remaining = 0;
-    let hoodie2Remaining = 0;
-    let hoodie3Remaining = 0;
+    let hoodie1Remaining;
+    let hoodie2Remaining;
+    let hoodie3Remaining;
 
     let genesisAddress = addresses[networkID].GENESIS_1155;
     try {
@@ -120,9 +121,15 @@ export const loadAppDetails = createAsyncThunk(
       maxHoodieMint = await genesisNFTContract
         .MAX_PER_WALLET()
         .then((n: BigNumber) => ethers.utils.formatUnits(n, "wei"));
-      hoodie1Remaining = await genesisNFTContract.totalRemaining1();
-      hoodie2Remaining = await genesisNFTContract.totalRemaining2();
-      hoodie3Remaining = await genesisNFTContract.totalRemaining3();
+      hoodie1Remaining = await genesisNFTContract
+        .totalRemaining1()
+        .then((p: BigNumber) => ethers.utils.formatUnits(p, "wei"));
+      hoodie2Remaining = await genesisNFTContract
+        .totalRemaining2()
+        .then((p: BigNumber) => ethers.utils.formatUnits(p, "wei"));
+      hoodie3Remaining = await genesisNFTContract
+        .totalRemaining3()
+        .then((p: BigNumber) => ethers.utils.formatUnits(p, "wei"));
     } catch (e) {
       console.log("Genesis contract error: ", e);
     }
@@ -135,7 +142,7 @@ export const loadAppDetails = createAsyncThunk(
       stakingTVL,
       stakingRebase,
       // marketCap,
-      marketPrice,
+      marketPrices,
       circSupply,
       totalSupply,
       // treasuryMarketValue,
@@ -171,25 +178,25 @@ export const findOrLoadMarketPrice = createAsyncThunk(
   "app/findOrLoadMarketPrice",
   async ({ networkID, provider }: IBaseAsyncThunk, { dispatch, getState }) => {
     const state: any = getState();
-    let marketPrice;
+    let marketPrices;
     // check if we already have loaded market price
-    if (state.app.loadingMarketPrice === false && state.app.marketPrice) {
+    if (state.app.loadingMarketPrice === false && state.app.marketPrices) {
       // go get marketPrice from app.state
-      marketPrice = state.app.marketPrice;
+      marketPrices = state.app.marketPrices;
     } else {
       // we don't have marketPrice in app.state, so go get it
       try {
         const originalPromiseResult = await dispatch(
           loadMarketPrice({ networkID: networkID, provider: provider }),
         ).unwrap();
-        marketPrice = originalPromiseResult?.marketPrice;
+        marketPrices = originalPromiseResult?.marketPrices;
       } catch (rejectedValueOrSerializedError) {
         // handle error here
         console.error("Returned a null response from dispatch(loadMarketPrice)");
         return;
       }
     }
-    return { marketPrice };
+    return { marketPrices };
   },
 );
 
@@ -199,13 +206,14 @@ export const findOrLoadMarketPrice = createAsyncThunk(
  * - updates the App.slice when it runs
  */
 const loadMarketPrice = createAsyncThunk("app/loadMarketPrice", async ({ networkID, provider }: IBaseAsyncThunk) => {
-  let marketPrice: number;
+  let marketPrices: { marketPrice: number; ohmPrice: number };
   try {
-    marketPrice = await getMarketPrice({ networkID, provider });
+    marketPrices = await getMarketPrice({ networkID, provider });
   } catch (e) {
-    marketPrice = await getTokenPrice("olympus");
+    let ohmPrices = await getTokenPrice("olympus");
+    marketPrices = { marketPrice: 0, ohmPrice: ohmPrices };
   }
-  return { marketPrice };
+  return { marketPrices };
 });
 
 interface IAppData {
@@ -214,7 +222,7 @@ interface IAppData {
   readonly currentBlock?: number;
   readonly fiveDayRate?: number;
   readonly marketCap?: number;
-  readonly marketPrice: number;
+  readonly marketPrices: { marketPrice: number; ohmPrice: number };
   readonly stakingAPY?: number;
   readonly stakingRebase?: number;
   readonly stakingTVL?: number;
@@ -231,9 +239,9 @@ interface IMintData {
   totalSupply: number;
   maxMint: number;
   genesisAddress: string;
-  hoodie1Remaining: number;
-  hoodie2Remaining: number;
-  hoodie3Remaining: number;
+  hoodie1Remaining: string;
+  hoodie2Remaining: string;
+  hoodie3Remaining: string;
   contractAddress: string;
 }
 

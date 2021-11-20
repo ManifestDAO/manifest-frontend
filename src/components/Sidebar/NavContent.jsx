@@ -4,7 +4,6 @@ import Social from "./Social";
 // import externalUrls from "./externalUrls";
 import { ReactComponent as StakeIcon } from "../../assets/icons/stake.svg";
 import { ReactComponent as BondIcon } from "../../assets/icons/bond.svg";
-import { ReactComponent as MintIcon } from "../../assets/icons/bag.svg";
 import { ReactComponent as Logo } from "../../assets/icons/logo-mnfst.svg";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import { trim, shorten } from "../../helpers";
@@ -131,6 +130,7 @@ function NavContent() {
                       marginRight: "5px",
                     }}
                     viewBox="0 0 24 24"
+                    htmlColor="inherit"
                     component={ShoppingCartIcon}
                   />
                   <Typography variant="h5" style={{ fontWeight: "600" }}>
