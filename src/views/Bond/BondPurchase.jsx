@@ -7,6 +7,7 @@ import {
   InputAdornment,
   InputLabel,
   OutlinedInput,
+  Link,
   Slide,
   Typography,
 } from "@material-ui/core";
@@ -65,6 +66,7 @@ function BondPurchase({ bond, slippage, recipientAddress }) {
         );
       }
     } else {
+      console.log("bonding...", quantity, slippage, bond, chainID, provider, address);
       await dispatch(
         bondAsset({
           value: quantity,
@@ -251,6 +253,18 @@ function BondPurchase({ bond, slippage, recipientAddress }) {
               <Typography>{isBondLoading ? <Skeleton width="100px" /> : shorten(recipientAddress)}</Typography>
             </div>
           )}
+
+          <div className="data-row">
+            <Link
+              href={`https://${chainID === 4 ? "rinkeby." : ""}etherscan.io/address/${
+                bond.networkAddrs[chainID].bondAddress
+              }`}
+              target="_blank"
+              rel="noref"
+            >
+              <Typography>View Contract</Typography>
+            </Link>
+          </div>
         </Box>
       </Slide>
     </Box>

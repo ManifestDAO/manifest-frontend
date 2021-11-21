@@ -32,7 +32,7 @@ export const changeApproval = createAsyncThunk(
     let bondAllowance = await reserveContract.allowance(address, bondAddr);
 
     // return early if approval already exists
-    if (bondAllowance.gt(BigNumber.from("0"))) {
+    if (bondAllowance.get(BigNumber.from("0"))) {
       dispatch(info("Approval completed."));
       dispatch(calculateUserBondDetails({ address, bond, networkID, provider }));
       return;
@@ -77,7 +77,7 @@ export const calcBondDetails = createAsyncThunk(
     if (!value) {
       value = "0";
     }
-    const amountInWei = ethers.utils.parseEther(value);
+    let amountInWei = ethers.utils.parseEther(value);
 
     // const vestingTerm = VESTING_TERM; // hardcoded for now
     let bondPrice = 0,
@@ -88,7 +88,7 @@ export const calcBondDetails = createAsyncThunk(
     const bondCalcContract = getBondCalculator(networkID, provider);
 
     const terms = await bondContract.terms();
-    const maxBondPrice = (await bondContract.maxPayout()) * Math.pow(10, 9);
+    const maxBondPrice = (await bondContract.maxPayout()) * 1000; // Math.pow(10, 9);
     const debtRatio = (await bondContract.standardizedDebtRatio()) / Math.pow(10, 9);
 
     let marketPriceData = { marketPrice: 0, ohmPrice: 0 };
@@ -149,7 +149,7 @@ export const calcBondDetails = createAsyncThunk(
         const errorString = "Amount is too small!";
         dispatch(error(errorString));
       } else {
-        bondQuote = bondQuote / Math.pow(10, 9);
+        bondQuote = bondQuote / Math.pow(10, 15);
       }
     }
 
@@ -188,23 +188,37 @@ export const calcBondDetails = createAsyncThunk(
 export const bondAsset = createAsyncThunk(
   "bonding/bondAsset",
   async ({ value, address, bond, networkID, provider, slippage }: IBondAssetAsyncThunk, { dispatch }) => {
+    console.log("bonding asset ... ");
     const depositorAddress = address;
+    console.log("depositor address: ", depositorAddress);
     const acceptedSlippage = slippage / 100 || 0.005; // 0.5% as default
+    console.log("slippage: ", acceptedSlippage);
+    console.log("value: ", value, typeof value);
     // parseUnits takes String => BigNumber
-    const valueInWei = ethers.utils.parseUnits(value.toString(), "wei");
-    let balance;
+    // const valueInWei = ethers.utils.parseUnits(value, "wei");
+    const valueInWei = (Number(value) * Math.pow(10, 9)).toString();
+    console.log("value in wei: ", valueInWei);
+
+    // let balance;
     // Calculate maxPremium based on premium and slippage.
     // const calculatePremium = await bonding.calculatePremium();
     const signer = provider.getSigner();
+
     const bondContract = bond.getContractForBond(networkID, signer);
+
+    console.log("bondAsset: ", depositorAddress, valueInWei, bondContract);
     const calculatePremium = await bondContract.bondPrice();
-    const maxPremium = Math.round(calculatePremium * (1 + acceptedSlippage));
+    const maxPremium = Math.round(Number(calculatePremium.toString()) * (1 + acceptedSlippage));
+    // const maxPremium = Math.round(calculatePremium * (1 + acceptedSlippage));
 
     // Deposit the bond
     let bondTx;
 
+    console.log("bondAsset: ", depositorAddress, valueInWei, bondContract, calculatePremium, maxPremium);
+
     try {
       bondTx = await bondContract.deposit(valueInWei, maxPremium, depositorAddress);
+      console.log("bondTX: ", bondTx);
       dispatch(
         fetchPendingTxns({ txnHash: bondTx.hash, text: "Bonding " + bond.displayName, type: "bond_" + bond.name }),
       );
