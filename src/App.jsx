@@ -26,7 +26,7 @@ import { dark as darkTheme } from "./themes/dark.js";
 // import { light as lightTheme } from "./themes/light.js";
 import "./style.scss";
 
-const drawerWidth = 220;
+const drawerWidth = 200;
 const transitionDuration = 969;
 
 const useStyles = makeStyles(theme => ({

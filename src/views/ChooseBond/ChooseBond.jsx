@@ -43,7 +43,7 @@ function ChooseBond() {
   });
 
   const marketPrice = useSelector(state => {
-    return state.app.marketPrices.marketPrice;
+    if (state.app.marketPrices) return state.app.marketPrices.marketPrice;
   });
 
   const treasuryBalance = useSelector(state => {
@@ -62,8 +62,8 @@ function ChooseBond() {
     <div id="choose-bond-view">
       {!isAccountLoading && !isEmpty(accountBonds) && <ClaimBonds activeBonds={accountBonds} />}
 
-      <Zoom in={true}>
-        <>
+      <>
+        <Zoom in={true}>
           <Paper className="ohm-card">
             <Box className="card-header">
               <Typography variant="h5">Bond</Typography>
@@ -125,8 +125,8 @@ function ChooseBond() {
               </Grid>
             )}
           </Paper>
-        </>
-      </Zoom>
+        </Zoom>
+      </>
 
       {isSmallScreen && (
         <Box className="ohm-card-container">

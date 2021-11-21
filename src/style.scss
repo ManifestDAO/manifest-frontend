@@ -2,6 +2,9 @@
   outline: none;
   -ms-overflow-style: none !important; /* IE and Edge */
   scrollbar-width: none !important; /* Firefox */
+  -webkit-transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   &::-webkit-scrollbar {
     display: none !important;
   }
@@ -32,12 +35,6 @@ body {
   font-family: "General";
   overflow: hidden;
   overflow-y: scroll;
-}
-
-* {
-  -webkit-transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 .app:before {
@@ -84,6 +81,7 @@ body {
 
 .ohm-card {
   max-width: 830px;
+  width: 98%;
   .card-header {
     width: 100%;
     min-height: 33px;

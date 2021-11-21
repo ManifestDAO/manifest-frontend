@@ -111,8 +111,8 @@ function Mint() {
                     <Typography variant="h5">Creation</Typography>
                     <Box className="preview gif-1"></Box>
                     <Box className="mint-data" p={1}>
-                      <Typography variant="body1">
-                        <strong>The builder</strong>, you prefer a solid work station and divine inspiration, you’re
+                      <Typography variant="body1" color="textSecondary">
+                        The <strong>builder</strong>, you prefer a solid work station and divine inspiration, you’re
                         Edison with a lightbulb. You’re Dyson with a vacuum. You’re a creator in your own way, you bring
                         about revolutions and evolution for the human race. You may be a tinkerer for yourself first and
                         foremost, but the universe always has bigger plans in store for you. Your inventions, your
@@ -142,8 +142,8 @@ function Mint() {
                       <Typography variant="h5">Abundance</Typography>
                       <Box className="preview gif-2"></Box>
                       <Box className="mint-data" p={1}>
-                        <Typography variant="body1">
-                          <strong>The visionary</strong>, you’re someone that wants to walk into a room and raise a
+                        <Typography variant="body1" color="textSecondary">
+                          The <strong>visionary</strong>, you’re someone that wants to walk into a room and raise a
                           hundred million in five minutes flat, you’ve never been the type of person to fit in and why
                           would you? You’re infinitely abundant in your being, a vortex of attraction, magnetism
                           unparalleled, everything you desire instantly manifests into your reality. You believe in
@@ -174,8 +174,8 @@ function Mint() {
                       <Typography variant="h5">Flow</Typography>
                       <Box className="preview gif-3"></Box>
                       <Box className="mint-data" p={1}>
-                        <Typography variant="body1">
-                          <strong>The artist</strong>, you’re a creator that recognizes living in flow is the highest
+                        <Typography variant="body1" color="textSecondary">
+                          The <strong>artist</strong>, you’re a creator that recognizes living in flow is the highest
                           path to walk in life. Every art piece you create, whether it’s a painting or song or something
                           else, is filled with emotion and passion and perfectly flows effortlessly through your hands,
                           mouth, and senses. It’s through this creation, this birth of manifestation from source you

@@ -146,8 +146,8 @@ function Stake() {
 
   return (
     <div id="stake-view">
-      <Zoom in={true} onEntered={() => setZoomed(true)}>
-        <>
+      <>
+        <Zoom in={true} onEntered={() => setZoomed(true)}>
           <Paper className={`ohm-card`}>
             <Grid container direction="column" spacing={2}>
               <Grid item>
@@ -398,9 +398,9 @@ function Stake() {
               </div>
             </Grid>
           </Paper>
-          <PoweredBy />
-        </>
-      </Zoom>
+        </Zoom>
+        <PoweredBy />
+      </>
     </div>
   );
 }
