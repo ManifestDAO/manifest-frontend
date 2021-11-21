@@ -13,6 +13,17 @@
       padding: 9.5px !important;
     }
   }
+  .mint-text {
+    margin-right: 3px;
+    &.live {
+      font-weight: 600;
+      color: transparent;
+      background: linear-gradient(to right, #30cfd0, #c43ad6);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  }
 }
 .tablet .dapp-topbar {
   justify-content: space-between;

@@ -124,11 +124,15 @@ export const sohm = new CustomBond({
     // const sohmBondContract = this.getContractForBond(networkID, provider);
     // let sohmPrice = await sohmBondContract.assetPrice();
     // sohmPrice = sohmPrice / Math.pow(10, 8);
+    // console.log("custom treasury balance fired for sohm");
     let sohmPrice = await getTokenPrice(); // BondContract.assetPrice();
-
+    // console.log("sohmPrice: ", sohmPrice);
     const token = this.getContractForReserve(networkID, provider);
+    // console.log("token: ", token);
     let sohmAmount = await token.balanceOf(addresses[networkID].TREASURY_ADDRESS);
+
     sohmAmount = sohmAmount / Math.pow(10, 9);
+    // console.log("sohm amt: ", sohmAmount);
     return sohmAmount * sohmPrice;
   },
 });

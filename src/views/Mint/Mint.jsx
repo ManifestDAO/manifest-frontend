@@ -8,6 +8,8 @@ import { loadAccountDetails } from "src/slices/AccountSlice";
 import { clearPendingTxn, fetchPendingTxns } from "src/slices/PendingTxnsSlice";
 import { error, info } from "src/slices/MessagesSlice";
 import { abi as Genesis1155Abi } from "src/abi/Genesis1155.json";
+import CheckIcon from "@material-ui/icons/Check";
+import NotInterestedIcon from "@material-ui/icons/NotInterested";
 import "./mint.scss";
 
 function Mint() {
@@ -67,25 +69,42 @@ function Mint() {
   return (
     <div className="mint-view">
       <Container maxWidth="xl">
-        <Box m={1} p={1} style={{ width: "auto", textAlign: "left" }}>
-          <Typography variant="h3" style={{ fontWeight: "600" }}>
-            SΞASON 0: GΞNΞS1S
-          </Typography>
-          <Box>
-            {genesisData && (
-              <Typography variant="h5">
-                {genesisData.totalMinted} / {genesisData.totalSupply} Minted
-              </Typography>
-            )}
-
-            <Typography variant="h5">0.333 ETH</Typography>
-            <Typography variant="h5">Max 1 Per Mint / 3 Per Wallet</Typography>
-            <Typography>Wallet ballance: {accountData.totalClaimed}</Typography>
+        <Box m={1} p={1} display="flex" flexDirect="row" justifyContent="space-between" style={{ width: "auto" }}>
+          <Box style={{ width: "50%", textAlign: "left" }}>
+            <Typography variant="h3" style={{ fontWeight: "600" }}>
+              SΞASON 0: GΞNΞS1S
+            </Typography>
+            <Box>
+              {genesisData && (
+                <Typography variant="h5">
+                  {genesisData.totalMinted} / {genesisData.totalSupply} Minted
+                </Typography>
+              )}
+              <Typography variant="h5">0.333 ETH</Typography>
+            </Box>
+          </Box>
+          <Box style={{ width: "50%", textAlign: "right" }}>
+            <Typography variant="h6" className={accountData.saleEligible && "wallet-eligible"}>
+              {accountData.saleEligible ? (
+                <CheckIcon
+                  viewBox="0 0 24 24"
+                  style={{ height: "11px", width: "11px", marginRight: "3px", color: "green" }}
+                />
+              ) : (
+                <NotInterestedIcon
+                  viewBox="0 0 24 24"
+                  style={{ height: "11px", width: "11px", marginRight: "3px", color: "red" }}
+                />
+              )}
+              {accountData.saleEligible ? "Wallet Elligible" : "Wallet Inellegible"}
+            </Typography>
+            <Typography variant="h6">Your ballance: {accountData.totalClaimed}</Typography>
+            <Typography variant="h6">Max 1 Per Mint / 3 Per Wallet</Typography>
           </Box>
         </Box>
         <Box m={1}>
           <Grid container spacing={3} className="grid-container">
-            <Grid item lg={4} p={1} style={{ textAlign: "center" }}>
+            <Grid item lg={4} md={4} style={{ textAlign: "center" }}>
               <Paper className="ohm-card">
                 <Box display="flex" flexDirection="column" justifyContent="space-between" height="100%">
                   <Typography variant="h5">Creation</Typography>
@@ -113,7 +132,7 @@ function Mint() {
               </Paper>
             </Grid>
 
-            <Grid item lg={4} p={1} style={{ textAlign: "center" }}>
+            <Grid item lg={4} md={4} style={{ textAlign: "center" }}>
               <Paper className="ohm-card">
                 <Box display="flex" flexDirection="column" justifyContent="space-between" height="100%">
                   <Box>
@@ -143,7 +162,7 @@ function Mint() {
               </Paper>
             </Grid>
 
-            <Grid item lg={4} p={1} style={{ textAlign: "center" }}>
+            <Grid item lg={4} md={4} style={{ textAlign: "center" }}>
               <Paper className="ohm-card">
                 <Box display="flex" flexDirection="column" justifyContent="space-between" height="100%">
                   <Box>

@@ -1,10 +1,10 @@
+import { useEffect, useState } from "react";
 import { AppBar, Toolbar, Box, Button, SvgIcon, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-// import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { ReactComponent as MenuIcon } from "../../assets/icons/hamburger.svg";
 // import OhmMenu from "./OhmMenu.jsx";
-// import ThemeSwitcher from "./ThemeSwitch.jsx";
 import ConnectMenu from "./ConnectMenu.jsx";
+import { useSelector } from "react-redux";
 import "./topbar.scss";
 
 const useStyles = makeStyles(theme => ({
@@ -28,8 +28,17 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function TopBar({ theme, toggleTheme, handleDrawerToggle }) {
+  const [saleMessage, setSaleMessage] = useState("");
   const classes = useStyles();
-  // const isVerySmallScreen = useMediaQuery("(max-width: 355px)");
+
+  const saleActive = useSelector(state => {
+    return state.app.genesisMint.saleStarted;
+  });
+
+  useEffect(() => {
+    if (saleActive) setSaleMessage("GΞNΞS1S mint is live!");
+    else setSaleMessage("Season 0 coming thoon");
+  }, [saleActive]);
 
   return (
     <AppBar position="sticky" className={classes.appBar} elevation={0}>
@@ -48,17 +57,12 @@ function TopBar({ theme, toggleTheme, handleDrawerToggle }) {
         </Button>
 
         <Box display="flex" justifyContent="center" alignItems="center">
-          {/* 
-          NOTE: COMMENTED OUT UNTIL UPDATED FOR MANIFEST BRANDING/COLORS, 
-                REPLACED WITH BUTTON TO MINT PAGE INSTEAD
-          {!isVerySmallScreen && <OhmMenu />} 
-          */}
+          <Box>
+            <Typography variant="h6" color="primary" className={`mint-text ${saleActive && "live"}`}>
+              {saleMessage}
+            </Typography>
+          </Box>
           <ConnectMenu theme={theme} />
-
-          {/* 
-            NOTE: LEAVE THIS COMMENTED OUT UNTIL LIGHT THEME IS CONFIGURED
-            <ThemeSwitcher theme={theme} toggleTheme={toggleTheme} /> 
-          */}
         </Box>
       </Toolbar>
     </AppBar>
