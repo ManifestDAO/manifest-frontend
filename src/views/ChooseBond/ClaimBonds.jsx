@@ -63,7 +63,7 @@ function ClaimBonds({ activeBonds }) {
       {numberOfBonds > 0 && (
         <Zoom in={true}>
           <Paper className="ohm-card claim-bonds-card">
-            <CardHeader title="Your Bonds (1,1)" />
+            <CardHeader title="Your Bonds" />
             <Box>
               {!isSmallScreen && (
                 <TableContainer>
@@ -89,7 +89,7 @@ function ClaimBonds({ activeBonds }) {
               {isSmallScreen &&
                 Object.entries(activeBonds).map((bond, i) => <ClaimBondCardData key={i} userBond={bond} />)}
 
-              <Box
+              {/* <Box
                 display="flex"
                 justifyContent="center"
                 className={`global-claim-buttons ${isSmallScreen ? "small" : ""}`}
@@ -128,7 +128,7 @@ function ClaimBonds({ activeBonds }) {
                     </Button>
                   </>
                 )}
-              </Box>
+              </Box> */}
             </Box>
           </Paper>
         </Zoom>

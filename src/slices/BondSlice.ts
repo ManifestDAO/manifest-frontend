@@ -32,7 +32,7 @@ export const changeApproval = createAsyncThunk(
     let bondAllowance = await reserveContract.allowance(address, bondAddr);
 
     // return early if approval already exists
-    if (bondAllowance.get(BigNumber.from("0"))) {
+    if (bondAllowance.gt(BigNumber.from("0"))) {
       dispatch(info("Approval completed."));
       dispatch(calculateUserBondDetails({ address, bond, networkID, provider }));
       return;
@@ -138,7 +138,7 @@ export const calcBondDetails = createAsyncThunk(
         const errorString = "Amount is too small!";
         dispatch(error(errorString));
       } else {
-        bondQuote = bondQuote / Math.pow(10, 9);
+        bondQuote = bondQuote / Math.pow(10, 15);
       }
     } else {
       // RFV = DAI
@@ -148,6 +148,8 @@ export const calcBondDetails = createAsyncThunk(
         bondQuote = 0;
         const errorString = "Amount is too small!";
         dispatch(error(errorString));
+      } else if (bond.name.indexOf("eth") !== -1) {
+        bondQuote = bondQuote / Math.pow(10, 15);
       } else {
         bondQuote = bondQuote / Math.pow(10, 15);
       }
