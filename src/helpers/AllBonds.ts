@@ -41,11 +41,15 @@ export const eth = new CustomBond({
   customTreasuryBalanceFunc: async function (this: CustomBond, networkID, provider) {
     const ethBondContract = this.getContractForBond(networkID, provider);
     let ethPrice = await ethBondContract.assetPrice();
+
     ethPrice = ethPrice / Math.pow(10, 8);
+    console.log("custom treasury balance eth price: ", ethPrice);
     const token = this.getContractForReserve(networkID, provider);
+
     let ethAmount = await token.balanceOf(addresses[networkID].TREASURY_ADDRESS);
-    ethAmount = ethAmount / Math.pow(10, 18);
     console.log("eth amount in treasury: ", ethAmount);
+    ethAmount = ethAmount / Math.pow(10, 18);
+    console.log("eth amount in treasury 2: ", ethAmount);
     return ethAmount * ethPrice;
   },
 });
@@ -92,15 +96,14 @@ export const mnfst_ohm_lp = new CustomBond({
       const bondCalculator = getBondCalculator(networkID, provider);
       const tokenAmount = await token.balanceOf(addresses[networkID].TREASURY_ADDRESS);
 
-      console.log("lp token amount: ", tokenAmount);
-
+      // console.log("lp token amount: ", tokenAmount);
       const valuation = await bondCalculator.valuation(tokenAddress, tokenAmount);
-      console.log("lp token valuation: ", valuation / Math.pow(10, 9));
+      // console.log("lp token valuation: ", valuation / Math.pow(10, 9));
 
       const markdown = await bondCalculator.markdown(tokenAddress);
-      console.log("markdown: ", markdown);
-      let tokenUSD = (valuation / Math.pow(10, 9)) * (markdown / Math.pow(10, 18));
-      console.log("tokenUSD: ", tokenUSD);
+      // console.log("markdown: ", markdown);
+      let tokenUSD = (valuation / Math.pow(10, 9)) * (markdown / Math.pow(10, 9));
+      // console.log("tokenUSD: ", tokenUSD);
       return tokenUSD * ohmPrice;
     }
   },
