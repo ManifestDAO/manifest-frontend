@@ -6,6 +6,14 @@
   min-width: 333px;
   overflow: hidden;
 
+  .title {
+    font-weight: 600;
+    color: transparent;
+    background: linear-gradient(to right, #30cfd0, #e08eff);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
   .ohm-card {
     text-align: center;
     min-width: 280px;
@@ -14,6 +22,7 @@
     height: 100%;
     max-height: 669px;
   }
+
   .preview {
     margin-top: 10px;
     width: 100%;
@@ -39,7 +48,7 @@
     width: 100%;
     min-width: 200px;
     max-width: 333px;
-    min-height: 169px;
+    max-height: 188px;
     height: 100%;
   }
 }

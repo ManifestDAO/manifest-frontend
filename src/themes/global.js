@@ -3,7 +3,7 @@ import fonts from "./fonts";
 const breakpointValues = {
   xs: 0,
   sm: 596,
-  md: 800,
+  md: 900,
   lg: 1000,
   xl: 1333,
 };
@@ -76,7 +76,7 @@ const commonSettings = {
       root: {
         backdropFilter: "blur(33px)",
         "&.ohm-card": {
-          padding: "20px 30px 30px 30px",
+          padding: "20px 20px 20px 20px",
           borderRadius: "10px",
           maxWidth: "833px",
           width: "97%",

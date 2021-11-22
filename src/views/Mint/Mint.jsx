@@ -68,22 +68,23 @@ function Mint() {
 
   return (
     <div className="mint-view">
-      <Container maxWidth="xl">
-        <Box m={1} p={1} display="flex" flexDirect="row" justifyContent="space-between" style={{ width: "auto" }}>
+      <Container maxWidth="md">
+        <Box p={1} display="flex" flexDirect="row" justifyContent="space-between" style={{ width: "auto" }}>
           <Box style={{ width: "50%", textAlign: "left" }}>
-            <Typography variant="h3" style={{ fontWeight: "600" }}>
+            <Typography variant="h3" style={{ fontWeight: "600" }} className="title">
               SΞASON 0: GΞNΞS1S
             </Typography>
             <Box>
               {genesisData && (
-                <Typography variant="h5">
+                <Typography variant="h6">
                   {genesisData.totalMinted} / {genesisData.totalSupply} Minted
                 </Typography>
               )}
-              <Typography variant="h5">0.333 ETH</Typography>
+              <Typography variant="h6">0.333 ETH</Typography>
+              <Typography variant="body2">Max 1 Per Mint / 3 Per Wallet</Typography>
             </Box>
           </Box>
-          <Box style={{ width: "50%", textAlign: "right" }}>
+          <Box style={{ width: "50%", textAlign: "right", fontWeight: "500 !important" }}>
             <Typography variant="h6" className={accountData.saleEligible && "wallet-eligible"}>
               {accountData.saleEligible ? (
                 <CheckIcon
@@ -99,10 +100,9 @@ function Mint() {
               {accountData.saleEligible ? "Wallet Elligible" : "Wallet Inellegible"}
             </Typography>
             <Typography variant="h6">Your ballance: {accountData.totalClaimed}</Typography>
-            <Typography variant="h6">Max 1 Per Mint / 3 Per Wallet</Typography>
           </Box>
         </Box>
-        <Box m={1}>
+        <Box style={{ marginTop: "15px" }} p={1}>
           <Grid container spacing={3} className="grid-container">
             <Grid item lg={4} md={4} style={{ textAlign: "center" }}>
               <Zoom in={true}>
@@ -120,14 +120,22 @@ function Mint() {
                         after you pass. And, you will.
                       </Typography>
                     </Box>
-                    <Button variant="contained" color="primary" disabled={isDisabled()} onClick={() => handleMint(1)}>
-                      Mint Creation
-                    </Button>
-                    <Box m={1}>
-                      <Typography variant="h6">
-                        {`${genesisData.hoodie1Remaining ? genesisData.hoodie1Remaining : "Not"} Available`}
-                      </Typography>
-                      <Typography>Youve minted: {accountData.hoodie1Claimed}</Typography>
+                    <Box>
+                      <Button
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        disabled={isDisabled()}
+                        onClick={() => handleMint(1)}
+                      >
+                        Mint Creation
+                      </Button>
+                      <Box m={1}>
+                        <Typography variant="h6">
+                          {`${genesisData.hoodie1Remaining ? genesisData.hoodie1Remaining : "Not"} Available`}
+                        </Typography>
+                        <Typography>Youve minted: {accountData.hoodie1Claimed}</Typography>
+                      </Box>
                     </Box>
                   </Box>
                 </Paper>
@@ -152,14 +160,22 @@ function Mint() {
                         </Typography>
                       </Box>
                     </Box>
-                    <Button variant="contained" color="primary" disabled={isDisabled()} onClick={() => handleMint(2)}>
-                      Mint Abundance
-                    </Button>
-                    <Box m={1}>
-                      <Typography variant="h6">{`${
-                        genesisData.hoodie2Remaining ? genesisData.hoodie2Remaining : "Not"
-                      } Available`}</Typography>
-                      <Typography>Youve minted: {accountData.hoodie2Claimed}</Typography>
+                    <Box>
+                      <Button
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        disabled={isDisabled()}
+                        onClick={() => handleMint(2)}
+                      >
+                        Mint Abundance
+                      </Button>
+                      <Box m={1}>
+                        <Typography variant="h6">{`${
+                          genesisData.hoodie2Remaining ? genesisData.hoodie2Remaining : "Not"
+                        } Available`}</Typography>
+                        <Typography>Youve minted: {accountData.hoodie2Claimed}</Typography>
+                      </Box>
                     </Box>
                   </Box>
                 </Paper>
@@ -184,15 +200,22 @@ function Mint() {
                         </Typography>
                       </Box>
                     </Box>
-
-                    <Button variant="contained" color="primary" disabled={isDisabled()} onClick={() => handleMint(3)}>
-                      Mint Flow
-                    </Button>
-                    <Box m={1}>
-                      <Typography variant="h6">{`${
-                        genesisData.hoodie3Remaining ? genesisData.hoodie3Remaining : "Not"
-                      } Available`}</Typography>
-                      <Typography>Youve minted: {accountData.hoodie3Claimed}</Typography>
+                    <Box>
+                      <Button
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        disabled={isDisabled()}
+                        onClick={() => handleMint(3)}
+                      >
+                        Mint Flow
+                      </Button>
+                      <Box m={1}>
+                        <Typography variant="h6">{`${
+                          genesisData.hoodie3Remaining ? genesisData.hoodie3Remaining : "Not"
+                        } Available`}</Typography>
+                        <Typography>Youve minted: {accountData.hoodie3Claimed}</Typography>
+                      </Box>
                     </Box>
                   </Box>
                 </Paper>

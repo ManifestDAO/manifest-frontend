@@ -73,6 +73,22 @@ export const useAddress = () => {
   return address;
 };
 
+const initModal = new Web3Modal({
+  // network: "mainnet", // optional
+  cacheProvider: true, // optional
+  providerOptions: {
+    walletconnect: {
+      package: WalletConnectProvider,
+      options: {
+        rpc: {
+          1: getMainnetURI(),
+          4: getTestnetURI(),
+        },
+      },
+    },
+  },
+});
+
 export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ children }) => {
   const [connected, setConnected] = useState(false);
   // NOTE (appleseed): if you are testing on rinkeby you need to set chainId === 4 as the default for non-connected wallet testing...
@@ -84,23 +100,7 @@ export const Web3ContextProvider: React.FC<{ children: ReactElement }> = ({ chil
 
   const [provider, setProvider] = useState<JsonRpcProvider>(new StaticJsonRpcProvider(uri));
 
-  const [web3Modal, setWeb3Modal] = useState<Web3Modal>(
-    new Web3Modal({
-      // network: "mainnet", // optional
-      cacheProvider: true, // optional
-      providerOptions: {
-        walletconnect: {
-          package: WalletConnectProvider,
-          options: {
-            rpc: {
-              1: getMainnetURI(),
-              4: getTestnetURI(),
-            },
-          },
-        },
-      },
-    }),
-  );
+  const [web3Modal, setWeb3Modal] = useState<Web3Modal>(initModal);
 
   const hasCachedProvider = (): Boolean => {
     if (!web3Modal) return false;
