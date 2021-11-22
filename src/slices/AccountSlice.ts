@@ -104,9 +104,6 @@ export const loadAccountDetails = createAsyncThunk(
     if (addresses[networkID].SOHM_ADDRESS) {
       const sohmContract = new ethers.Contract(addresses[networkID].SOHM_ADDRESS as string, sOHMv2, provider);
       sohmBalance = await sohmContract.balanceOf(address);
-      // if (networkID === 4)
-      //   sohmBondAllowance = await sohmContract.allowance(address, addresses[networkID].SOHM_BOND_ADDRESS);
-      // else sohmBondAllowance = 0;
     }
 
     if (addresses[networkID].GENESIS_1155) {
@@ -140,16 +137,12 @@ export const loadAccountDetails = createAsyncThunk(
         mnfstStake: +stakeAllowance,
         mnfstUnstake: +unstakeAllowance,
       },
-      // bonding: {
-      //   sohmAllowance: +sohmBondAllowance,
-      // },
       genesis: {
         saleEligible: genesisSaleEligible,
         totalClaimed: genesisClaimed,
         hoodie1Claimed: genesisClaimed1,
         hoodie2Claimed: genesisClaimed2,
         hoodie3Claimed: genesisClaimed3,
-        // balance: genesisBalance,
       },
     };
   },
@@ -195,7 +188,9 @@ export const calculateUserBondDetails = createAsyncThunk(
     allowance = await reserveContract.allowance(address, bond.getAddressForBond(networkID));
     balance = await reserveContract.balanceOf(address);
     // formatEthers takes BigNumber => String
-    const balanceVal = ethers.utils.formatUnits(balance, "gwei");
+    let balanceVal;
+    if (bond.name === "eth") balanceVal = ethers.utils.formatUnits(balance, "ether");
+    else balanceVal = ethers.utils.formatUnits(balance, "gwei");
     // balanceVal should NOT be converted to a number. it loses decimal precision
     return {
       bond: bond.name,
