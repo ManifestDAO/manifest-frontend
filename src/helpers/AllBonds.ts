@@ -43,13 +43,13 @@ export const eth = new CustomBond({
     let ethPrice = await ethBondContract.assetPrice();
 
     ethPrice = ethPrice / Math.pow(10, 8);
-    console.log("custom treasury balance eth price: ", ethPrice);
+    // console.log("custom treasury balance eth price: ", ethPrice);
     const token = this.getContractForReserve(networkID, provider);
 
     let ethAmount = await token.balanceOf(addresses[networkID].TREASURY_ADDRESS);
-    console.log("eth amount in treasury: ", ethAmount);
+    // console.log("eth amount in treasury: ", ethAmount);
     ethAmount = ethAmount / Math.pow(10, 18);
-    console.log("eth amount in treasury 2: ", ethAmount);
+    // console.log("eth amount in treasury 2: ", ethAmount);
     return ethAmount * ethPrice;
   },
 });
@@ -87,7 +87,7 @@ export const mnfst_ohm_lp = new CustomBond({
       const tokenAmount = await token.balanceOf(addresses[networkID].TREASURY_ADDRESS);
       const valuation = await bondCalculator.valuation(tokenAddress, tokenAmount);
       const markdown = await bondCalculator.markdown(tokenAddress);
-      let tokenUSD = (valuation / Math.pow(10, 9)) * (markdown / Math.pow(10, 18));
+      let tokenUSD = (valuation / Math.pow(10, 9)) * (markdown / Math.pow(10, 9));
       return tokenUSD * ohmPrice;
     } else {
       let ohmPrice = await getTokenPrice(); // BondContract.assetPrice();

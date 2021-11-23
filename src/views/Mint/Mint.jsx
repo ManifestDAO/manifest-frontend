@@ -26,13 +26,16 @@ function Mint() {
 
   const isDisabled = () => {
     return (
-      pendingTransaction.length > 0 || accountData.claimed >= 3 || !accountData.saleEligible || !genesisData.saleStarted
+      pendingTransaction.length > 0 ||
+      Number(accountData.totalClaimed) >= 3 ||
+      !accountData.saleEligible ||
+      !genesisData.saleStarted
     );
   };
 
   useEffect(() => {
-    console.log("account data loaded: ", accountData);
-    console.log("genesis data loaded: ", genesisData);
+    // console.log("account data loaded: ", accountData);
+    // console.log("genesis data loaded: ", genesisData);
     if (genesisData.contractAddress)
       genesisContract = new ethers.Contract(genesisData.contractAddress, Genesis1155Abi, provider.getSigner());
   }, [accountData, genesisData, isMinting]);
@@ -48,7 +51,7 @@ function Mint() {
     try {
       let ethAmt = ethers.utils.parseEther(genesisData.price);
       mintTx = await genesisContract.mint(id, { value: ethAmt, gasLimit: 250000 });
-      console.log(mintTx);
+      // console.log(mintTx);
 
       dispatch(fetchPendingTxns({ txnHash: mintTx.hash, text: "Minting", type: "mint" }));
       await mintTx.wait();

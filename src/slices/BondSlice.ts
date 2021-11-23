@@ -111,16 +111,16 @@ export const calcBondDetails = createAsyncThunk(
     try {
       if (bond.name.indexOf("ohm") !== -1) {
         bondPrice = (await bondContract.bondPriceInOHM()) / Math.pow(10, 9);
-        console.log("bond price in ohm: ", bondPrice);
+        // console.log("bond price in ohm: ", bondPrice);
         let bondPriceUSD = bondPrice * ohmPrice;
         bondPrice = bondPriceUSD;
-        console.log("bond price converted to USD: ", bondPriceUSD);
-        console.log("market price of MNFST: ", marketPrice);
+        // console.log("bond price converted to USD: ", bondPriceUSD);
+        // console.log("market price of MNFST: ", marketPrice);
         bondDiscount = (marketPrice - bondPrice) / bondPrice; // 1 - bondPrice / (bondPrice * Math.pow(10, 9));
-        console.log("bond discount: ", bondDiscount);
+        // console.log("bond discount: ", bondDiscount);
       } else {
         bondPrice = (await bondContract.bondPriceInUSD()) / Math.pow(10, 18);
-        console.log("eth bond: ", bondPrice);
+        // console.log("eth bond: ", bondPrice);
         bondDiscount = (marketPrice - bondPrice) / bondPrice; // 1 - bondPrice / (bondPrice * Math.pow(10, 9));
       }
     } catch (e) {
@@ -141,7 +141,7 @@ export const calcBondDetails = createAsyncThunk(
         bondQuote = bondQuote / Math.pow(10, 15);
       }
     } else {
-      // RFV = DAI
+      // ETH or sOHM bonds
       bondQuote = await bondContract.payoutFor(amountInWei);
 
       if (!amountInWei.isZero() && bondQuote < 100000000000000) {
@@ -151,7 +151,7 @@ export const calcBondDetails = createAsyncThunk(
       } else if (bond.name.indexOf("eth") !== -1) {
         bondQuote = bondQuote / Math.pow(10, 15);
       } else {
-        bondQuote = bondQuote / Math.pow(10, 15);
+        bondQuote = bondQuote / Math.pow(10, 18);
       }
     }
 
@@ -190,16 +190,20 @@ export const calcBondDetails = createAsyncThunk(
 export const bondAsset = createAsyncThunk(
   "bonding/bondAsset",
   async ({ value, address, bond, networkID, provider, slippage }: IBondAssetAsyncThunk, { dispatch }) => {
-    console.log("bonding asset ... ");
+    // console.log("bonding asset ... ");
     const depositorAddress = address;
-    console.log("depositor address: ", depositorAddress);
     const acceptedSlippage = slippage / 100 || 0.005; // 0.5% as default
-    console.log("slippage: ", acceptedSlippage);
-    console.log("value: ", value, typeof value);
+    // console.log("value: ", value, typeof value);
     // parseUnits takes String => BigNumber
     // const valueInWei = ethers.utils.parseUnits(value, "wei");
-    const valueInWei = (Number(value) * Math.pow(10, 9)).toString();
-    console.log("value in wei: ", valueInWei);
+    let valueInWei;
+
+    if (bond.name === "eth") {
+      valueInWei = (Number(value) * Math.pow(10, 18)).toString();
+    } else {
+      valueInWei = (Number(value) * Math.pow(10, 9)).toString();
+    }
+    // console.log("converted value for deposit: ", valueInWei);
 
     // let balance;
     // Calculate maxPremium based on premium and slippage.
@@ -208,7 +212,7 @@ export const bondAsset = createAsyncThunk(
 
     const bondContract = bond.getContractForBond(networkID, signer);
 
-    console.log("bondAsset: ", depositorAddress, valueInWei, bondContract);
+    // console.log("bondAsset: ", depositorAddress, valueInWei, bondContract);
     const calculatePremium = await bondContract.bondPrice();
     const maxPremium = Math.round(Number(calculatePremium.toString()) * (1 + acceptedSlippage));
     // const maxPremium = Math.round(calculatePremium * (1 + acceptedSlippage));
@@ -216,11 +220,9 @@ export const bondAsset = createAsyncThunk(
     // Deposit the bond
     let bondTx;
 
-    console.log("bondAsset: ", depositorAddress, valueInWei, bondContract, calculatePremium, maxPremium);
-
     try {
       bondTx = await bondContract.deposit(valueInWei, maxPremium, depositorAddress);
-      console.log("bondTX: ", bondTx);
+      // console.log("bondTX: ", bondTx);
       dispatch(
         fetchPendingTxns({ txnHash: bondTx.hash, text: "Bonding " + bond.displayName, type: "bond_" + bond.name }),
       );
