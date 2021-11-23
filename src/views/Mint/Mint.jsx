@@ -88,7 +88,7 @@ function Mint() {
             </Box>
           </Box>
           <Box style={{ width: "50%", textAlign: "right", fontWeight: "500 !important" }}>
-            <Typography variant="h6" className={accountData.saleEligible && "wallet-eligible"}>
+            <Typography variant="h6" className={accountData.saleEligible ? "wallet-eligible" : ""}>
               {accountData.saleEligible ? (
                 <CheckIcon
                   viewBox="0 0 24 24"

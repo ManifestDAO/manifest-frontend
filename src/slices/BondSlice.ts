@@ -84,6 +84,7 @@ export const calcBondDetails = createAsyncThunk(
       bondDiscount = 0,
       valuation = 0,
       bondQuote = 0;
+
     const bondContract = bond.getContractForBond(networkID, provider);
     const bondCalcContract = getBondCalculator(networkID, provider);
 
@@ -109,6 +110,8 @@ export const calcBondDetails = createAsyncThunk(
     let ohmPrice = marketPriceData.ohmPrice;
 
     try {
+      // bondPrice = (await bondContract.bondPrice()) / 1000;
+
       if (bond.name.indexOf("ohm") !== -1) {
         bondPrice = (await bondContract.bondPriceInOHM()) / Math.pow(10, 9);
         // console.log("bond price in ohm: ", bondPrice);
@@ -120,11 +123,12 @@ export const calcBondDetails = createAsyncThunk(
         // console.log("bond discount: ", bondDiscount);
       } else {
         bondPrice = (await bondContract.bondPriceInUSD()) / Math.pow(10, 18);
-        // console.log("eth bond: ", bondPrice);
+        // bondPrice = await bond.getBondReservePrice(networkID, provider);
+        console.log("bond price: ", bondPrice);
         bondDiscount = (marketPrice - bondPrice) / bondPrice; // 1 - bondPrice / (bondPrice * Math.pow(10, 9));
       }
     } catch (e) {
-      console.log("error getting bondPriceInOHM", e);
+      console.log("error getting bond price", e);
     }
 
     if (Number(value) === 0) {
@@ -133,25 +137,29 @@ export const calcBondDetails = createAsyncThunk(
     } else if (bond.isLP) {
       valuation = await bondCalcContract.valuation(bond.getAddressForReserve(networkID), amountInWei);
       bondQuote = await bondContract.payoutFor(valuation);
-      if (!amountInWei.isZero() && bondQuote < 100000) {
+      if (!amountInWei.isZero() && bondQuote < 10000000) {
         bondQuote = 0;
         const errorString = "Amount is too small!";
         dispatch(error(errorString));
       } else {
-        bondQuote = bondQuote / Math.pow(10, 15);
+        // let otherQuote = ethers.utils.parseUnits(bondQuote.toString(), "ether");
+        // console.log("otherQuote from slp conversion: ", otherQuote);
+        bondQuote = bondQuote / Math.pow(10, 16);
       }
     } else {
       // ETH or sOHM bonds
+
+      // let valueof = await treasuryContract.valueOf(reserveAddress, amountInWei);
       bondQuote = await bondContract.payoutFor(amountInWei);
 
       if (!amountInWei.isZero() && bondQuote < 100000000000000) {
         bondQuote = 0;
         const errorString = "Amount is too small!";
         dispatch(error(errorString));
-      } else if (bond.name.indexOf("eth") !== -1) {
+      } else if (bond.name.indexOf("eth") === -1) {
         bondQuote = bondQuote / Math.pow(10, 15);
       } else {
-        bondQuote = bondQuote / Math.pow(10, 18);
+        bondQuote = bondQuote / Math.pow(10, 15);
       }
     }
 
