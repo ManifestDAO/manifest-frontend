@@ -34,8 +34,8 @@ function Mint() {
   };
 
   useEffect(() => {
-    // console.log("account data loaded: ", accountData);
-    // console.log("genesis data loaded: ", genesisData);
+    console.log("account data loaded: ", accountData);
+    console.log("genesis data loaded: ", genesisData);
     if (genesisData.contractAddress)
       genesisContract = new ethers.Contract(genesisData.contractAddress, Genesis1155Abi, provider.getSigner());
   }, [accountData, genesisData, isMinting]);
@@ -134,9 +134,11 @@ function Mint() {
                         Mint Creation
                       </Button>
                       <Box m={1}>
-                        <Typography variant="h6">
-                          {`${genesisData.hoodie1Remaining ? genesisData.hoodie1Remaining : "Not"} Available`}
-                        </Typography>
+                        {genesisData.hoodie1Remaining > 0 ? (
+                          <Typography variant="h6">{genesisData.hoodie1Remaining} Available</Typography>
+                        ) : (
+                          <Typography variant="h6">Sold Out</Typography>
+                        )}
                         <Typography>Youve minted: {accountData.hoodie1Claimed}</Typography>
                       </Box>
                     </Box>
@@ -174,9 +176,11 @@ function Mint() {
                         Mint Abundance
                       </Button>
                       <Box m={1}>
-                        <Typography variant="h6">{`${
-                          genesisData.hoodie2Remaining ? genesisData.hoodie2Remaining : "Not"
-                        } Available`}</Typography>
+                        {genesisData.hoodie2Remaining > 0 ? (
+                          <Typography variant="h6">{genesisData.hoodie2Remaining} Available</Typography>
+                        ) : (
+                          <Typography variant="h6">Sold Out</Typography>
+                        )}
                         <Typography>Youve minted: {accountData.hoodie2Claimed}</Typography>
                       </Box>
                     </Box>
@@ -214,9 +218,11 @@ function Mint() {
                         Mint Flow
                       </Button>
                       <Box m={1}>
-                        <Typography variant="h6">{`${
-                          genesisData.hoodie3Remaining ? genesisData.hoodie3Remaining : "Not"
-                        } Available`}</Typography>
+                        {genesisData.hoodie3Remaining > 0 ? (
+                          <Typography variant="h6">{genesisData.hoodie3Remaining} Available</Typography>
+                        ) : (
+                          <Typography variant="h6">Sold Out</Typography>
+                        )}
                         <Typography>Youve minted: {accountData.hoodie3Claimed}</Typography>
                       </Box>
                     </Box>

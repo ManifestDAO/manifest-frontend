@@ -65,7 +65,7 @@ export const mnfst_ohm_lp = new CustomBond({
   reserveContract: ReserveMnfstOhmContract,
   networkAddrs: {
     [NetworkID.Mainnet]: {
-      bondAddress: "0xD67838dD745c16F180057A0A76039ae6C38901C3",
+      bondAddress: "0x4c3B12152300091B813236bE7066A5759E581672",
       reserveAddress: "0x89c4d11dfd5868d847ca26c8b1caa9c25c712cef",
     },
     [NetworkID.Testnet]: {
@@ -121,7 +121,7 @@ export const sohm = new CustomBond({
   reserveContract: ReserveSohmContract, // The Standard ierc20Abi since they're normal tokens
   networkAddrs: {
     [NetworkID.Mainnet]: {
-      bondAddress: "0x9cd38F8462f1cbcb5Ce3f1eDf92131f703c52b3a",
+      bondAddress: "0xFEff98fdBd76B51Fd7Fd0E95eC1CD9c28DD1503F",
       reserveAddress: "0x04F2694C8fcee23e8Fd0dfEA1d4f5Bb8c352111F",
     },
     [NetworkID.Testnet]: {

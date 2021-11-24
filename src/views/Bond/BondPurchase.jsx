@@ -237,7 +237,9 @@ function BondPurchase({ bond, slippage, recipientAddress }) {
 
           <div className="data-row">
             <Typography>Debt Ratio</Typography>
-            <Typography>{isBondLoading ? <Skeleton width="100px" /> : `${trim(bond.debtRatio * 100, 2)}%`}</Typography>
+            <Typography>
+              {isBondLoading ? <Skeleton width="100px" /> : `${trim(bond.debtRatio / 10000000, 2)}%`}
+            </Typography>
           </div>
 
           <div className="data-row">
