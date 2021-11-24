@@ -34,8 +34,8 @@ function Mint() {
   };
 
   useEffect(() => {
-    console.log("account data loaded: ", accountData);
-    console.log("genesis data loaded: ", genesisData);
+    // console.log("account data loaded: ", accountData);
+    // console.log("genesis data loaded: ", genesisData);
     if (genesisData.contractAddress)
       genesisContract = new ethers.Contract(genesisData.contractAddress, Genesis1155Abi, provider.getSigner());
   }, [accountData, genesisData, isMinting]);
