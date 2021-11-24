@@ -124,7 +124,7 @@ export const calcBondDetails = createAsyncThunk(
       } else {
         bondPrice = (await bondContract.bondPriceInUSD()) / Math.pow(10, 18);
         // bondPrice = await bond.getBondReservePrice(networkID, provider);
-        console.log("bond price: ", bondPrice);
+        // console.log("bond price: ", bondPrice);
         bondDiscount = (marketPrice - bondPrice) / bondPrice; // 1 - bondPrice / (bondPrice * Math.pow(10, 9));
       }
     } catch (e) {
