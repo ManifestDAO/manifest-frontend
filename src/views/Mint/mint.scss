@@ -50,6 +50,9 @@
     max-width: 333px;
     max-height: 222px;
     height: 100%;
+    &.expanded {
+      height: 100%;
+    }
   }
 }
 

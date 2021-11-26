@@ -77,7 +77,7 @@ function Mint() {
             <Typography variant="h3" style={{ fontWeight: "600" }} className="title">
               SΞASON 0: GΞNΞS1S
             </Typography>
-            <Box m={1}>
+            <Box marginTop="10px">
               {genesisData && (
                 <Typography variant="h6">
                   {genesisData.totalMinted} / {genesisData.totalSupply} Minted
