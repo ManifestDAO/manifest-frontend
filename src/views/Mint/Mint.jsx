@@ -111,9 +111,10 @@ function Mint() {
               <Zoom in={true}>
                 <Paper className="ohm-card">
                   <Box display="flex" flexDirection="column" justifyContent="space-between" height="100%">
-                    <Typography variant="h5">Creation</Typography>
-                    <Box className="preview gif-1"></Box>
-                    <Box className="mint-data" p={1}>
+                    <Box>
+                      <Typography variant="h5">Creation</Typography>
+                      <Box className="preview gif-1"></Box>
+                      {/* <Box className="mint-data" p={1}>
                       <Typography variant="body1" color="textSecondary">
                         The <strong>builder</strong>, you prefer a solid work station and divine inspiration, you’re
                         Edison with a lightbulb. You’re Dyson with a vacuum. You’re a creator in your own way, you bring
@@ -122,6 +123,15 @@ function Mint() {
                         creations, will leave a mark on human history. You want to create something that stands long
                         after you pass. And, you will.
                       </Typography>
+                    </Box> */}
+                    </Box>
+                    <Box m={1}>
+                      {genesisData.hoodie1Remaining > 0 ? (
+                        <Typography variant="h6">{genesisData.hoodie1Remaining} Available</Typography>
+                      ) : (
+                        <Typography variant="h6">Sold Out</Typography>
+                      )}
+                      <Typography>Youve minted: {accountData.hoodie1Claimed}</Typography>
                     </Box>
                     <Box>
                       <Button
@@ -134,14 +144,6 @@ function Mint() {
                       >
                         Mint
                       </Button>
-                      <Box m={1}>
-                        {genesisData.hoodie1Remaining > 0 ? (
-                          <Typography variant="h6">{genesisData.hoodie1Remaining} Available</Typography>
-                        ) : (
-                          <Typography variant="h6">Sold Out</Typography>
-                        )}
-                        <Typography>Youve minted: {accountData.hoodie1Claimed}</Typography>
-                      </Box>
                     </Box>
                   </Box>
                 </Paper>
@@ -155,7 +157,7 @@ function Mint() {
                     <Box>
                       <Typography variant="h5">Abundance</Typography>
                       <Box className="preview gif-2"></Box>
-                      <Box className="mint-data" p={1}>
+                      {/* <Box className="mint-data" p={1}>
                         <Typography variant="body1" color="textSecondary">
                           The <strong>visionary</strong>, you’re someone that wants to walk into a room and raise a
                           hundred million in five minutes flat, you’ve never been the type of person to fit in and why
@@ -164,7 +166,15 @@ function Mint() {
                           people. You believe in storytelling. You believe that empathy is the greatest advantage you
                           possess. And, you’re right.
                         </Typography>
-                      </Box>
+                      </Box> */}
+                    </Box>
+                    <Box m={1}>
+                      {genesisData.hoodie2Remaining > 0 ? (
+                        <Typography variant="h6">{genesisData.hoodie2Remaining} Available</Typography>
+                      ) : (
+                        <Typography variant="h6">Sold Out</Typography>
+                      )}
+                      <Typography>Youve minted: {accountData.hoodie2Claimed}</Typography>
                     </Box>
                     <Box>
                       <Button
@@ -177,14 +187,6 @@ function Mint() {
                       >
                         Mint
                       </Button>
-                      <Box m={1}>
-                        {genesisData.hoodie2Remaining > 0 ? (
-                          <Typography variant="h6">{genesisData.hoodie2Remaining} Available</Typography>
-                        ) : (
-                          <Typography variant="h6">Sold Out</Typography>
-                        )}
-                        <Typography>Youve minted: {accountData.hoodie2Claimed}</Typography>
-                      </Box>
                     </Box>
                   </Box>
                 </Paper>
@@ -198,7 +200,7 @@ function Mint() {
                     <Box>
                       <Typography variant="h5">Flow</Typography>
                       <Box className="preview gif-3"></Box>
-                      <Box className="mint-data" p={1}>
+                      {/* <Box className="mint-data" p={1}>
                         <Typography variant="body1" color="textSecondary">
                           The <strong>artist</strong>, you’re a creator that recognizes living in flow is the highest
                           path to walk in life. Every art piece you create, whether it’s a painting or song or something
@@ -207,28 +209,28 @@ function Mint() {
                           truly feel alive. You create for yourself, you create for something higher than yourself, your
                           work resonates deeply with the collective. And, so it is.
                         </Typography>
-                      </Box>
+                      </Box> */}
                     </Box>
-                    <Box>
-                      <Button
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        disabled={isDisabled()}
-                        onClick={() => handleMint(3)}
-                        style={{ fontWeight: "600" }}
-                      >
-                        Mint
-                      </Button>
-                      <Box m={1}>
-                        {genesisData.hoodie3Remaining > 0 ? (
-                          <Typography variant="h6">{genesisData.hoodie3Remaining} Available</Typography>
-                        ) : (
-                          <Typography variant="h6">Sold Out</Typography>
-                        )}
-                        <Typography>Youve minted: {accountData.hoodie3Claimed}</Typography>
-                      </Box>
+                    <Box m={1}>
+                      {genesisData.hoodie3Remaining > 0 ? (
+                        <Typography variant="h6">{genesisData.hoodie3Remaining} Available</Typography>
+                      ) : (
+                        <Typography variant="h6">Sold Out</Typography>
+                      )}
+                      <Typography>Youve minted: {accountData.hoodie3Claimed}</Typography>
                     </Box>
+                  </Box>
+                  <Box>
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      disabled={isDisabled()}
+                      onClick={() => handleMint(3)}
+                      style={{ fontWeight: "600" }}
+                    >
+                      Mint
+                    </Button>
                   </Box>
                 </Paper>
               </Zoom>
