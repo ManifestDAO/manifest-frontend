@@ -77,14 +77,14 @@ function Mint() {
             <Typography variant="h3" style={{ fontWeight: "600" }} className="title">
               SΞASON 0: GΞNΞS1S
             </Typography>
-            <Box>
+            <Box m={1}>
               {genesisData && (
                 <Typography variant="h6">
                   {genesisData.totalMinted} / {genesisData.totalSupply} Minted
                 </Typography>
               )}
               <Typography variant="h6">0.333 ETH</Typography>
-              <Typography variant="body2">Max 1 Per Mint / 3 Per Wallet</Typography>
+              <Typography variant="h6">Max 1 Per Mint / 3 Per Wallet</Typography>
             </Box>
           </Box>
           <Box style={{ width: "50%", textAlign: "right", fontWeight: "500 !important" }}>
@@ -100,9 +100,9 @@ function Mint() {
                   style={{ height: "11px", width: "11px", marginRight: "3px", color: "red" }}
                 />
               )}
-              {accountData.saleEligible ? "Wallet Elligible" : "Wallet Inellegible"}
+              {accountData.saleEligible ? "Wallet Eligible" : "Wallet Ineligible"}
             </Typography>
-            <Typography variant="h6">Your ballance: {accountData.totalClaimed}</Typography>
+            <Typography variant="h6">Your balance: {accountData.totalClaimed}</Typography>
           </Box>
         </Box>
         <Box style={{ marginTop: "15px" }} p={1}>
@@ -130,8 +130,9 @@ function Mint() {
                         color="primary"
                         disabled={isDisabled()}
                         onClick={() => handleMint(1)}
+                        style={{ fontWeight: "600" }}
                       >
-                        Mint Creation
+                        Mint
                       </Button>
                       <Box m={1}>
                         {genesisData.hoodie1Remaining > 0 ? (
@@ -172,8 +173,9 @@ function Mint() {
                         color="primary"
                         disabled={isDisabled()}
                         onClick={() => handleMint(2)}
+                        style={{ fontWeight: "600" }}
                       >
-                        Mint Abundance
+                        Mint
                       </Button>
                       <Box m={1}>
                         {genesisData.hoodie2Remaining > 0 ? (
@@ -214,8 +216,9 @@ function Mint() {
                         color="primary"
                         disabled={isDisabled()}
                         onClick={() => handleMint(3)}
+                        style={{ fontWeight: "600" }}
                       >
-                        Mint Flow
+                        Mint
                       </Button>
                       <Box m={1}>
                         {genesisData.hoodie3Remaining > 0 ? (

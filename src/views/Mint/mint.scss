@@ -4,12 +4,11 @@
   justify-content: center;
   align-items: center;
   min-width: 333px;
-  overflow: hidden;
 
   .title {
     font-weight: 600;
     color: transparent;
-    background: linear-gradient(to right, #30cfd0, #e08eff);
+    background: linear-gradient(to right, #aa11ee, #9f11ef);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -29,6 +28,7 @@
     min-width: 200px;
     display: flex;
     min-height: 220px;
+    max-height: 220px;
     height: auto;
     background-size: contain;
     background-repeat: no-repeat;
@@ -48,7 +48,7 @@
     width: 100%;
     min-width: 200px;
     max-width: 333px;
-    max-height: 188px;
+    max-height: 222px;
     height: 100%;
   }
 }

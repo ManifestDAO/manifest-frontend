@@ -37,7 +37,7 @@ function TopBar({ theme, toggleTheme, handleDrawerToggle }) {
 
   useEffect(() => {
     if (saleActive) setSaleMessage("GΞNΞS1S mint is live!");
-    else setSaleMessage("Season 0 coming thoon");
+    else setSaleMessage("Season 0 coming soon");
   }, [saleActive]);
 
   return (
