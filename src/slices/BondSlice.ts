@@ -143,8 +143,12 @@ export const calcBondDetails = createAsyncThunk(
         dispatch(error(errorString));
       } else {
         // let otherQuote = ethers.utils.parseUnits(bondQuote.toString(), "ether");
-        // console.log("otherQuote from slp conversion: ", otherQuote);
-        bondQuote = bondQuote / Math.pow(10, 16);
+        // console.log("otherQuote from slp conversion: ", Number(otherQuote));
+        if (bond.name === "mnfst_ohm_lp") {
+          bondQuote = bondQuote / 1000000;
+        } else {
+          bondQuote = bondQuote / Math.pow(10, 16);
+        }
       }
     } else {
       // ETH or sOHM bonds
@@ -208,6 +212,11 @@ export const bondAsset = createAsyncThunk(
 
     if (bond.name === "eth") {
       valueInWei = (Number(value) * Math.pow(10, 18)).toString();
+    } else if (bond.name === "mnfst_ohm_lp") {
+      let otherQuote = ethers.utils.parseUnits(value, "ether");
+      console.log("otherQuote from slp conversion: ", Number(otherQuote));
+      valueInWei = otherQuote.toString().padStart(18, "0");
+      console.log(valueInWei);
     } else {
       valueInWei = (Number(value) * Math.pow(10, 9)).toString();
     }
