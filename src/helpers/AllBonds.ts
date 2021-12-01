@@ -74,7 +74,7 @@ export const mnfst_ohm_lp = new CustomBond({
     },
   },
   lpUrl:
-    "https://app.sushi.com/add/0x383518188c0c6d7730d91b2c03a03c837814a899/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+    "https://app.sushi.com/add/0x383518188c0c6d7730d91b2c03a03c837814a899/0x21585bbcd5bdc3f5737620cf0db2e51978cf60ac",
   customTreasuryBalanceFunc: async function (this: CustomBond, networkID, provider) {
     if (networkID === NetworkID.Mainnet) {
       // const BondContract = this.getContractForBond(networkID, provider);
