@@ -35,10 +35,10 @@ function TopBar({ theme, toggleTheme, handleDrawerToggle }) {
     return state.app.genesisMint.saleStarted;
   });
 
-  useEffect(() => {
-    if (saleActive) setSaleMessage("GΞNΞS1S mint is live!");
-    else setSaleMessage("Season 0 coming soon");
-  }, [saleActive]);
+  // useEffect(() => {
+  //   if (saleActive) setSaleMessage("GΞNΞS1S mint is live!");
+  //   else setSaleMessage("Season 0 coming soon");
+  // }, [saleActive]);
 
   return (
     <AppBar position="sticky" className={classes.appBar} elevation={0}>

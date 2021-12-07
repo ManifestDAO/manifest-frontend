@@ -39,9 +39,9 @@ function BondHeader({ bond, slippage, recipientAddress, onRecipientAddressChange
       </div>
 
       <div className="bond-settings">
-        <IconButton onClick={handleOpen} style={{ pointerEvents: "none" }}>
+        {/* <IconButton onClick={handleOpen} style={{ pointerEvents: "none" }}>
           <SvgIcon color="primary" component={SettingsIcon} />
-        </IconButton>
+        </IconButton> */}
         <AdvancedSettings
           open={open}
           handleClose={handleClose}
