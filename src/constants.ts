@@ -1,4 +1,3 @@
-export const THE_GRAPH_URL = "https://api.thegraph.com/subgraphs/name/drondin/olympus-graph";
 export const EPOCH_INTERVAL = 2200;
 
 // NOTE could get this from an outside source since it changes slightly over time
@@ -17,7 +16,6 @@ export const addresses: IAddresses = {
     OHM_ADDRESS: "0x2e43D7453ceA0D43a9EFBB833fDFBf47E7D57811", // Manifest's testnet ohm contract
     SOHM_ADDRESS: "0x1Fecda1dE7b6951B248C0B62CaeBD5BAbedc2084",
     BONDINGCALC_ADDRESS: "0xEbF54f55a2d1C5dbCBcd21334Db6352Efd6Ac0Ac",
-    // REDEEM_HELPER_ADDRESS: "",
     // THESE ARE FOR MANIFEST
     MNFST_ADDRESS: "0xC60e8ce81885E2DcB9eA99198155E87EB8953810",
     SMNFST_ADDRESS: "0xff6987289C07C002D7F34467999d7f0286FF1fCF",
@@ -34,7 +32,6 @@ export const addresses: IAddresses = {
     OHM_ADDRESS: "0x383518188c0c6d7730d91b2c03a03c837814a899",
     SOHM_ADDRESS: "0x04F2694C8fcee23e8Fd0dfEA1d4f5Bb8c352111F",
     BONDINGCALC_ADDRESS: "0x34f6128924d3a8d364a5CEE667b423334a1a2114",
-    // REDEEM_HELPER_ADDRESS: "",
     // THESE ARE FOR MANIFEST
     MNFST_ADDRESS: "0x21585bbcd5bdc3f5737620cf0db2e51978cf60ac",
     SMNFST_ADDRESS: "0xd9ccb7bd2b66edb2998e9de53bd7883891ca665b",
