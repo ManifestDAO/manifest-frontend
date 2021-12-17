@@ -182,7 +182,12 @@ function KlimaMint() {
                     )}
                     <Typography>Youve minted: {accountData.shirt1Claimed}</Typography>
                   </Box>
-                  <Box display="flex" flexDirection="column" alignItems="center" style={{ marginBottom: "20px" }}>
+                  <Box
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="center"
+                    style={{ marginBottom: "20px", width: "100%" }}
+                  >
                     <Typography component="div">
                       <Grid component="label" container alignItems="center" spacing={1}>
                         <Grid item>sMNFST</Grid>
@@ -270,7 +275,12 @@ function KlimaMint() {
                     )}
                     <Typography>Youve minted: {accountData.shirt2Claimed}</Typography>
                   </Box>
-                  <Box display="flex" flexDirection="column" alignItems="center" style={{ marginBottom: "20px" }}>
+                  <Box
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="center"
+                    style={{ marginBottom: "20px", width: "100%" }}
+                  >
                     <Typography component="div">
                       <Grid component="label" container alignItems="center" spacing={1}>
                         <Grid item>sMNFST</Grid>
@@ -359,7 +369,12 @@ function KlimaMint() {
                     <Typography>Youve minted: {accountData.shirt3Claimed}</Typography>
                   </Box>
                 </Box>
-                <Box display="flex" flexDirection="column" alignItems="center" style={{ marginBottom: "20px" }}>
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  alignItems="center"
+                  style={{ marginBottom: "20px", width: "100%" }}
+                >
                   <Typography component="div">
                     <Grid component="label" container alignItems="center" spacing={1}>
                       <Grid item>sMNFST</Grid>
