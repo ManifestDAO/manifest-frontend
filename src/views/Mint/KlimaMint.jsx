@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { ethers } from "ethers";
-import { Box, Button, Container, Grid, Paper, Typography, Zoom } from "@material-ui/core";
+import { Box, Button, Container, Grid, Paper, Typography, Zoom, Switch, withStyles } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 import { useWeb3Context } from "src/hooks";
 import { loadAppDetails } from "src/slices/AppSlice";
@@ -12,12 +12,38 @@ import CheckIcon from "@material-ui/icons/Check";
 import NotInterestedIcon from "@material-ui/icons/NotInterested";
 import "./mint.scss";
 
+// #aa11ee, #9f11ef
+
+const PurpleSwitch = withStyles({
+  switchBase: {
+    color: "#aa11ee",
+    "&$checked": {
+      color: "#9f11ef",
+    },
+    "&$checked + $track": {
+      backgroundColor: "#aa11ee",
+    },
+  },
+  checked: {},
+  track: {},
+})(Switch);
+
 function KlimaMint() {
   const dispatch = useDispatch();
   const [isMinting, setIsMinting] = useState(false);
+  const [buyWithMNFST, setBuyWithMNFST] = useState({
+    shirt1: true,
+    shirt2: true,
+    shirt3: true,
+  });
   const { address, chainID, provider } = useWeb3Context();
   const accountData = useSelector(state => state.account.klima);
   const klimaData = useSelector(state => state.app.klimaMint);
+
+  const handleSwitchChange = event => {
+    setBuyWithMNFST({ ...buyWithMNFST, [event.target.name]: event.target.checked });
+  };
+
   let klimaContract;
 
   const pendingTransaction = useSelector(state => {
@@ -45,10 +71,15 @@ function KlimaMint() {
     // let curGas = await provider.getGasPrice();
 
     try {
-      let mnfstAmt = klimaData.price / Math.pow(10, 9);
-      console.log("amount in MNFST: ", mnfstAmt);
+      // let mnfstAmt = ethers.utils.parseEther(klimaData.price) / Math.pow(10, 9);
+      // console.log("amount in MNFST: ", mnfstAmt);
 
-      mintTx = await klimaContract.mint(id, { value: mnfstAmt.toString(), gasLimit: 250000 });
+      if (buyWithMNFST["shirt" + id]) {
+        mintTx = await klimaContract.mintWithMNFST(id, { gasLimit: 333000 });
+      } else {
+        mintTx = await klimaContract.mintWithSMNFST(id, { gasLimit: 333000 });
+      }
+
       console.log(mintTx);
 
       dispatch(fetchPendingTxns({ txnHash: mintTx.hash, text: "Minting", type: "mint" }));
@@ -79,10 +110,11 @@ function KlimaMint() {
                 {klimaData.totalMinted} / {klimaData.totalSupply} Minted
               </Typography>
             )}
-            <Typography variant="h6">Price {klimaData.price} MNFST</Typography>
+            <Typography variant="h6">{klimaData.price} MNFST</Typography>
             <Typography variant="h6">Max 1 Per Mint / 4 Per Wallet</Typography>
           </Box>
         </Box>
+
         <Box style={{ width: "50%", textAlign: "right", fontWeight: "500 !important" }}>
           <Typography variant="h6" className={accountData.saleEligible ? "wallet-eligible" : ""}>
             {accountData.saleEligible ? (
@@ -101,6 +133,7 @@ function KlimaMint() {
           <Typography variant="h6">Your balance: {accountData.totalClaimed}</Typography>
         </Box>
       </Box>
+
       <Box style={{ marginTop: "15px" }} p={1}>
         <Grid container spacing={3} className="grid-container">
           <Grid item lg={4} md={4} style={{ textAlign: "center" }}>
@@ -119,6 +152,23 @@ function KlimaMint() {
                     )}
                     <Typography>Youve minted: {accountData.shirt1Claimed}</Typography>
                   </Box>
+                  <Box display="flex" flexDirection="column" alignItems="center">
+                    <Typography component="div">
+                      <Grid component="label" container alignItems="center" spacing={1}>
+                        <Grid item>sMNFST</Grid>
+                        <Grid item>
+                          <PurpleSwitch
+                            checked={buyWithMNFST.shirt1}
+                            onChange={handleSwitchChange}
+                            name="shirt1"
+                            // color="default"
+                            inputProps={{ "aria-label": "default checkbox" }}
+                          />
+                        </Grid>
+                        <Grid item>MNFST</Grid>
+                      </Grid>
+                    </Typography>
+                  </Box>
                   <Box>
                     <Button
                       fullWidth
@@ -128,7 +178,7 @@ function KlimaMint() {
                       onClick={() => handleMint(1)}
                       style={{ fontWeight: "600" }}
                     >
-                      Mint
+                      {`Mint (${buyWithMNFST.shirt1 ? "MNFST" : "sMNFST"})`}
                     </Button>
                   </Box>
                 </Box>
@@ -152,6 +202,23 @@ function KlimaMint() {
                     )}
                     <Typography>Youve minted: {accountData.shirt2Claimed}</Typography>
                   </Box>
+                  <Box display="flex" flexDirection="column" alignItems="center">
+                    <Typography component="div">
+                      <Grid component="label" container alignItems="center" spacing={1}>
+                        <Grid item>sMNFST</Grid>
+                        <Grid item>
+                          <PurpleSwitch
+                            checked={buyWithMNFST.shirt2}
+                            onChange={handleSwitchChange}
+                            name="shirt2"
+                            // color="default"
+                            inputProps={{ "aria-label": "default checkbox" }}
+                          />
+                        </Grid>
+                        <Grid item>MNFST</Grid>
+                      </Grid>
+                    </Typography>
+                  </Box>
                   <Box>
                     <Button
                       fullWidth
@@ -161,7 +228,7 @@ function KlimaMint() {
                       onClick={() => handleMint(2)}
                       style={{ fontWeight: "600" }}
                     >
-                      Mint
+                      {`Mint (${buyWithMNFST.shirt2 ? "MNFST" : "sMNFST"})`}
                     </Button>
                   </Box>
                 </Box>
@@ -186,6 +253,23 @@ function KlimaMint() {
                     <Typography>Youve minted: {accountData.shirt3Claimed}</Typography>
                   </Box>
                 </Box>
+                <Box display="flex" flexDirection="column" alignItems="center">
+                  <Typography component="div">
+                    <Grid component="label" container alignItems="center" spacing={1}>
+                      <Grid item>sMNFST</Grid>
+                      <Grid item>
+                        <PurpleSwitch
+                          checked={buyWithMNFST.shirt3}
+                          onChange={handleSwitchChange}
+                          name="shirt3"
+                          // color="default"
+                          inputProps={{ "aria-label": "default checkbox" }}
+                        />
+                      </Grid>
+                      <Grid item>MNFST</Grid>
+                    </Grid>
+                  </Typography>
+                </Box>
                 <Box>
                   <Button
                     fullWidth
@@ -195,7 +279,7 @@ function KlimaMint() {
                     onClick={() => handleMint(3)}
                     style={{ fontWeight: "600" }}
                   >
-                    Mint
+                    {`Mint (${buyWithMNFST.shirt3 ? "MNFST" : "sMNFST"})`}
                   </Button>
                 </Box>
               </Paper>

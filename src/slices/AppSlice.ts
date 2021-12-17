@@ -174,7 +174,7 @@ export const loadAppDetails = createAsyncThunk(
         .totalRemaining3()
         .then((p: BigNumber) => ethers.utils.formatUnits(p, "wei"));
     } catch (e) {
-      console.log("Genesis contract error: ", e);
+      console.log("KlimaShirt contract error: ", e);
     }
 
     return {
