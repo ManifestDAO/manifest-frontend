@@ -96,8 +96,13 @@ function KlimaMint() {
     try {
       // let mnfstAmt = ethers.utils.parseEther(klimaData.price)Math.pow(10, 9);
       // console.log("amount in MNFST: ", mnfstAmt);
+      let mnfstSelected = buyWithMNFST["shirt" + id];
+      // console.log("buying with mnfst? ", mnfstSelected);
 
-      if (buyWithMNFST["shirt" + id]) {
+      if (klimaData.contractAddress && !klimaContract)
+        klimaContract = new ethers.Contract(klimaData.contractAddress, ManifestKlima1155Abi, provider.getSigner());
+
+      if (mnfstSelected) {
         mintTx = await klimaContract.mintWithMNFST(id);
       } else {
         mintTx = await klimaContract.mintWithSMNFST(id);
