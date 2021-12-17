@@ -1,6 +1,5 @@
 import { BigNumber, ethers } from "ethers";
 import { addresses } from "../constants";
-import { abi as ierc20Abi } from "../abi/IERC20.json";
 import { abi as ManifestERC20Abi } from "../abi/ManifestERC20.json";
 import { abi as sManifestERC20Abi } from "../abi/sManifestERC20.json";
 import { abi as sOHMv2 } from "../abi/sOhmv2.json";
@@ -78,30 +77,27 @@ export const loadAccountDetails = createAsyncThunk(
     let genesisClaimed2 = 0;
     let genesisClaimed3 = 0;
     // klima save the world mint
-    let klimaSaleEligible = false;
+    let klimaSaleEligible = true;
     let klimaClaimed = "0";
     let klimaBalance = "0";
     let klimaClaimed1 = 0;
     let klimaClaimed2 = 0;
     let klimaClaimed3 = 0;
+    let mintAllowanceMNFST = 0;
+    let mintAllowanceSMNFST = 0;
+
+    let mnfstContract;
+    let smnfstContract;
 
     if (addresses[networkID].MNFST_ADDRESS) {
-      const mnfstContract = new ethers.Contract(
-        addresses[networkID].MNFST_ADDRESS as string,
-        ManifestERC20Abi,
-        provider,
-      );
+      mnfstContract = new ethers.Contract(addresses[networkID].MNFST_ADDRESS as string, ManifestERC20Abi, provider);
       mnfstBalance = await mnfstContract.balanceOf(address);
       stakeAllowance =
         (await mnfstContract.allowance(address, addresses[networkID].STAKING_HELPER_ADDRESS)) / Math.pow(10, 18);
     }
 
     if (addresses[networkID].SMNFST_ADDRESS) {
-      const smnfstContract = new ethers.Contract(
-        addresses[networkID].SMNFST_ADDRESS as string,
-        sManifestERC20Abi,
-        provider,
-      );
+      smnfstContract = new ethers.Contract(addresses[networkID].SMNFST_ADDRESS as string, sManifestERC20Abi, provider);
       smnfstBalance = await smnfstContract.balanceOf(address);
       try {
         unstakeAllowance =
@@ -156,6 +152,24 @@ export const loadAccountDetails = createAsyncThunk(
       klimaClaimed3 = await klimaContract
         .balanceOf(address, 3)
         .then((bal: BigNumber) => ethers.utils.formatUnits(bal, "wei"));
+
+      if (mnfstContract) {
+        try {
+          mintAllowanceMNFST =
+            (await mnfstContract.allowance(address, addresses[networkID].KLIMA_1155)) / Math.pow(10, 18);
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
+      if (smnfstContract) {
+        try {
+          mintAllowanceSMNFST =
+            (await smnfstContract.allowance(address, addresses[networkID].KLIMA_1155)) / Math.pow(10, 18);
+        } catch (e) {
+          console.error(e);
+        }
+      }
     }
 
     return {
@@ -181,6 +195,8 @@ export const loadAccountDetails = createAsyncThunk(
         shirt1Claimed: klimaClaimed1,
         shirt2Claimed: klimaClaimed2,
         shirt3Claimed: klimaClaimed3,
+        mnfstMintAllowance: +mintAllowanceMNFST,
+        smnfstMintAllowance: +mintAllowanceSMNFST,
       },
     };
   },

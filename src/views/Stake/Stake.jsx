@@ -18,7 +18,7 @@ import {
 } from "@material-ui/core";
 import RebaseTimer from "../../components/RebaseTimer/RebaseTimer";
 import TabPanel from "../../components/TabPanel";
-import { getOhmTokenImage, getTokenImage, trim } from "../../helpers";
+import { getTokenImage, trim } from "../../helpers";
 import { changeApproval, changeStake } from "../../slices/StakeThunk";
 // import useMediaQuery from "@material-ui/core/useMediaQuery";
 import "./stake.scss";
@@ -38,12 +38,9 @@ function a11yProps(index) {
   };
 }
 
-const sMnfstImg = getTokenImage("smnfst");
-// const ohmImg = getOhmTokenImage(16, 16);
-
 function Stake() {
   const dispatch = useDispatch();
-  const { provider, address, connected, connect, chainID } = useWeb3Context();
+  const { provider, address, connect, chainID } = useWeb3Context();
 
   const [zoomed, setZoomed] = useState(false);
   const [view, setView] = useState(0);
