@@ -4,8 +4,8 @@ import { abi as ManifestStaking } from "../abi/ManifestStaking.json";
 // import { abi as MNFST } from "../abi/ManifestERC20.json";
 import { abi as sMNFST } from "../abi/sManifestERC20.json";
 import { abi as Genesis1155Abi } from "../abi/Genesis1155.json";
+import { abi as ManifestKlima1155Abi } from "../abi/ManifestKlima1155.json";
 import { setAll, getTokenPrice, getMarketPrice } from "../helpers";
-// import { NodeHelper } from "../helpers/NodeHelper";
 import { createSlice, createSelector, createAsyncThunk } from "@reduxjs/toolkit";
 import { RootState } from "src/store";
 import { IBaseAsyncThunk } from "./interfaces";
@@ -23,6 +23,17 @@ const initialState = {
     hoodie1Remaining: 0,
     hoodie2Remaining: 0,
     hoodie3Remaining: 0,
+    contractAddress: "",
+  },
+  klimaMint: {
+    saleStarted: false,
+    totalMinted: 0,
+    price: "2",
+    totalSupply: 1332,
+    maxMint: 4,
+    shirt1Remaining: 0,
+    shirt2Remaining: 0,
+    shirt3Remaining: 0,
     contractAddress: "",
   },
 };
@@ -134,6 +145,38 @@ export const loadAppDetails = createAsyncThunk(
       console.log("Genesis contract error: ", e);
     }
 
+    let klimaSaleStarted = false;
+    let totalShirtsMinted = 0;
+    let klimaPrice = "0.333";
+    let totalKlimaSupply = 999;
+    let maxShirtMint = 3;
+    let shirt1Remaining;
+    let shirt2Remaining;
+    let shirt3Remaining;
+
+    let klimaAddress = addresses[networkID].KLIMA_1155;
+    try {
+      const klimaNFTContract = new ethers.Contract(klimaAddress, ManifestKlima1155Abi, provider);
+      klimaSaleStarted = await klimaNFTContract.saleIsActive();
+      totalShirtsMinted = await klimaNFTContract
+        .totalHoodiesMinted()
+        .then((n: BigNumber) => ethers.utils.formatUnits(n, "wei"));
+      klimaPrice = await klimaNFTContract.price().then((p: BigNumber) => ethers.utils.formatEther(p));
+      // totalGenesisSupply = await genesisNFTContract.totalSupply();
+      maxShirtMint = await klimaNFTContract.MAX_PER_WALLET().then((n: BigNumber) => ethers.utils.formatUnits(n, "wei"));
+      shirt1Remaining = await klimaNFTContract
+        .totalRemaining1()
+        .then((p: BigNumber) => ethers.utils.formatUnits(p, "wei"));
+      shirt2Remaining = await klimaNFTContract
+        .totalRemaining2()
+        .then((p: BigNumber) => ethers.utils.formatUnits(p, "wei"));
+      shirt3Remaining = await klimaNFTContract
+        .totalRemaining3()
+        .then((p: BigNumber) => ethers.utils.formatUnits(p, "wei"));
+    } catch (e) {
+      console.log("Genesis contract error: ", e);
+    }
+
     return {
       currentIndex: ethers.utils.formatUnits(currentIndex, "gwei"),
       currentBlock,
@@ -156,6 +199,17 @@ export const loadAppDetails = createAsyncThunk(
         hoodie2Remaining: hoodie2Remaining,
         hoodie3Remaining: hoodie3Remaining,
         contractAddress: genesisAddress,
+      },
+      klimaMint: {
+        saleStarted: klimaSaleStarted,
+        totalMinted: totalShirtsMinted,
+        price: klimaPrice,
+        totalSupply: totalKlimaSupply,
+        maxMint: maxShirtMint,
+        shirt1Remaining: shirt1Remaining,
+        shirt2Remaining: shirt2Remaining,
+        shirt3Remaining: shirt3Remaining,
+        contractAddress: klimaAddress,
       },
     } as IAppData;
   },
@@ -229,7 +283,8 @@ interface IAppData {
   readonly totalSupply?: number;
   readonly treasuryBalance?: number;
   readonly treasuryMarketValue?: number;
-  readonly genesisMint: IMintData;
+  readonly genesisMint: IGenesisMintData;
+  readonly klimaMint: IKlimaMintData;
 }
 
 interface IMintData {
@@ -238,11 +293,21 @@ interface IMintData {
   price: string;
   totalSupply: number;
   maxMint: number;
+  contractAddress: string;
+}
+
+interface IGenesisMintData extends IMintData {
   genesisAddress: string;
   hoodie1Remaining: string;
   hoodie2Remaining: string;
   hoodie3Remaining: string;
-  contractAddress: string;
+}
+
+interface IKlimaMintData extends IMintData {
+  klimaAddress: string;
+  shirt1Remaining: string;
+  shirt2Remaining: string;
+  shirt3Remaining: string;
 }
 
 const appSlice = createSlice({

@@ -5,11 +5,11 @@ import { abi as ManifestERC20Abi } from "../abi/ManifestERC20.json";
 import { abi as sManifestERC20Abi } from "../abi/sManifestERC20.json";
 import { abi as sOHMv2 } from "../abi/sOhmv2.json";
 import { abi as Genesis1155Abi } from "../abi/Genesis1155.json";
+import { abi as ManifestKlima1155Abi } from "../abi/ManifestKlima1155.json";
 
 import { setAll } from "../helpers";
 
 import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit";
-// import { Bond, NetworkID } from "src/lib/Bond"; // TODO: this type definition needs to move out of BOND.
 import { RootState } from "src/store";
 import { IBaseAddressAsyncThunk, ICalcUserBondDetailsAsyncThunk } from "./interfaces";
 
@@ -54,6 +54,11 @@ interface IUserAccountDetails {
     claimed: string;
     balance: string;
   };
+  klima: {
+    saleEligible: boolean;
+    claimed: string;
+    balance: string;
+  };
 }
 
 export const loadAccountDetails = createAsyncThunk(
@@ -65,12 +70,20 @@ export const loadAccountDetails = createAsyncThunk(
     let stakeAllowance = 0;
     let unstakeAllowance = 0;
     let sohmBondAllowance = 0;
+    // genesis mint
     let genesisSaleEligible = false;
     let genesisClaimed = "0";
     let genesisBalance = "0";
     let genesisClaimed1 = 0;
     let genesisClaimed2 = 0;
     let genesisClaimed3 = 0;
+    // klima save the world mint
+    let klimaSaleEligible = false;
+    let klimaClaimed = "0";
+    let klimaBalance = "0";
+    let klimaClaimed1 = 0;
+    let klimaClaimed2 = 0;
+    let klimaClaimed3 = 0;
 
     if (addresses[networkID].MNFST_ADDRESS) {
       const mnfstContract = new ethers.Contract(
@@ -78,7 +91,6 @@ export const loadAccountDetails = createAsyncThunk(
         ManifestERC20Abi,
         provider,
       );
-
       mnfstBalance = await mnfstContract.balanceOf(address);
       stakeAllowance =
         (await mnfstContract.allowance(address, addresses[networkID].STAKING_HELPER_ADDRESS)) / Math.pow(10, 18);
@@ -90,9 +102,7 @@ export const loadAccountDetails = createAsyncThunk(
         sManifestERC20Abi,
         provider,
       );
-
       smnfstBalance = await smnfstContract.balanceOf(address);
-
       try {
         unstakeAllowance =
           (await smnfstContract.allowance(address, addresses[networkID].STAKING_ADDRESS)) / Math.pow(10, 18);
@@ -127,6 +137,27 @@ export const loadAccountDetails = createAsyncThunk(
         .then((bal: BigNumber) => ethers.utils.formatUnits(bal, "wei"));
     }
 
+    if (addresses[networkID].KLIMA_1155) {
+      const klimaContract = new ethers.Contract(
+        addresses[networkID].KLIMA_1155 as string,
+        ManifestKlima1155Abi,
+        provider,
+      );
+      klimaSaleEligible = true; // await klimaContract.checkSaleEligiblity(address);
+      klimaClaimed = await klimaContract
+        .totalClaimedBy(address)
+        .then((amt: BigNumber) => ethers.utils.formatUnits(amt, "wei"));
+      klimaClaimed1 = await klimaContract
+        .balanceOf(address, 1)
+        .then((bal: BigNumber) => ethers.utils.formatUnits(bal, "wei"));
+      klimaClaimed2 = await klimaContract
+        .balanceOf(address, 2)
+        .then((bal: BigNumber) => ethers.utils.formatUnits(bal, "wei"));
+      klimaClaimed3 = await klimaContract
+        .balanceOf(address, 3)
+        .then((bal: BigNumber) => ethers.utils.formatUnits(bal, "wei"));
+    }
+
     return {
       balances: {
         sohm: ethers.utils.formatUnits(sohmBalance, "gwei"),
@@ -143,6 +174,13 @@ export const loadAccountDetails = createAsyncThunk(
         hoodie1Claimed: genesisClaimed1,
         hoodie2Claimed: genesisClaimed2,
         hoodie3Claimed: genesisClaimed3,
+      },
+      klima: {
+        saleEligible: klimaSaleEligible,
+        totalClaimed: klimaClaimed,
+        shirt1Claimed: klimaClaimed1,
+        shirt2Claimed: klimaClaimed2,
+        shirt3Claimed: klimaClaimed3,
       },
     };
   },
@@ -218,6 +256,11 @@ interface IAccountSlice {
     claimed: string;
     balance?: string;
   };
+  klima: {
+    saleEligible: boolean;
+    claimed: string;
+    balance?: string;
+  };
   loading: boolean;
 }
 
@@ -226,6 +269,7 @@ const initialState: IAccountSlice = {
   bonds: {},
   balances: { sohm: "", mnfst: "", smnfst: "" },
   genesis: { saleEligible: false, claimed: "0", balance: "0" },
+  klima: { saleEligible: false, claimed: "0", balance: "0" },
 };
 
 const accountSlice = createSlice({

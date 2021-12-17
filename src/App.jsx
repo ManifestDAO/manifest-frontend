@@ -23,7 +23,6 @@ import Messages from "./components/Messages/Messages";
 import NotFound from "./views/404/NotFound";
 
 import { dark as darkTheme } from "./themes/dark.js";
-// import { light as lightTheme } from "./themes/light.js";
 import "./style.scss";
 
 const drawerWidth = 200;
@@ -82,12 +81,6 @@ function App() {
 
   const { bonds } = useBonds();
   async function loadDetails(whichDetails) {
-    // NOTE (unbanksy): If you encounter the following error:
-    // Unhandled Rejection (Error): call revert exception (method="balanceOf(address)", errorArgs=null, errorName=null, errorSignature=null, reason=null, code=CALL_EXCEPTION, version=abi/5.4.0)
-    // it's because the initial provider loaded always starts with chainID=1. This causes
-    // address lookup on the wrong chain which then throws the error. To properly resolve this,
-    // we shouldn't be initializing to chainID=1 in web3Context without first listening for the
-    // network. To actually test rinkeby, change setChainID equal to 4 before testing.
     let loadProvider = provider;
 
     if (whichDetails === "app") {

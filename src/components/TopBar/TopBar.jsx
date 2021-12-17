@@ -58,9 +58,7 @@ function TopBar({ theme, toggleTheme, handleDrawerToggle }) {
 
         <Box display="flex" justifyContent="center" alignItems="center">
           <Box>
-            <Typography variant="h6" color="primary" className={`mint-text ${saleActive && "live"}`}>
-              {saleMessage}
-            </Typography>
+            <Typography variant="h6" color="primary" className={`mint-text ${saleActive && "live"}`}></Typography>
           </Box>
           <ConnectMenu theme={theme} />
         </Box>
