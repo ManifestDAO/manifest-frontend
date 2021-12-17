@@ -25,17 +25,12 @@ function KlimaMint() {
   });
 
   const isDisabled = () => {
-    return (
-      pendingTransaction.length > 0 ||
-      Number(accountData.totalClaimed) >= 3 ||
-      !accountData.saleEligible ||
-      !klimaData.saleStarted
-    );
+    return pendingTransaction.length > 0 || Number(accountData.totalClaimed) >= 4 || !klimaData.saleStarted;
   };
 
   useEffect(() => {
     console.log("account data loaded: ", accountData);
-    console.log("genesis data loaded: ", klimaData);
+    console.log("klima data loaded: ", klimaData);
     if (klimaData.contractAddress)
       klimaContract = new ethers.Contract(klimaData.contractAddress, ManifestKlima1155Abi, provider.getSigner());
   }, [accountData, klimaData, isMinting]);
@@ -75,7 +70,7 @@ function KlimaMint() {
     <Box style={{ marginBottom: "33px" }}>
       <Box p={1} display="flex" flexDirect="row" justifyContent="space-between" style={{ width: "auto" }}>
         <Box style={{ width: "50%", textAlign: "left" }}>
-          <Typography variant="h3" style={{ fontWeight: "600", color: "#35A937" }} className="title">
+          <Typography variant="h3" style={{ fontWeight: "600" }} className="title klima-title">
             SΞ△S0N 0: S△VΞ THΞ W0RLD
           </Typography>
           <Box marginTop="10px">
@@ -84,7 +79,7 @@ function KlimaMint() {
                 {klimaData.totalMinted} / {klimaData.totalSupply} Minted
               </Typography>
             )}
-            <Typography variant="h6">Price {}</Typography>
+            <Typography variant="h6">Price {klimaData.price} MMFST</Typography>
             <Typography variant="h6">Max 1 Per Mint / 4 Per Wallet</Typography>
           </Box>
         </Box>

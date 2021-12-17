@@ -69,7 +69,7 @@ function GenesisMint() {
     <Box style={{ marginBottom: "33px" }}>
       <Box p={1} display="flex" flexDirect="row" justifyContent="space-between" style={{ width: "auto" }}>
         <Box style={{ width: "50%", textAlign: "left" }}>
-          <Typography variant="h3" style={{ fontWeight: "600" }} className="title">
+          <Typography variant="h3" style={{ fontWeight: "600" }} className="title genesis-title">
             SΞASON 0: GΞNΞS1S
           </Typography>
           <Box marginTop="10px">

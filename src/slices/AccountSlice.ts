@@ -269,7 +269,7 @@ const initialState: IAccountSlice = {
   bonds: {},
   balances: { sohm: "", mnfst: "", smnfst: "" },
   genesis: { saleEligible: false, claimed: "0", balance: "0" },
-  klima: { saleEligible: false, claimed: "0", balance: "0" },
+  klima: { saleEligible: true, claimed: "0", balance: "0" },
 };
 
 const accountSlice = createSlice({
