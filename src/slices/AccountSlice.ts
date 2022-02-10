@@ -198,6 +198,24 @@ export const loadAccountDetails = createAsyncThunk(
         mnfstMintAllowance: +mintAllowanceMNFST,
         smnfstMintAllowance: +mintAllowanceSMNFST,
       },
+      inventory: [
+        {
+          type: "genesis",
+          style: "hoodie1Claimed",
+        },
+        {
+          type: "klima",
+          style: "shirt2Claimed",
+        },
+        {
+          type: "klima",
+          style: "shirt2Claimed",
+        },
+        {
+          type: "klima",
+          style: "shirt3Claimed",
+        },
+      ],
     };
   },
 );
