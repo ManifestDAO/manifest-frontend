@@ -12,7 +12,7 @@ import CheckIcon from "@material-ui/icons/Check";
 import NotInterestedIcon from "@material-ui/icons/NotInterested";
 import { changeApproval } from "../../slices/KlimaMintThunk";
 import "./mint.scss";
-
+import MintOverview from "./MintOverview";
 // #aa11ee, #9f11ef
 
 const PurpleSwitch = withStyles({
@@ -108,8 +108,6 @@ function KlimaMint() {
         mintTx = await klimaContract.mintWithSMNFST(id);
       }
 
-      // console.log(mintTx);
-
       dispatch(fetchPendingTxns({ txnHash: mintTx.hash, text: "Minting", type: "mint" }));
       await mintTx.wait();
 
@@ -127,42 +125,15 @@ function KlimaMint() {
 
   return (
     <Box style={{ marginBottom: "33px" }}>
-      <Box p={1} display="flex" flexDirect="row" justifyContent="space-between" style={{ width: "auto" }}>
-        <Box style={{ width: "50%", textAlign: "left" }}>
-          <Typography variant="h3" style={{ fontWeight: "600" }} className="title klima-title">
-            SΞ△S0N 0: S△VΞ THΞ W0RLD
-          </Typography>
-          <Box marginTop="10px">
-            {klimaData && (
-              <Typography variant="h6">
-                {klimaData.totalMinted} / {klimaData.totalSupply} Minted
-              </Typography>
-            )}
-            <Typography variant="h6">{klimaData.price} MNFST</Typography>
-            <Typography variant="h6">Max 1 Per Mint / 4 Per Wallet</Typography>
-          </Box>
-        </Box>
-
-        <Box style={{ width: "50%", textAlign: "right", fontWeight: "500 !important" }}>
-          <Typography variant="h6" className={accountData.saleEligible ? "wallet-eligible" : ""}>
-            {accountData.saleEligible ? (
-              <CheckIcon
-                viewBox="0 0 24 24"
-                style={{ height: "11px", width: "11px", marginRight: "3px", color: "green" }}
-              />
-            ) : (
-              <NotInterestedIcon
-                viewBox="0 0 24 24"
-                style={{ height: "11px", width: "11px", marginRight: "3px", color: "red" }}
-              />
-            )}
-            {accountData.saleEligible ? "Wallet Eligible" : "Wallet Ineligible"}
-          </Typography>
-          <Typography variant="h6">Youve claimed: {accountData.totalClaimed}</Typography>
-          <Typography variant="h6">MNFST Balance: {Number(accountBalances.mnfst).toFixed(2)}</Typography>
-          <Typography variant="h6">sMNFST Balance: {Number(accountBalances.smnfst).toFixed(2)}</Typography>
-        </Box>
-      </Box>
+      <MintOverview
+        title="SΞ△S0N 0: S△VΞ THΞ W0RLD"
+        background="linear-gradient(to right, #35a937, #1797d3)"
+        titleColor="linear-gradient(90deg, #35a937, #1797d3)"
+        dropData={klimaData}
+        accountData={accountData}
+        accountBalances={accountBalances}
+        maxMint="Max 1 Per Mint / 4 Per Wallet"
+      />
 
       <Box style={{ marginTop: "15px" }} p={1}>
         <Grid container spacing={3} className="grid-container">
