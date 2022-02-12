@@ -11,6 +11,7 @@ import { abi as Genesis1155Abi } from "src/abi/Genesis1155.json";
 import { MintCard } from "./MintCard";
 import MintOverview from "./MintOverview";
 import "./mint.scss";
+import { MintButton } from "./MintButton";
 
 function GenesisMint() {
   const dispatch = useDispatch();
@@ -66,6 +67,7 @@ function GenesisMint() {
     }
   };
 
+  console.log("genesisData", genesisData, "accountData", accountData);
   return (
     <Box style={{ marginBottom: "33px" }}>
       <MintOverview
@@ -79,50 +81,50 @@ function GenesisMint() {
 
       <Box style={{ marginTop: "15px" }} p={1}>
         <Grid container spacing={3} className="grid-container">
-          <Grid item lg={4} md={4} style={{ textAlign: "center" }}>
-            <Zoom in={true}>
-              <MintCard
-                nftTitle="Creation"
-                background="./images/01_creation.gif"
-                itemsClaimed={accountData.hoodie1Claimed}
-                itemsRemaining={genesisData.hoodie1Remaining}
-                accountData={accountData}
-                genesisData={genesisData}
-                isDisabled={isDisabled}
-                handleMint={handleMint}
-              />
-            </Zoom>
-          </Grid>
-
-          <Grid item lg={4} md={4} style={{ textAlign: "center" }}>
-            <Zoom in={true}>
-              <MintCard
-                nftTitle="Abundance"
-                background="./images/02_abundance.gif"
-                itemsClaimed={accountData.hoodie2Claimed}
-                itemsRemaining={genesisData.hoodie2Remaining}
-                accountData={accountData}
-                genesisData={genesisData}
-                isDisabled={isDisabled}
-                handleMint={handleMint}
-              />
-            </Zoom>
-          </Grid>
-
-          <Grid item lg={4} md={4} style={{ textAlign: "center" }}>
-            <Zoom in={true}>
-              <MintCard
-                nftTitle="Flow"
-                background="./images/03_flow.gif"
-                itemsClaimed={accountData.hoodie3Claimed}
-                itemsRemaining={genesisData.hoodie3Remaining}
-                accountData={accountData}
-                genesisData={genesisData}
-                isDisabled={isDisabled}
-                handleMint={handleMint}
-              />
-            </Zoom>
-          </Grid>
+          {[
+            {
+              id: 1,
+              title: "Creation",
+              src: "./images/01_creation.gif",
+              drop: "klima",
+              itemStyle: "shirt1",
+              stock: genesisData.hoodie1Remaining,
+              claimed: accountData,
+            },
+            {
+              id: 2,
+              title: "Abundance",
+              src: "./images/02_abundance.gif",
+              drop: "klima",
+              itemStyle: "shirt2",
+              stock: genesisData.hoodie2Remaining,
+              claimed: accountData,
+            },
+            {
+              id: 3,
+              title: "Flow",
+              src: "./images/03_flow.gif",
+              drop: "klima",
+              itemStyle: "shirt3",
+              stock: genesisData.hoodie3Remaining,
+              claimed: accountData,
+            },
+          ].map(mint => {
+            return (
+              <Grid item lg={4} md={4} style={{ textAlign: "center" }}>
+                <MintCard
+                  nftTitle={mint.title}
+                  background={mint.src}
+                  itemsClaimed={accountData.claimed}
+                  itemsRemaining={genesisData.stock}
+                  isDisabled={isDisabled}
+                  handleMint={handleMint}
+                >
+                  <MintButton />
+                </MintCard>
+              </Grid>
+            );
+          })}
         </Grid>
       </Box>
     </Box>

@@ -1,17 +1,18 @@
 import { Box, Button } from "@material-ui/core";
 
-export const MintButton = ({ isDisabled, handleMint }) => {
+export const MintButton = ({ disabled, handleMint, children = "Mint" }) => {
+  console.log(children);
   return (
     <Box>
       <Button
         fullWidth
         variant="contained"
         color="primary"
-        disabled={isDisabled()}
-        onClick={() => handleMint(3)}
+        disabled={disabled}
+        onClick={handleMint}
         style={{ fontWeight: "600" }}
       >
-        Mint
+        {children}
       </Button>
     </Box>
   );
