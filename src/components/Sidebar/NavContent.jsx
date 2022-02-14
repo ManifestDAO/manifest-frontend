@@ -6,6 +6,7 @@ import { ReactComponent as StakeIcon } from "../../assets/icons/stake.svg";
 import { ReactComponent as BondIcon } from "../../assets/icons/bond.svg";
 import { ReactComponent as Logo } from "../../assets/icons/logo-mnfst.svg";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import InboxIcon from "@material-ui/icons/Inbox";
 import { trim, shorten } from "../../helpers";
 import { useAddress, useWeb3Context } from "src/hooks/web3Context";
 // import useBonds from "../../hooks/Bonds";
@@ -22,6 +23,8 @@ function NavContent() {
   // const { chainID } = useWeb3Context();
 
   const mintIsLive = useSelector(state => state.app.genesisMint.saleStarted);
+  // ToDo: set actual feature toggle for inventory
+  const inventoryIsLive = useSelector(state => state.app.genesisMint.saleStarted);
 
   const checkPage = useCallback((match, location, page) => {
     const currentPath = location.pathname.replace("/", "");
@@ -135,6 +138,32 @@ function NavContent() {
                   />
                   <Typography variant="h5" style={{ fontWeight: "600" }}>
                     Mint
+                  </Typography>
+                </Box>
+              </Link>
+              <Link
+                component={NavLink}
+                id="inventory-nav"
+                to="/inventory"
+                isActive={(match, location) => {
+                  return checkPage(match, location, "inventory");
+                }}
+                className={`button-dapp-menu ${isActive ? "active" : ""} ${inventoryIsLive ? "glow" : ""}`}
+              >
+                <Box display="flex" align="center">
+                  <SvgIcon
+                    style={{
+                      height: "20px",
+                      width: "28px",
+                      verticalAlign: "middle",
+                      marginRight: "5px",
+                    }}
+                    viewBox="0 0 24 24"
+                    htmlColor="inherit"
+                    component={InboxIcon}
+                  />
+                  <Typography variant="h5" style={{ fontWeight: "600" }}>
+                    Inventory
                   </Typography>
                 </Box>
               </Link>

@@ -15,7 +15,7 @@ import { loadAppDetails } from "./slices/AppSlice";
 import { loadAccountDetails, calculateUserBondDetails } from "./slices/AccountSlice";
 import { info } from "./slices/MessagesSlice";
 
-import { Stake, ChooseBond, Bond, Mint } from "./views";
+import { Stake, ChooseBond, Bond, Mint, Inventory } from "./views";
 import Sidebar from "./components/Sidebar/Sidebar.jsx";
 import TopBar from "./components/TopBar/TopBar.jsx";
 import NavDrawer from "./components/Sidebar/NavDrawer.jsx";
@@ -68,7 +68,7 @@ function App() {
   const classes = useStyles();
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const isSmallerScreen = useMediaQuery("(max-width: 980px)");
+  const isSmallerScreen = useMediaQuery("(max-width: 1024px)");
   const isSmallScreen = useMediaQuery("(max-width: 600px)");
 
   const { connect, hasCachedProvider, provider, chainID, connected, uri } = useWeb3Context();
@@ -206,6 +206,10 @@ function App() {
 
             <Route path="/mint">
               <Mint />
+            </Route>
+
+            <Route path="/inventory">
+              <Inventory />
             </Route>
 
             <Route component={NotFound} />
