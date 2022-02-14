@@ -1,19 +1,9 @@
-import { PaperCard } from "src/components/Card";
-import { Box, Zoom } from "@material-ui/core";
-import { MintButton } from "./MintButton";
-import { MintDescription } from "./MintDescription";
+import PaperCard from "src/components/Card";
 import Preview from "src/components/Preview";
+import { Box, Zoom } from "@material-ui/core";
+import { MintDescription } from "./MintDescription";
 
-export const MintCard = ({
-  mintButtonLabel,
-  children,
-  nftTitle,
-  itemsClaimed,
-  itemsRemaining,
-  isDisabled,
-  handleMint,
-  background,
-}) => {
+export const MintCard = ({ children, nftTitle, itemsClaimed, itemsRemaining, background }) => {
   return (
     <Zoom in={true}>
       <PaperCard>

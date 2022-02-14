@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { ethers } from "ethers";
 import { Box, Grid, Switch, withStyles } from "@material-ui/core";
+import CommonGrid from "../../components/Grid";
 import { useSelector, useDispatch } from "react-redux";
 import { useWeb3Context } from "src/hooks";
 import { loadAppDetails } from "src/slices/AppSlice";
@@ -27,7 +28,6 @@ function KlimaMint() {
   const accountData = useSelector(state => state.account.klima);
   const accountBalances = useSelector(state => state.account.balances);
   const klimaData = useSelector(state => state.app.klimaMint);
-  console.log("klimaData", klimaData);
   const pendingTransactions = useSelector(state => {
     return state.pendingTransactions;
   });
@@ -107,7 +107,7 @@ function KlimaMint() {
         maxMint="Max 1 Per Mint / 4 Per Wallet"
       />
       <Box style={{ marginTop: "15px" }} p={1}>
-        <Grid container spacing={3} className="grid-container">
+        <CommonGrid>
           {[
             {
               id: 1,
@@ -161,14 +161,14 @@ function KlimaMint() {
                 if (hasAllowance("smnfst")) {
                   return (
                     <MintButton disabled={isDisabled()} handleClick={() => handleMint(mint.id)}>
-                      {MINT_WITH_SMNFST}
+                      {txnButtonText(pendingTransactions, "Minting", "Mint with sMNFST")}
                     </MintButton>
                   );
                 }
                 if (!hasAllowance("smnfst")) {
                   return (
                     <MintButton disabled={isDisabled()} handleClick={approveSMNFST}>
-                      {APPROVE_SMNFST}
+                      {txnButtonText(pendingTransactions, "approve_smnfst_for_mint", "Approve sMNFST")}
                     </MintButton>
                   );
                 }
@@ -195,7 +195,7 @@ function KlimaMint() {
               </Grid>
             );
           })}
-        </Grid>
+        </CommonGrid>
       </Box>
     </Box>
   );

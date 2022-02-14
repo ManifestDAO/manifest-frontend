@@ -1,7 +1,6 @@
 import { Box, Button } from "@material-ui/core";
 
 export const MintButton = ({ disabled, handleMint, children = "Mint" }) => {
-  console.log(children);
   return (
     <Box>
       <Button
