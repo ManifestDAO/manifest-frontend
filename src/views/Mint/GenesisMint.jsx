@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import { Box, Grid, Zoom } from "@material-ui/core";
+import CommonGrid from "../../components/Grid";
 import { useSelector, useDispatch } from "react-redux";
 import { useWeb3Context } from "src/hooks";
 import { loadAppDetails } from "src/slices/AppSlice";
@@ -67,7 +68,6 @@ function GenesisMint() {
     }
   };
 
-  console.log("genesisData", genesisData, "accountData", accountData);
   return (
     <Box style={{ marginBottom: "33px" }}>
       <MintOverview
@@ -80,34 +80,31 @@ function GenesisMint() {
       />
 
       <Box style={{ marginTop: "15px" }} p={1}>
-        <Grid container spacing={3} className="grid-container">
+        <CommonGrid>
           {[
             {
               id: 1,
               title: "Creation",
               src: "./images/01_creation.gif",
-              drop: "klima",
-              itemStyle: "shirt1",
+              drop: "genesis",
               stock: genesisData.hoodie1Remaining,
-              claimed: accountData,
+              claimed: accountData.hoodie1Claimed,
             },
             {
               id: 2,
               title: "Abundance",
               src: "./images/02_abundance.gif",
-              drop: "klima",
-              itemStyle: "shirt2",
+              drop: "genesis",
               stock: genesisData.hoodie2Remaining,
-              claimed: accountData,
+              claimed: accountData.hoodie2Claimed,
             },
             {
               id: 3,
               title: "Flow",
               src: "./images/03_flow.gif",
-              drop: "klima",
-              itemStyle: "shirt3",
+              drop: "genesis",
               stock: genesisData.hoodie3Remaining,
-              claimed: accountData,
+              claimed: accountData.hoodie3Claimed,
             },
           ].map(mint => {
             return (
@@ -115,17 +112,15 @@ function GenesisMint() {
                 <MintCard
                   nftTitle={mint.title}
                   background={mint.src}
-                  itemsClaimed={accountData.claimed}
-                  itemsRemaining={genesisData.stock}
-                  isDisabled={isDisabled}
-                  handleMint={handleMint}
+                  itemsClaimed={mint.claimed}
+                  itemsRemaining={mint.stock}
                 >
-                  <MintButton />
+                  <MintButton disabled={isDisabled} handleMint={handleMint} />
                 </MintCard>
               </Grid>
             );
           })}
-        </Grid>
+        </CommonGrid>
       </Box>
     </Box>
   );

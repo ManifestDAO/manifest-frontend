@@ -1,29 +1,33 @@
 import { Box, Typography } from "@material-ui/core";
-import styled from "styled-components";
+import { makeStyles } from "@material-ui/core/styles";
 
-export const Preview = styled(Box)`
-  margin-top: 10px;
-  width: 100%;
-  min-width: 200px;
-  display: flex;
-  min-height: 220px;
-  max-height: 220px;
-  height: auto;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position-x: center;
-  background-image: url(${props => props.background});
-`;
+const useStyles = makeStyles(theme => ({
+  preview: {
+    marginTop: "10px",
+    width: "100%",
+    minWidth: "200px",
+    display: "flex",
+    minHeight: "220px",
+    maxHeight: "220px",
+    height: "auto",
+    backgroundSize: "contain",
+    backgroundRepeat: "no-repeat",
+    backgroundPositionX: "center",
+    [theme.breakpoints.down("1024")]: {
+      minHeight: "300px",
+      minWidth: "300px",
+    },
+  },
+}));
 
 export default ({ nftTitle, background, children }) => {
-  console.log(nftTitle);
-
+  const classes = useStyles();
   return (
     <>
       <Typography variant="h5">{nftTitle}</Typography>
-      <Preview background={background}>{children}</Preview>
+      <Box className={classes.preview} style={{ backgroundImage: `url(${background})` }}>
+        {children}
+      </Box>
     </>
   );
 };
-
-/* <Box className="preview gif-3"></Box>; */

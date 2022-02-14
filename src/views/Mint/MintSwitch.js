@@ -15,7 +15,6 @@ const PurpleSwitch = withStyles({
 })(Switch);
 
 export const MintSwitch = ({ itemStyle, checked, handleSwitchChange, label = "MNFST" }) => {
-  console.log("mint switch props", { itemStyle, checked, handleSwitchChange, label });
   return (
     <Box display="flex" flexDirection="column" alignItems="center" style={{ marginBottom: "20px", width: "100%" }}>
       <Typography component="div">
