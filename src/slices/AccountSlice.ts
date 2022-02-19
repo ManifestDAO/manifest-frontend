@@ -185,40 +185,54 @@ export const loadAccountDetails = createAsyncThunk(
       genesis: {
         saleEligible: genesisSaleEligible,
         totalClaimed: genesisClaimed,
-        hoodie1Claimed: genesisClaimed1,
-        hoodie2Claimed: genesisClaimed2,
-        hoodie3Claimed: genesisClaimed3,
+        creation: genesisClaimed1,
+        abundance: genesisClaimed2,
+        flow: genesisClaimed3,
       },
       klima: {
         saleEligible: klimaSaleEligible,
         totalClaimed: klimaClaimed,
-        shirt1Claimed: klimaClaimed1,
-        shirt2Claimed: klimaClaimed2,
-        shirt3Claimed: klimaClaimed3,
+        cooperation: klimaClaimed1,
+        growth: klimaClaimed2,
+        protection: klimaClaimed3,
         mnfstMintAllowance: +mintAllowanceMNFST,
         smnfstMintAllowance: +mintAllowanceSMNFST,
       },
       inventory: [
-        {
-          type: "genesis",
-          style: "hoodie1Claimed",
-        },
-        {
-          type: "klima",
-          style: "shirt2Claimed",
-        },
-        {
-          type: "klima",
-          style: "shirt2Claimed",
-        },
-        {
-          type: "klima",
-          style: "shirt3Claimed",
-        },
+        { type: "creation", quantity: genesisClaimed1 },
+        { type: "abundance", quantity: genesisClaimed2 },
+        { type: "flow", quantity: genesisClaimed3 },
+        { type: "cooperation", quantity: klimaClaimed1 },
+        { type: "growth", quantity: klimaClaimed2 },
+        { type: "protection", quantity: klimaClaimed3 },
       ],
     };
   },
 );
+
+// NFT
+
+// ID  Key          Title    Src  Drop
+// 1   "creation"
+// 2   "abundance"
+// 3   "flow"
+// 4   "cooperation"
+// 5   "growth"
+// 6   "protection"
+
+// foreach (var index in NFT_table)
+// {
+//   genesisClaimed1 = await genesisContract
+//     .balanceOf(address, 1)
+//     .then((bal: BigNumber) => ethers.utils.formatUnits(bal, "wei"));
+// }
+
+// Inventory of contract-specific items
+
+interface Inventory {
+  type: string;
+  quantity: string;
+}
 
 export interface IUserBondDetails {
   allowance: number;
@@ -287,23 +301,45 @@ interface IAccountSlice {
   };
   genesis: {
     saleEligible: boolean;
-    claimed: string;
-    balance?: string;
+    totalClaimed: string;
+    creation?: string;
+    abundance?: string;
+    flow?: string;
   };
   klima: {
     saleEligible: boolean;
-    claimed: string;
-    balance?: string;
+    totalClaimed: string;
+    cooperation?: string;
+    growth?: string;
+    protection?: string;
+    mnfstMintAllowance?: number;
+    smnfstMintAllowance?: number;
   };
   loading: boolean;
+  inventory: Inventory[];
 }
 
 const initialState: IAccountSlice = {
   loading: true,
   bonds: {},
   balances: { sohm: "", mnfst: "", smnfst: "" },
-  genesis: { saleEligible: false, claimed: "0", balance: "0" },
-  klima: { saleEligible: true, claimed: "0", balance: "0" },
+  genesis: {
+    saleEligible: false,
+    totalClaimed: "0",
+    creation: "0",
+    abundance: "0",
+    flow: "0",
+  },
+  klima: {
+    saleEligible: true,
+    totalClaimed: "0",
+    cooperation: "0",
+    growth: "0",
+    protection: "0",
+    mnfstMintAllowance: 0,
+    smnfstMintAllowance: 0,
+  },
+  inventory: [],
 };
 
 const accountSlice = createSlice({
