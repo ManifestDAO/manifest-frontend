@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
     },
     [theme.breakpoints.down("sm")]: {
       justifyContent: "center",
-      flexFlow: "column",
+      // flexFlow: "column",
       alignItems: "center",
     },
   },

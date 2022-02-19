@@ -3,16 +3,7 @@ import { Box, Typography } from "@material-ui/core";
 import CheckIcon from "@material-ui/icons/Check";
 import NotInterestedIcon from "@material-ui/icons/NotInterested";
 
-export const MintOverview = ({
-  title,
-  backgroun,
-  titleColor,
-  dropData,
-  accountBalances,
-  accountData,
-  totalMinted,
-  maxMint,
-}) => {
+export const MintOverview = ({ title, background, titleColor, dropData, accountBalances, accountData, maxMint }) => {
   return (
     <Box p={1} display="flex" flexDirect="row" justifyContent="space-between" style={{ width: "auto" }}>
       <Box style={{ width: "50%", textAlign: "left" }}>

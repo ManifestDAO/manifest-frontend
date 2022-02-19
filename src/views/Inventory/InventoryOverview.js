@@ -24,7 +24,7 @@ export const InventoryOverview = ({ accountData, accountBalances }) => {
   return (
     <Box p={1} display="flex" flexDirect="row" justifyContent="space-between" style={{ width: "auto" }}>
       <Box style={{ width: "50%", textAlign: "left" }}>
-        <Typography variant="h3" style={{ fontWeight: "600" }} className="title klima-title">
+        <Typography variant="h3" style={{ fontWeight: "600" }}>
           Inventory
         </Typography>
         <Box marginTop="10px">
