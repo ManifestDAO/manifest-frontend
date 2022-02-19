@@ -4,47 +4,44 @@ import { useSelector } from "react-redux";
 import View from "../../components/View";
 import InventoryOverview from "./InventoryOverview";
 import InventoryCard from "./InventoryCard";
+import { InventoryMetaDataMapping } from "../inventoryMetaDataMapping";
+import CommonGrid from "../../components/Grid";
 
 function Inventory() {
-  const accountData = useSelector(state => state.account.klima);
+  const accountData = useSelector(state => state.account);
   const accountBalances = useSelector(state => state.account.balances);
+  const [count, setCount] = useState(0);
+  const NFTS = Object.entries(accountData.inventory).reduce((acc, [id, item]) => {
+    if (item.quantity == 0) return [...acc];
 
-  const [size, setSize] = useState("");
-  const [amount, setAmount] = useState(0);
-  const [selected, setSelected] = useState(0);
+    const elements = Array.from(Array(Number(item.quantity)).keys(), () => {
+      return (
+        <Box style={{ marginTop: "15px" }} p={1}>
+          <Grid item lg={4} md={4} style={{ textAlign: "center" }}>
+            <InventoryCard
+              count={count}
+              setCount={setCount}
+              nftTitle={InventoryMetaDataMapping.get(item.type).title}
+              background={InventoryMetaDataMapping.get(item.type).src}
+            />
+          </Grid>
+        </Box>
+      );
+    });
+    return [...acc, elements];
+  }, []);
 
   return (
     <View>
       <Container maxWidth="md">
         <Box style={{ marginBottom: "33px" }}>
           <InventoryOverview accountData={accountData} accountBalances={accountBalances} />
-          {[
-            {
-              id: 1,
-              title: "Cooperation",
-              src: "./images/t-shirt-1-cooperation.gif",
-              drop: "klima",
-              itemStyle: "shirt1",
-              claimed: accountData.shirt1Claimed,
-            },
-          ].map(item => {
-            return (
-              <Box style={{ marginTop: "15px" }} p={1}>
-                <Grid item lg={4} md={4} style={{ textAlign: "center" }}>
-                  <InventoryCard
-                    onClick={() => setSelected(+1)}
-                    nftTitle={item.title}
-                    background={item.src}
-                    itemsClaimed={item.claimed}
-                  />
-                </Grid>
-              </Box>
-            );
-          })}
-
-          <Button className="stake-button" variant="contained" color="primary">
-            {`Claim (${amount})`}
-          </Button>
+          <CommonGrid>{NFTS}</CommonGrid>
+          <Box textAlign="center">
+            <Button style={{ marginTop: "25px" }} className="stake-button" variant="contained" color="primary">
+              {`Claim ${count} Items`}
+            </Button>
+          </Box>
         </Box>
       </Container>
     </View>
@@ -52,3 +49,32 @@ function Inventory() {
 }
 
 export default Inventory;
+
+// {Object.entries(accountData.inventory).reduce((acc, [id, item]) => {
+//   if (item.quantity == 0) return [...acc];
+
+//   return [
+//     ...acc,
+//     <Box style={{ marginTop: "15px" }} p={1}>
+//       <Grid item lg={4} md={4} style={{ textAlign: "center" }}>
+//         <InventoryCard
+//           onClick={() => setSelected(!selected)}
+//           selected={selected}
+//           nftTitle={InventoryMetaDataMapping.get(item.type).title}
+//           background={InventoryMetaDataMapping.get(item.type).src}
+//         />
+//       </Grid>
+//     </Box>,
+//   ];
+// }, [])}
+
+//   <Box style={{ marginTop: "15px" }} p={1}>
+//   <Grid item lg={4} md={4} style={{ textAlign: "center" }}>
+//     <InventoryCard
+//       onClick={() => setSelected(!selected)}
+//       selected={selected}
+//       nftTitle={InventoryMetaDataMapping.get(item.type).title}
+//       background={InventoryMetaDataMapping.get(item.type).src}
+//     />
+//   </Grid>
+// </Box>

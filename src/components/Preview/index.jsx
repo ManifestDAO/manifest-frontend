@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
     backgroundPositionX: "center",
     [theme.breakpoints.down("1024")]: {
       minHeight: "300px",
-      minWidth: "300px",
+      minWidth: "200px",
     },
   },
 }));
