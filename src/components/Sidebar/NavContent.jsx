@@ -6,6 +6,8 @@ import { ReactComponent as StakeIcon } from "../../assets/icons/stake.svg";
 import { ReactComponent as BondIcon } from "../../assets/icons/bond.svg";
 import { ReactComponent as Logo } from "../../assets/icons/logo-mnfst.svg";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import SwapCallsIcon from "@material-ui/icons/SwapCalls";
+
 import { trim, shorten } from "../../helpers";
 import { useAddress, useWeb3Context } from "src/hooks/web3Context";
 // import useBonds from "../../hooks/Bonds";
@@ -108,6 +110,25 @@ function NavContent() {
                   />
                   <Typography variant="h5" style={{ fontWeight: "600" }}>
                     Bond
+                  </Typography>
+                </Box>
+              </Link>
+
+              <Link href="https://app.sushi.com/swap?outputCurrency=0x21585BBcD5bDC3f5737620cf0Db2E51978cf60ac">
+                <Box display="flex" align="center">
+                  <SvgIcon
+                    style={{
+                      height: "20px",
+                      width: "28px",
+                      verticalAlign: "middle",
+                      marginRight: "5px",
+                    }}
+                    viewBox="0 0 24 24"
+                    htmlColor="inherit"
+                    component={SwapCallsIcon}
+                  />
+                  <Typography variant="h5" style={{ fontWeight: "600" }}>
+                    Swap
                   </Typography>
                 </Box>
               </Link>
