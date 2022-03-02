@@ -89,7 +89,7 @@ function NavContent() {
                 </Box>
               </Link>
 
-              <Link
+              {/* <Link
                 component={NavLink}
                 id="bond-nav"
                 to="/bonds"
@@ -112,7 +112,7 @@ function NavContent() {
                     Bond
                   </Typography>
                 </Box>
-              </Link>
+              </Link> */}
 
               <Link href="https://app.sushi.com/swap?outputCurrency=0x21585BBcD5bDC3f5737620cf0Db2E51978cf60ac">
                 <Box display="flex" align="center">
