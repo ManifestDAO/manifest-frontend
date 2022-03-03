@@ -1,7 +1,7 @@
 import { useState } from "react";
 import PaperCard from "src/components/Card";
 import Preview from "src/components/Preview";
-import { Box, Zoom, FormControl, Select, MenuItem, InputLabel, makeStyles } from "@material-ui/core";
+import { Box, Zoom, Select, FormControl, MenuItem, InputLabel, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   form: {
@@ -12,35 +12,40 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const InventoryCard = ({ nftTitle, background, count, setCount }) => {
-  const [selected, setSelected] = useState(false);
+export const InventoryCard = ({ nftTitle, background, itemName, handleFormChange }) => {
   const [size, setSize] = useState("Size");
   const { form, customInputLabel } = useStyles();
 
   const handleChange = e => {
     e.stopPropagation();
-    setSize(e.target.value);
+    const { name, value } = e.target;
+    setSize(value);
+    handleFormChange({
+      [name]: value,
+    });
   };
+
   const selectPaper = () => {
-    setSelected(!selected);
-    if (!selected) return setCount(count + 1);
-    if (selected) return setCount(count - 1);
+    //   setSelected(!selected);
+    //   if (!selected) return setCount(count + 1);
+    //   if (selected) return setCount(count - 1);
   };
 
   return (
     <Zoom in={true}>
-      <PaperCard selectPaper={selectPaper} selected={selected}>
+      <PaperCard selectPaper={selectPaper} selected={""}>
         <Box display="flex" flexDirection="column" justifyContent="space-between" height="100%">
           <Box>
             <Preview nftTitle={nftTitle} background={background} />
           </Box>
         </Box>
         <Box textAlign="center">
+          <Box textAlign="center">
+            <InputLabel>Select Size</InputLabel>
+          </Box>
           <FormControl className={form}>
-            <Box textAlign="center">
-              <InputLabel>Select Size</InputLabel>
-            </Box>
-            <Select onChange={handleChange} value={size}>
+            <Select onChange={handleChange} value={size} name={itemName}>
+              {/* need something to tie this selected size to the NFT */}
               <MenuItem className={customInputLabel} value={"small"}>
                 Small
               </MenuItem>
