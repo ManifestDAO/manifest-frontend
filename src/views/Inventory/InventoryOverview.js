@@ -1,24 +1,4 @@
-import {
-  Box,
-  Button,
-  Container,
-  FormControl,
-  Grid,
-  InputAdornment,
-  InputLabel,
-  Link,
-  OutlinedInput,
-  Paper,
-  SvgIcon,
-  Switch,
-  Tab,
-  Tabs,
-  Typography,
-  Zoom,
-  withStyles,
-} from "@material-ui/core";
-import CheckIcon from "@material-ui/icons/Check";
-import NotInterestedIcon from "@material-ui/icons/NotInterested";
+import { Box, Typography } from "@material-ui/core";
 
 export const InventoryOverview = ({ accountData, accountBalances }) => {
   return (
@@ -28,7 +8,7 @@ export const InventoryOverview = ({ accountData, accountBalances }) => {
           Inventory
         </Typography>
         <Box marginTop="10px">
-          <Typography variant="h6">Claim and Order from Inventory</Typography>
+          <Typography variant="h6">Select an Size your NFT before you Claim</Typography>
           <Typography variant="h6">Once you Claim you cannot unclaim</Typography>
           <Typography variant="h6">You may Claim and Order multiple items</Typography>
         </Box>
