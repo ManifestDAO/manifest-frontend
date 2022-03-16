@@ -7,7 +7,7 @@ export const useBasicFeatureToggle = (valueToStore = "none") => {
   }
   const hash = sha256(toUtf8Bytes(item));
 
-  if (hash.toUpperCase() == "0X7037C60FDE113376A8BF3DCCDAA576533AB48B3837E26B0510E8CE38D8D5A310") {
+  if (hash.toUpperCase() == "0X8260310A82C645C480BE1E9335E1D5A4C8E20BB5C33C3E77A101D7DD15D84D3F") {
     return true;
   }
 
