@@ -8,6 +8,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import useTheme from "./hooks/useTheme";
 import useBonds from "./hooks/Bonds";
 import { useAddress, useWeb3Context } from "./hooks/web3Context";
+import { useBasicFeatureToggle } from "./hooks/useBasicFeatureToggle";
 import { shouldTriggerSafetyCheck } from "./helpers";
 
 import { calcBondDetails } from "./slices/BondSlice";
@@ -15,7 +16,7 @@ import { loadAppDetails } from "./slices/AppSlice";
 import { loadAccountDetails, calculateUserBondDetails } from "./slices/AccountSlice";
 import { info } from "./slices/MessagesSlice";
 
-import { Stake, ChooseBond, Bond, Mint } from "./views";
+import { Stake, ChooseBond, Bond, Mint, OrderForm } from "./views";
 import Sidebar from "./components/Sidebar/Sidebar.jsx";
 import TopBar from "./components/TopBar/TopBar.jsx";
 import NavDrawer from "./components/Sidebar/NavDrawer.jsx";
@@ -169,6 +170,8 @@ function App() {
     if (isSidebarExpanded) handleSidebarClose();
   }, [location]);
 
+  const hasAdvancedFeatures = useBasicFeatureToggle();
+
   return (
     <ThemeProvider theme={themeMode}>
       <CssBaseline />
@@ -207,6 +210,12 @@ function App() {
             <Route path="/mint">
               <Mint />
             </Route>
+
+            {hasAdvancedFeatures && (
+              <Route path="/order">
+                <OrderForm />
+              </Route>
+            )}
 
             <Route component={NotFound} />
           </Switch>
