@@ -15,9 +15,11 @@ import { Paper, Link, Box, Typography, SvgIcon } from "@material-ui/core";
 // import { Skeleton } from "@material-ui/lab";
 import { useSelector } from "react-redux";
 
+import useBasicFeatureToggle from "src/hooks/useBasicFeatureToggle";
 import "./sidebar.scss";
 
 function NavContent() {
+  const hasAdvancedFeatures = useBasicFeatureToggle();
   const [isActive] = useState();
   const address = useAddress();
   // const { bonds } = useBonds();
@@ -161,32 +163,34 @@ function NavContent() {
                   </Typography>
                 </Box>
               </Link>
-              <Link
-                component={NavLink}
-                id="inventory-nav"
-                to="/inventory"
-                isActive={(match, location) => {
-                  return checkPage(match, location, "inventory");
-                }}
-                className={`button-dapp-menu ${isActive ? "active" : ""} ${inventoryIsLive ? "glow" : ""}`}
-              >
-                <Box display="flex" align="center">
-                  <SvgIcon
-                    style={{
-                      height: "20px",
-                      width: "28px",
-                      verticalAlign: "middle",
-                      marginRight: "5px",
-                    }}
-                    viewBox="0 0 24 24"
-                    htmlColor="inherit"
-                    component={InboxIcon}
-                  />
-                  <Typography variant="h5" style={{ fontWeight: "600" }}>
-                    Inventory
-                  </Typography>
-                </Box>
-              </Link>
+              {hasAdvancedFeatures && (
+                <Link
+                  component={NavLink}
+                  id="inventory-nav"
+                  to="/inventory"
+                  isActive={(match, location) => {
+                    return checkPage(match, location, "inventory");
+                  }}
+                  className={`button-dapp-menu ${isActive ? "active" : ""} ${inventoryIsLive ? "glow" : ""}`}
+                >
+                  <Box display="flex" align="center">
+                    <SvgIcon
+                      style={{
+                        height: "20px",
+                        width: "28px",
+                        verticalAlign: "middle",
+                        marginRight: "5px",
+                      }}
+                      viewBox="0 0 24 24"
+                      htmlColor="inherit"
+                      component={InboxIcon}
+                    />
+                    <Typography variant="h5" style={{ fontWeight: "600" }}>
+                      Inventory
+                    </Typography>
+                  </Box>
+                </Link>
+              )}
             </div>
           </div>
         </div>

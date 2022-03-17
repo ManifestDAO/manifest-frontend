@@ -12,28 +12,27 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const InventoryCard = ({ nftTitle, background, itemName, handleFormChange }) => {
-  const [size, setSize] = useState("Size");
+export const InventoryCard = ({ item, nftTitle, background, itemName, handleFormChange }) => {
+  const [size, setSize] = useState(0);
   const { form, customInputLabel } = useStyles();
 
   const handleChange = e => {
+    console.log("item for thee", item);
     e.stopPropagation();
     const { name, value } = e.target;
     setSize(value);
     handleFormChange({
-      [name]: value,
+      tokenId: item.tokenId,
+      tokenAddress: item.tokenAddress,
+      type: item.type,
+      name,
+      size: value, // might not need this
     });
-  };
-
-  const selectPaper = () => {
-    //   setSelected(!selected);
-    //   if (!selected) return setCount(count + 1);
-    //   if (selected) return setCount(count - 1);
   };
 
   return (
     <Zoom in={true}>
-      <PaperCard selectPaper={selectPaper} selected={""}>
+      <PaperCard selected={size}>
         <Box display="flex" flexDirection="column" justifyContent="space-between" height="100%">
           <Box>
             <Preview nftTitle={nftTitle} background={background} />
