@@ -159,7 +159,7 @@ function KlimaMint() {
             {accountData.saleEligible ? "Wallet Eligible" : "Wallet Ineligible"}
           </Typography>
           <Typography variant="h6">Youve claimed: {accountData.totalClaimed}</Typography>
-          <Typography variant="h6">wETH Balance: {Number(accountBalances.mnfst).toFixed(2)}</Typography>
+          <Typography variant="h6">wETH Balance: {Number(accountBalances.weth).toFixed(2)}</Typography>
           {/* <Typography variant="h6">OHM Balance: {Number(accountBalances.smnfst).toFixed(2)}</Typography> */}
         </Box>
       </Box>

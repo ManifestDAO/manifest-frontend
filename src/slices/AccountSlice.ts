@@ -19,6 +19,9 @@ export const getBalances = createAsyncThunk(
     const mnfstContract = new ethers.Contract(addresses[networkID].MNFST_ADDRESS as string, ManifestERC20Abi, provider);
     const mnfstBalance = await mnfstContract.balanceOf(address);
 
+    const wethContract = new ethers.Contract(addresses[networkID].WETH_ADDRESS as string, WETHERC20Abi, provider);
+    const wethBalance = await wethContract.balanceOf(address);
+
     const smnfstContract = new ethers.Contract(
       addresses[networkID].SMNFST_ADDRESS as string,
       sManifestERC20Abi,
@@ -31,6 +34,7 @@ export const getBalances = createAsyncThunk(
 
     return {
       balances: {
+        weth: ethers.utils.formatEthers(wethBalance),
         sohm: ethers.utils.formatUnits(sohmBalance, "gwei"),
         mnfst: ethers.utils.formatUnits(mnfstBalance, "gwei"),
         smnfst: ethers.utils.formatUnits(smnfstBalance, "gwei"),
@@ -44,6 +48,7 @@ interface IUserAccountDetails {
     sohm: string;
     mnfst: string;
     smnfst: string;
+    weth: string;
   };
   staking: {
     mnfstStake: number;
