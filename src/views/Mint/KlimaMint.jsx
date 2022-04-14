@@ -138,7 +138,7 @@ function KlimaMint() {
                 {klimaData.totalMinted} / {klimaData.totalSupply} Minted
               </Typography>
             )}
-            <Typography variant="h6">{klimaData.price} MNFST</Typography>
+            <Typography variant="h6">{klimaData.price / 10e8} wETH</Typography>
             <Typography variant="h6">Max 1 Per Mint / 4 Per Wallet</Typography>
           </Box>
         </Box>
@@ -159,8 +159,8 @@ function KlimaMint() {
             {accountData.saleEligible ? "Wallet Eligible" : "Wallet Ineligible"}
           </Typography>
           <Typography variant="h6">Youve claimed: {accountData.totalClaimed}</Typography>
-          <Typography variant="h6">MNFST Balance: {Number(accountBalances.mnfst).toFixed(2)}</Typography>
-          <Typography variant="h6">sMNFST Balance: {Number(accountBalances.smnfst).toFixed(2)}</Typography>
+          <Typography variant="h6">wETH Balance: {Number(accountBalances.mnfst).toFixed(2)}</Typography>
+          {/* <Typography variant="h6">OHM Balance: {Number(accountBalances.smnfst).toFixed(2)}</Typography> */}
         </Box>
       </Box>
 
@@ -182,7 +182,7 @@ function KlimaMint() {
                     )}
                     <Typography>Youve minted: {accountData.shirt1Claimed}</Typography>
                   </Box>
-                  <Box
+                  {/* <Box
                     display="flex"
                     flexDirection="column"
                     alignItems="center"
@@ -190,7 +190,7 @@ function KlimaMint() {
                   >
                     <Typography component="div">
                       <Grid component="label" container alignItems="center" spacing={1}>
-                        <Grid item>sMNFST</Grid>
+                        <Grid item>OHM</Grid>
                         <Grid item>
                           <PurpleSwitch
                             checked={buyWithMNFST.shirt1}
@@ -199,10 +199,10 @@ function KlimaMint() {
                             inputProps={{ "aria-label": "default checkbox" }}
                           />
                         </Grid>
-                        <Grid item>MNFST</Grid>
+                        <Grid item>wETH</Grid>
                       </Grid>
                     </Typography>
-                  </Box>
+                  </Box> */}
                   <Box>
                     {buyWithMNFST.shirt1 && hasAllowance("mnfst") && (
                       <Button
@@ -213,7 +213,7 @@ function KlimaMint() {
                         onClick={() => handleMint(1)}
                         style={{ fontWeight: "600" }}
                       >
-                        {txnButtonText(pendingTransactions, "Minting", "Mint with MNFST")}
+                        {txnButtonText(pendingTransactions, "Minting", "Mint with wETH")}
                       </Button>
                     )}
                     {buyWithMNFST.shirt1 && !hasAllowance("mnfst") && (
@@ -225,11 +225,11 @@ function KlimaMint() {
                         onClick={() => onSeekApproval("mnfst")}
                         style={{ fontWeight: "600" }}
                       >
-                        {txnButtonText(pendingTransactions, "approve_mnfst_for_mint", "Approve MNFST")}
+                        {txnButtonText(pendingTransactions, "approve_mnfst_for_mint", "Approve wETH")}
                       </Button>
                     )}
 
-                    {!buyWithMNFST.shirt1 && hasAllowance("smnfst") && (
+                    {/* {!buyWithMNFST.shirt1 && hasAllowance("smnfst") && (
                       <Button
                         fullWidth
                         variant="contained"
@@ -238,7 +238,7 @@ function KlimaMint() {
                         onClick={() => handleMint(1)}
                         style={{ fontWeight: "600" }}
                       >
-                        {txnButtonText(pendingTransactions, "Minting", "Mint with sMNFST")}
+                        {txnButtonText(pendingTransactions, "Minting", "Mint with OHM")}
                       </Button>
                     )}
                     {!buyWithMNFST.shirt1 && !hasAllowance("smnfst") && (
@@ -250,9 +250,9 @@ function KlimaMint() {
                         onClick={() => onSeekApproval("smnfst")}
                         style={{ fontWeight: "600" }}
                       >
-                        {txnButtonText(pendingTransactions, "approve_smnfst_for_mint", "Approve sMNFST")}
+                        {txnButtonText(pendingTransactions, "approve_smnfst_for_mint", "Approve OHM")}
                       </Button>
-                    )}
+                    )} */}
                   </Box>
                 </Box>
               </Paper>
@@ -275,7 +275,7 @@ function KlimaMint() {
                     )}
                     <Typography>Youve minted: {accountData.shirt2Claimed}</Typography>
                   </Box>
-                  <Box
+                  {/* <Box
                     display="flex"
                     flexDirection="column"
                     alignItems="center"
@@ -283,7 +283,7 @@ function KlimaMint() {
                   >
                     <Typography component="div">
                       <Grid component="label" container alignItems="center" spacing={1}>
-                        <Grid item>sMNFST</Grid>
+                        <Grid item>OHM</Grid>
                         <Grid item>
                           <PurpleSwitch
                             checked={buyWithMNFST.shirt2}
@@ -292,10 +292,10 @@ function KlimaMint() {
                             inputProps={{ "aria-label": "default checkbox" }}
                           />
                         </Grid>
-                        <Grid item>MNFST</Grid>
+                        <Grid item>wETH</Grid>
                       </Grid>
                     </Typography>
-                  </Box>
+                  </Box> */}
                   <Box>
                     {buyWithMNFST.shirt2 && hasAllowance("mnfst") && (
                       <Button
@@ -306,7 +306,7 @@ function KlimaMint() {
                         onClick={() => handleMint(2)}
                         style={{ fontWeight: "600" }}
                       >
-                        {txnButtonText(pendingTransactions, "Minting", "Mint with MNFST")}
+                        {txnButtonText(pendingTransactions, "Minting", "Mint with wETH")}
                       </Button>
                     )}
                     {buyWithMNFST.shirt2 && !hasAllowance("mnfst") && (
@@ -318,11 +318,11 @@ function KlimaMint() {
                         onClick={() => onSeekApproval("mnfst")}
                         style={{ fontWeight: "600" }}
                       >
-                        {txnButtonText(pendingTransactions, "approve_mnfst_for_mint", "Approve MNFST")}
+                        {txnButtonText(pendingTransactions, "approve_mnfst_for_mint", "Approve wETH")}
                       </Button>
                     )}
 
-                    {!buyWithMNFST.shirt2 && hasAllowance("smnfst") && (
+                    {/* {!buyWithMNFST.shirt2 && hasAllowance("smnfst") && (
                       <Button
                         fullWidth
                         variant="contained"
@@ -331,7 +331,7 @@ function KlimaMint() {
                         onClick={() => handleMint(2)}
                         style={{ fontWeight: "600" }}
                       >
-                        {txnButtonText(pendingTransactions, "Minting", "Mint with sMNFST")}
+                        {txnButtonText(pendingTransactions, "Minting", "Mint with OHM")}
                       </Button>
                     )}
                     {!buyWithMNFST.shirt2 && !hasAllowance("smnfst") && (
@@ -343,9 +343,9 @@ function KlimaMint() {
                         onClick={() => onSeekApproval("smnfst")}
                         style={{ fontWeight: "600" }}
                       >
-                        {txnButtonText(pendingTransactions, "approve_smnfst_for_mint", "Approve sMNFST")}
+                        {txnButtonText(pendingTransactions, "approve_smnfst_for_mint", "Approve OHM")}
                       </Button>
-                    )}
+                    )} */}
                   </Box>
                 </Box>
               </Paper>
@@ -369,7 +369,7 @@ function KlimaMint() {
                     <Typography>Youve minted: {accountData.shirt3Claimed}</Typography>
                   </Box>
                 </Box>
-                <Box
+                {/* <Box
                   display="flex"
                   flexDirection="column"
                   alignItems="center"
@@ -377,7 +377,7 @@ function KlimaMint() {
                 >
                   <Typography component="div">
                     <Grid component="label" container alignItems="center" spacing={1}>
-                      <Grid item>sMNFST</Grid>
+                      <Grid item>OHM</Grid>
                       <Grid item>
                         <PurpleSwitch
                           checked={buyWithMNFST.shirt3}
@@ -386,10 +386,10 @@ function KlimaMint() {
                           inputProps={{ "aria-label": "default checkbox" }}
                         />
                       </Grid>
-                      <Grid item>MNFST</Grid>
+                      <Grid item>wETH</Grid>
                     </Grid>
                   </Typography>
-                </Box>
+                </Box> */}
                 <Box>
                   {buyWithMNFST.shirt3 && hasAllowance("mnfst") && (
                     <Button
@@ -400,7 +400,7 @@ function KlimaMint() {
                       onClick={() => handleMint(3)}
                       style={{ fontWeight: "600" }}
                     >
-                      {txnButtonText(pendingTransactions, "Minting", "Mint with MNFST")}
+                      {txnButtonText(pendingTransactions, "Minting", "Mint with wETH")}
                     </Button>
                   )}
                   {buyWithMNFST.shirt3 && !hasAllowance("mnfst") && (
@@ -412,11 +412,11 @@ function KlimaMint() {
                       onClick={() => onSeekApproval("mnfst")}
                       style={{ fontWeight: "600" }}
                     >
-                      {txnButtonText(pendingTransactions, "approve_mnfst_for_mint", "Approve MNFST")}
+                      {txnButtonText(pendingTransactions, "approve_mnfst_for_mint", "Approve wETH")}
                     </Button>
                   )}
 
-                  {!buyWithMNFST.shirt3 && hasAllowance("smnfst") && (
+                  {/* {!buyWithMNFST.shirt3 && hasAllowance("smnfst") && (
                     <Button
                       fullWidth
                       variant="contained"
@@ -439,7 +439,7 @@ function KlimaMint() {
                     >
                       {txnButtonText(pendingTransactions, "approve_smnfst_for_mint", "Approve sMNFST")}
                     </Button>
-                  )}
+                  )} */}
                 </Box>
               </Paper>
             </Zoom>
