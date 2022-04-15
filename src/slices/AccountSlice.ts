@@ -5,6 +5,7 @@ import { abi as sManifestERC20Abi } from "../abi/sManifestERC20.json";
 import { abi as sOHMv2 } from "../abi/sOhmv2.json";
 import { abi as Genesis1155Abi } from "../abi/Genesis1155.json";
 import { abi as ManifestKlima1155Abi } from "../abi/ManifestKlima1155.json";
+import { abi as WETHERC20Abi } from "../abi/wETHERC20.json";
 
 import { setAll } from "../helpers";
 
@@ -18,6 +19,9 @@ export const getBalances = createAsyncThunk(
     const mnfstContract = new ethers.Contract(addresses[networkID].MNFST_ADDRESS as string, ManifestERC20Abi, provider);
     const mnfstBalance = await mnfstContract.balanceOf(address);
 
+    const wethContract = new ethers.Contract(addresses[networkID].WETH_ADDRESS as string, WETHERC20Abi, provider);
+    const wethBalance = await wethContract.balanceOf(address);
+
     const smnfstContract = new ethers.Contract(
       addresses[networkID].SMNFST_ADDRESS as string,
       sManifestERC20Abi,
@@ -30,6 +34,7 @@ export const getBalances = createAsyncThunk(
 
     return {
       balances: {
+        weth: ethers.utils.formatEthers(wethBalance),
         sohm: ethers.utils.formatUnits(sohmBalance, "gwei"),
         mnfst: ethers.utils.formatUnits(mnfstBalance, "gwei"),
         smnfst: ethers.utils.formatUnits(smnfstBalance, "gwei"),
@@ -43,6 +48,7 @@ interface IUserAccountDetails {
     sohm: string;
     mnfst: string;
     smnfst: string;
+    weth: string;
   };
   staking: {
     mnfstStake: number;
@@ -65,6 +71,7 @@ export const loadAccountDetails = createAsyncThunk(
   async ({ networkID, provider, address }: IBaseAddressAsyncThunk) => {
     let mnfstBalance = 0;
     let smnfstBalance = 0;
+    let wethBalance = 0;
     let sohmBalance = 0;
     let stakeAllowance = 0;
     let unstakeAllowance = 0;
@@ -88,6 +95,13 @@ export const loadAccountDetails = createAsyncThunk(
 
     let mnfstContract;
     let smnfstContract;
+    let wethContract;
+
+    //added WETH to the list of contracts
+    if (addresses[networkID].WETH_ADDRESS) {
+      wethContract = new ethers.Contract(addresses[networkID].WETH_ADDRESS as string, WETHERC20Abi, provider);
+      wethBalance = await wethContract.balanceOf(address);
+    }
 
     if (addresses[networkID].MNFST_ADDRESS) {
       mnfstContract = new ethers.Contract(addresses[networkID].MNFST_ADDRESS as string, ManifestERC20Abi, provider);
@@ -153,10 +167,11 @@ export const loadAccountDetails = createAsyncThunk(
         .balanceOf(address, 3)
         .then((bal: BigNumber) => ethers.utils.formatUnits(bal, "wei"));
 
-      if (mnfstContract) {
+      //switched mnfst contract out with weth for the minting allowance. Will fix labelling later on.
+      if (wethContract) {
         try {
           mintAllowanceMNFST =
-            (await mnfstContract.allowance(address, addresses[networkID].KLIMA_1155)) / Math.pow(10, 18);
+            (await wethContract.allowance(address, addresses[networkID].KLIMA_1155)) / Math.pow(10, 18);
         } catch (e) {
           console.error(e);
         }

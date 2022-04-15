@@ -1,7 +1,7 @@
 import { ethers, BigNumber } from "ethers";
 import { addresses } from "../constants";
-import { abi as ManifestERC20Abi } from "../abi/ManifestERC20.json";
-import { abi as sManifestERC20Abi } from "../abi/sManifestERC20.json";
+import { abi as wETHERC20Abi } from "../abi/wETHERC20.json";
+import { abi as OHMERC20Abi } from "../abi/OHMERC20.json";
 import { abi as ManifestKlima1155Abi } from "../abi/ManifestKlima1155.json";
 
 import { clearPendingTxn, fetchPendingTxns, getStakingTypeText } from "./PendingTxnsSlice";
@@ -37,12 +37,8 @@ export const changeApproval = createAsyncThunk(
     }
 
     const signer = provider.getSigner();
-    const mnfstContract = new ethers.Contract(addresses[networkID].MNFST_ADDRESS as string, ManifestERC20Abi, signer);
-    const smnfstContract = new ethers.Contract(
-      addresses[networkID].SMNFST_ADDRESS as string,
-      sManifestERC20Abi,
-      signer,
-    );
+    const mnfstContract = new ethers.Contract(addresses[networkID].WETH_ADDRESS as string, wETHERC20Abi, signer);
+    const smnfstContract = new ethers.Contract(addresses[networkID].OHM_ADDRESS as string, OHMERC20Abi, signer);
     let approveTx;
     let mintAllowanceMNFST = await mnfstContract.allowance(address, addresses[networkID].KLIMA_1155);
     let mintAllowanceSMNFST = await smnfstContract.allowance(address, addresses[networkID].KLIMA_1155);
