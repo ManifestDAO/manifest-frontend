@@ -34,7 +34,7 @@ export const getBalances = createAsyncThunk(
 
     return {
       balances: {
-        weth: ethers.utils.formatUnits(wethBalance, "gwei"),
+        weth: ethers.utils.formatUnits(wethBalance, "ether"),
         sohm: ethers.utils.formatUnits(sohmBalance, "gwei"),
         mnfst: ethers.utils.formatUnits(mnfstBalance, "gwei"),
         smnfst: ethers.utils.formatUnits(smnfstBalance, "gwei"),
