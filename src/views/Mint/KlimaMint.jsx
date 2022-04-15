@@ -138,7 +138,7 @@ function KlimaMint() {
                 {klimaData.totalMinted} / {klimaData.totalSupply} Minted
               </Typography>
             )}
-            <Typography variant="h6">{klimaData.price / 10e8} wETH</Typography>
+            <Typography variant="h6">{klimaData.price} wETH</Typography>
             <Typography variant="h6">Max 1 Per Mint / 4 Per Wallet</Typography>
           </Box>
         </Box>

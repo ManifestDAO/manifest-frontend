@@ -28,7 +28,7 @@ const initialState = {
   klimaMint: {
     saleStarted: false,
     totalMinted: 0,
-    price: "2",
+    price: "0.2",
     totalSupply: 1332,
     maxMint: 4,
     shirt1Remaining: 0,
@@ -147,7 +147,7 @@ export const loadAppDetails = createAsyncThunk(
 
     let klimaSaleStarted = false;
     let totalShirtsMinted = 0;
-    let klimaPrice = "2";
+    let klimaPrice = "0.2";
     let totalKlimaSupply = 1332;
     let maxShirtMint = 4;
     let shirt1Remaining;
@@ -161,7 +161,7 @@ export const loadAppDetails = createAsyncThunk(
       totalShirtsMinted = await klimaNFTContract
         .totalHoodiesMinted()
         .then((n: BigNumber) => ethers.utils.formatUnits(n, "wei"));
-      klimaPrice = await klimaNFTContract.price().then((p: BigNumber) => String(Number(p) / Math.pow(10, 9)));
+      klimaPrice = await klimaNFTContract.price().then((p: BigNumber) => String(Number(p) / Math.pow(10, 18)));
       // totalKlimaSupply = await klimaNFTContract.totalSupply();
       maxShirtMint = await klimaNFTContract.MAX_PER_WALLET().then((n: BigNumber) => ethers.utils.formatUnits(n, "wei"));
       shirt1Remaining = await klimaNFTContract
