@@ -209,7 +209,7 @@ function KlimaMint() {
                         fullWidth
                         variant="contained"
                         color="primary"
-                        disabled={isDisabled()}
+                        disabled={isDisabled() || klimaData.shirt1Remaining < 1}
                         onClick={() => handleMint(1)}
                         style={{ fontWeight: "600" }}
                       >
@@ -221,7 +221,7 @@ function KlimaMint() {
                         fullWidth
                         variant="contained"
                         color="primary"
-                        disabled={isDisabled()}
+                        disabled={isDisabled() || klimaData.shirt1Remaining < 1}
                         onClick={() => onSeekApproval("mnfst")}
                         style={{ fontWeight: "600" }}
                       >
@@ -302,7 +302,7 @@ function KlimaMint() {
                         fullWidth
                         variant="contained"
                         color="primary"
-                        disabled={isDisabled()}
+                        disabled={isDisabled() || klimaData.shirt2Remaining < 1}
                         onClick={() => handleMint(2)}
                         style={{ fontWeight: "600" }}
                       >
@@ -314,7 +314,7 @@ function KlimaMint() {
                         fullWidth
                         variant="contained"
                         color="primary"
-                        disabled={isDisabled()}
+                        disabled={isDisabled() || klimaData.shirt2Remaining < 1}
                         onClick={() => onSeekApproval("mnfst")}
                         style={{ fontWeight: "600" }}
                       >
@@ -396,7 +396,7 @@ function KlimaMint() {
                       fullWidth
                       variant="contained"
                       color="primary"
-                      disabled={isDisabled()}
+                      disabled={isDisabled() || klimaData.shirt3Remaining < 1}
                       onClick={() => handleMint(3)}
                       style={{ fontWeight: "600" }}
                     >
@@ -408,7 +408,7 @@ function KlimaMint() {
                       fullWidth
                       variant="contained"
                       color="primary"
-                      disabled={isDisabled()}
+                      disabled={isDisabled() || klimaData.shirt3Remaining < 1}
                       onClick={() => onSeekApproval("mnfst")}
                       style={{ fontWeight: "600" }}
                     >
