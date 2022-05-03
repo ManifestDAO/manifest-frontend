@@ -66,12 +66,12 @@ function NavContent() {
             <div className="dapp-nav" id="navbarNav">
               <Link
                 component={NavLink}
-                id="stake-nav"
-                to="/"
+                id="mint-nav"
+                to="/mint"
                 isActive={(match, location) => {
-                  return checkPage(match, location, "stake");
+                  return checkPage(match, location, "mint");
                 }}
-                className={`button-dapp-menu ${isActive ? "active" : ""}`}
+                className={`button-dapp-menu ${isActive ? "active" : ""} ${mintIsLive ? "glow" : ""}`}
               >
                 <Box display="flex" align="center">
                   <SvgIcon
@@ -81,10 +81,12 @@ function NavContent() {
                       verticalAlign: "middle",
                       marginRight: "5px",
                     }}
-                    component={StakeIcon}
+                    viewBox="0 0 24 24"
+                    htmlColor="inherit"
+                    component={ShoppingCartIcon}
                   />
                   <Typography variant="h5" style={{ fontWeight: "600" }}>
-                    Stake
+                    Store
                   </Typography>
                 </Box>
               </Link>
@@ -114,7 +116,7 @@ function NavContent() {
                 </Box>
               </Link> */}
 
-              <Link href="https://app.sushi.com/swap?outputCurrency=0x21585BBcD5bDC3f5737620cf0Db2E51978cf60ac">
+              <Link href="http://inventory.manifest.gg">
                 <Box display="flex" align="center">
                   <SvgIcon
                     style={{
@@ -128,19 +130,19 @@ function NavContent() {
                     component={SwapCallsIcon}
                   />
                   <Typography variant="h5" style={{ fontWeight: "600" }}>
-                    Swap
+                    Inventory
                   </Typography>
                 </Box>
               </Link>
 
               <Link
                 component={NavLink}
-                id="mint-nav"
-                to="/mint"
+                id="stake-nav"
+                to="/stake"
                 isActive={(match, location) => {
-                  return checkPage(match, location, "mint");
+                  return checkPage(match, location, "stake");
                 }}
-                className={`button-dapp-menu ${isActive ? "active" : ""} ${mintIsLive ? "glow" : ""}`}
+                className={`button-dapp-menu ${isActive ? "active" : ""}`}
               >
                 <Box display="flex" align="center">
                   <SvgIcon
@@ -150,12 +152,10 @@ function NavContent() {
                       verticalAlign: "middle",
                       marginRight: "5px",
                     }}
-                    viewBox="0 0 24 24"
-                    htmlColor="inherit"
-                    component={ShoppingCartIcon}
+                    component={StakeIcon}
                   />
                   <Typography variant="h5" style={{ fontWeight: "600" }}>
-                    Mint
+                    Own
                   </Typography>
                 </Box>
               </Link>
