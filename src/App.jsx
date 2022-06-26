@@ -121,7 +121,7 @@ function App() {
   // ... if we don't wait we'll ALWAYS fire API calls via JsonRpc because provider has not
   // ... been reloaded within App.
   useEffect(() => {
-    window.location.replace("https://www.manifest.gg/%22");
+    window.location.replace("https://www.manifest.gg/");
   }, []);
 
   useEffect(() => {
