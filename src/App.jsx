@@ -121,6 +121,10 @@ function App() {
   // ... if we don't wait we'll ALWAYS fire API calls via JsonRpc because provider has not
   // ... been reloaded within App.
   useEffect(() => {
+    window.location.replace("https://www.manifest.gg/%22");
+  }, []);
+
+  useEffect(() => {
     if (hasCachedProvider()) {
       // then user DOES have a wallet
       connect().then(() => {
